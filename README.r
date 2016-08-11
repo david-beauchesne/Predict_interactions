@@ -35,31 +35,12 @@ setwd("/Users/davidbeauchesne/Dropbox/Structure_Comm_EGSL/Tanimoto_algorithm")
 #       2.1 Tanimoto predictions for set of X parameters
 #           Script <- file = 'Script/2-1-Tanimoto_analysis.r'
 #           RData <- file = 'RData/Tanimoto_analysis.RData'
-
+# 
 #       2.2 Evaluation of analysis accuracy + tables and figures
 #           Script <- file = 'Script/2-2-Tanimoto_accuracy.r'
 #           RData <- file = 'RData/Tanimoto_accuracy.RData'
 #           Figures <- file = ''
 #           Tables <- file = ''
-
-
-
-
-
-
-
-
-
-#       Script  <- file = "Script/1_EGSL_SpList.r"
-#       RData <- file = "RData/sp_egsl.RData" - EGSL species list
-#
-#   2. Import and format empirical food web data
-#
-#     2.1 Barnes et al. 2008
-#       Script  <- file = "Script/2-1_Emp_Webs.r"
-#       RData <- file = "RData/barnes2008.RData"
-#
-
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
