@@ -1,6 +1,6 @@
 # Run readme.r before other scripts
 rm(list=ls())
-setwd("/Users/davidbeauchesne/Dropbox/Structure_Comm_EGSL/Tanimoto_algorithm")
+setwd("/Users/davidbeauchesne/Dropbox/PhD/PhD_obj2/Structure_Comm_EGSL/Predict_interactions")
 # -----------------------------------------------------------------------------
 # PROJECT:
 #    Evaluating the structure of the communities of the estuary
@@ -35,7 +35,7 @@ setwd("/Users/davidbeauchesne/Dropbox/Structure_Comm_EGSL/Tanimoto_algorithm")
 #       2.1 Tanimoto predictions for set of X parameters
 #           Script <- file = 'Script/2-1-Tanimoto_analysis.r'
 #           RData <- file = 'RData/Tanimoto_analysis.RData'
-# 
+#
 #       2.2 Evaluation of analysis accuracy + tables and figures
 #           Script <- file = 'Script/2-2-Tanimoto_accuracy.r'
 #           RData <- file = 'RData/Tanimoto_accuracy.RData'
@@ -53,8 +53,8 @@ source("Script/two_way_tanimoto_predict.r") # interaction predictions from two-w
 source("Script/prediction_matrix.r") # predictions formatted to food web matrix format (S x S)
 source("Script/empirical_matrix.r") # predictions formatted to food web matrix format (S x S)
 source("Script/consumer_set_of_resource.R")
-source("Script/tanimoto_efficiency.r") # predictions formatted to food web matrix format (S x S)
-source("Script/prediction_accuracy.r") # calculating the accuracy of predictions from Tanimoto_predictions
+source("Script/prediction_accuracy.r") #
+source("Script/tanimoto_accuracy.r") # calculating the accuracy of predictions from Tanimoto_predictions
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
