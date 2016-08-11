@@ -2,7 +2,7 @@
 # Two-way Tanimoto algorithm: prediction accuracy for 2-Tanimoto_analysis.r
 # ---------------------------------------------------------------------------
 
-tanimoto_accuracy <- function(Tanimoto_analysis, predict.only) {
+tanimoto_accuracy <- function(Tanimoto_analysis, predict.only = FALSE, empirical.only = FALSE) {
     load("RData/interactions_source.RData")
     source("Script/prediction_matrix.r")
     source("Script/empirical_matrix.r")
@@ -25,7 +25,7 @@ tanimoto_accuracy <- function(Tanimoto_analysis, predict.only) {
                     accuracy[iteration, 'K'] <- names(Tanimoto_analysis[[n]])[m]
                     accuracy[iteration, 'wt'] <- names(Tanimoto_analysis[[n]][[m]])[i]
                     accuracy[iteration, 'Cm'] <- names(Tanimoto_analysis[[n]][[m]][[i]])[j]
-                    accuracy[iteration, 5:12] <- prediction_accuracy(predicted = prediction_matrix(S1 = S1, predictions = predictions, predict.only = predict.only),
+                    accuracy[iteration, 5:12] <- prediction_accuracy(predicted = prediction_matrix(S1 = S1, predictions = predictions, predict.only = predict.only, empirical.only = empirical.only),
                                                         empirical = empirical_matrix(S1 = S1, interactions_source = interactions_source, source = source))
 
                     iteration <- iteration + 1
