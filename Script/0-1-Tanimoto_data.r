@@ -231,4 +231,4 @@ Tanimoto_data[[2]] <- emp.web.inter
 Tanimoto_data[[3]] <- total.inter
 Tanimoto_data[[4]] <- egsl
 
-save(x = Tanimoto_data, file = "RData/Tanimoto_data.RData")
+save(x = Tanimoto_data, file = "./RData/Tanimoto_data.RData")
