@@ -6,7 +6,7 @@ tanimoto_accuracy <- function(Tanimoto_analysis, predict.only = FALSE, empirical
     load("RData/interactions_source.RData")
     source("Script/prediction_matrix.r")
     source("Script/empirical_matrix.r")
-    source("Script/tanimoto_efficiency.r")
+    source("Script/prediction_accuracy.r")
 
 
     accuracy <- matrix(ncol = 12, nrow = length(Tanimoto_analysis) * length(Tanimoto_analysis[[1]]) * length(Tanimoto_analysis[[1]][[1]]) * length(Tanimoto_analysis[[1]][[1]][[1]]), data = 0, dimnames = list(c(), c('MW','K','wt','Cm','a','b','c','d','TSS','ScoreY1','ScoreY0','FSS')))
