@@ -6,7 +6,7 @@ serialNext = function(prefix){
     }
         i=1
     repeat {
-        f = paste(unlist(strsplit(prefix, '[.]'))[1],i,'.',unlist(strsplit(prefix, '[.]'))[2],sep="")
+        f = paste(unlist(strsplit(prefix, '[.]R'))[1],i,'.R',unlist(strsplit(prefix, '[.]R'))[2],sep="")
         if(!file.exists(f)){return(f)}
         i=i+1
      }
