@@ -55,7 +55,7 @@ source("Script/empirical_matrix.r") # predictions formatted to food web matrix f
 source("Script/consumer_set_of_resource.R")
 source("Script/prediction_accuracy.r") #
 source("Script/tanimoto_accuracy.r") # calculating the accuracy of predictions from Tanimoto_predictions
-source("Script/serialNext.r")
+source("Script/serialNext.r") # function to avoid overwriting existing files in temporary analyses folder
 source("Script/eplot.r") # empty plot for figure generation
 # -----------------------------------------------------------------------------
 
