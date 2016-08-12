@@ -1,6 +1,5 @@
 # Run readme.r before other scripts
 rm(list=ls())
-setwd("/Users/davidbeauchesne/Dropbox/PhD/PhD_obj2/Structure_Comm_EGSL/Predict_interactions")
 # -----------------------------------------------------------------------------
 # PROJECT:
 #    Evaluating the structure of the communities of the estuary
@@ -45,7 +44,7 @@ setwd("/Users/davidbeauchesne/Dropbox/PhD/PhD_obj2/Structure_Comm_EGSL/Predict_i
 
 # -----------------------------------------------------------------------------
 # FUNCTIONS (add a description of the functions eventually)
-source("Script/Tanimoto.r") # basic tanimoto similarity
+source("./Script/tanimoto.r") # basic tanimoto similarity
 source("Script/Tanimoto_traits.r") # extended tanimoto included trait/taxonomy vector
 source("Script/similarity_taxon.r") # similarity matrix for set of taxa
 source("Script/similarity_taxon_predict.r") #similarity of additional taxa in S1 not found in S0
