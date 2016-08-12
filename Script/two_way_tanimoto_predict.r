@@ -1,4 +1,4 @@
-two_way_tanimoto_predict <- function(Kc, Kr, S0, S1, MW, similarity.matrix, minimum_threshold) {
+two_way_tanimoto_predict <- function(Kc, Kr, S0, S1, MW, similarity.consumer, similarity.resource, minimum_threshold) {
     # Two-way Tanimoto Algorithm
     # ===========================
 
@@ -64,8 +64,8 @@ two_way_tanimoto_predict <- function(Kc, Kr, S0, S1, MW, similarity.matrix, mini
                 } else { # selecting Kr most similar resources in S1
                     # Let's assume for this part that we are not compiling a different similarity measure for predators and preys.
                     similar.resource <- matrix(nrow = length(S1)-1, ncol = 2, dimnames = list(c(), c('resource','similarity')), data = NA) # importing K nearest neighbors resources
-                    similar.resource[, 'resource'] <- names(sort(similarity.matrix[S1[-which(S1 == S1[i])], resources.S1[j]], decreasing = TRUE))
-                    similar.resource[, 'similarity'] <- sort(similarity.matrix[S1[-which(S1 == S1[i])], resources.S1[j]], decreasing = TRUE)
+                    similar.resource[, 'resource'] <- names(sort(similarity.resource[S1[-which(S1 == S1[i])], resources.S1[j]], decreasing = TRUE))
+                    similar.resource[, 'similarity'] <- sort(similarity.resource[S1[-which(S1 == S1[i])], resources.S1[j]], decreasing = TRUE)
 
                     # If multiple taxa with same similarity, randomly select those that will be used as similar resources.
                     if(similar.resource[Kr+1, 'similarity'] == similar.resource[Kr, 'similarity']) {
@@ -96,9 +96,9 @@ two_way_tanimoto_predict <- function(Kc, Kr, S0, S1, MW, similarity.matrix, mini
         }#if1
 
         # Identify similar consumers to S1[i]
-        similar.consumer <- matrix(nrow = nrow(similarity.matrix)-1, ncol = 2, dimnames = list(c(), c('consumer','similarity')), data = NA) # emporting K nearest neighbors for consumers
-        similar.consumer[, 'consumer'] <- names(sort(similarity.matrix[-which(colnames(similarity.matrix) == S1[i]), S1[i]], decreasing = TRUE))
-        similar.consumer[, 'similarity'] <- sort(similarity.matrix[-which(colnames(similarity.matrix) == S1[i]), S1[i]], decreasing = TRUE)
+        similar.consumer <- matrix(nrow = nrow(similarity.consumer)-1, ncol = 2, dimnames = list(c(), c('consumer','similarity')), data = NA) # emporting K nearest neighbors for consumers
+        similar.consumer[, 'consumer'] <- names(sort(similarity.consumer[-which(colnames(similarity.consumer) == S1[i]), S1[i]], decreasing = TRUE))
+        similar.consumer[, 'similarity'] <- sort(similarity.consumer[-which(colnames(similarity.consumer) == S1[i]), S1[i]], decreasing = TRUE)
 
         # If multiple taxa with same similarity, randomly select those that will be used as similar resources.
         if(similar.consumer[Kc+1, 'similarity'] == similar.consumer[Kc, 'similarity']) {
@@ -146,8 +146,8 @@ two_way_tanimoto_predict <- function(Kc, Kr, S0, S1, MW, similarity.matrix, mini
                     } else {
                         # Let's assume for this part that we are not compiling a different similarity measure for predators and preys.
                         similar.resource <- matrix(nrow = length(S1)-1, ncol = 2, dimnames = list(c(), c('resource','similarity')), data = NA) # importing K nearest neighbors resources
-                        similar.resource[, 'resource'] <- names(sort(similarity.matrix[S1[-which(S1 == S1[i])], candidate.resource[k]], decreasing = TRUE))
-                        similar.resource[, 'similarity'] <- sort(similarity.matrix[S1[-which(S1 == S1[i])], candidate.resource[k]], decreasing = TRUE)
+                        similar.resource[, 'resource'] <- names(sort(similarity.resource[S1[-which(S1 == S1[i])], candidate.resource[k]], decreasing = TRUE))
+                        similar.resource[, 'similarity'] <- sort(similarity.resource[S1[-which(S1 == S1[i])], candidate.resource[k]], decreasing = TRUE)
 
                         # If multiple taxa with same similarity, randomly select those that will be used as similar resources.
                         if(similar.resource[Kr+1, 'similarity'] == similar.resource[Kr, 'similarity']) {
