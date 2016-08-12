@@ -1,4 +1,4 @@
-tanimoto_analysis <- function(min.tx, K.values, MW, WT, minimum_threshold, similarity, filename, blind = FALSE) {
+tanimoto_analysis <- function(min.tx, K.values, MW, WT, minimum_threshold, similarity = 'both', filename, blind = FALSE) {
     # -----------------------------------------------------------------------------
     # # PARAMETERS:
     #     filename                name of file under which to same the results of the predictions
@@ -13,17 +13,6 @@ tanimoto_analysis <- function(min.tx, K.values, MW, WT, minimum_threshold, simil
     # # OUTPUT:
     #     tanimoto_analysis       List of predictions for all parameters tested
     # -----------------------------------------------------------------------------
-
-    filename <- 'essai'
-    min.tx = 45
-    K.values = 5
-    MW = 1
-    WT = 0
-    blind = FALSE
-    minimum_threshold = 0.3
-    similarity = 'both'
-
-
     load("./RData/Tanimoto_data.RData")
     load("./RData/interactions_source.RData")
     if(similarity == 'both') { # For similarity matrices already evaluated
@@ -244,4 +233,6 @@ tanimoto_analysis <- function(min.tx, K.values, MW, WT, minimum_threshold, simil
     print(Sys.time() - init.time)
 
     save(x = Tanimoto_analysis, file = paste('./Analyses/',filename,'.RData',sep=''))
+
+    return(Tanimoto_analysis)
 }
