@@ -17,7 +17,7 @@
 #           Tables <- file = ''
 # -----------------------------------------------------------------------------
 
-load("RData/Tanimoto_analysis.RData")
+load("./RData/Tanimoto_analysis.RData")
 
 Tanimoto_accuracy <- tanimoto_accuracy(Tanimoto_analysis = Tanimoto_analysis)
 
@@ -26,7 +26,7 @@ eplot <- function(x, y) {
   plot(x = x, y = y, bty = "n",ann = FALSE,xaxt = "n",yaxt = "n",type = "n",bg = "grey", ylim = c(-0.09,1.09), xlim = c(-0.09,1.09))
 }
 
-pdf("Article/results4.pdf",width=7,height=7)
+pdf("./Article/results4.pdf",width=7,height=7)
 # Plots
 par(mfrow=c(2,2))
 # Graph
