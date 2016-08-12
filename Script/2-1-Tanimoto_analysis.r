@@ -81,7 +81,7 @@ suppressMessages(load("./RData/Similarity.matrices.RData")) # For similarity mat
     names(communities) <- Cm
 
 # Setting up lists to store the results
-    wt.init <- seq(0,1,by=0.1)
+    wt.init <- wt.init <- c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1)
     wt.remove <- which(!wt.init %in% WT)# selecting a subset of similarity matrices
     for(i in rev(wt.remove)) {
         similarity.matrices[[i]] <- NULL
