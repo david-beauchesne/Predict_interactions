@@ -19,10 +19,11 @@
 
     # -----------------------------------------------------------------------------
     # PARAMETERS:
+        filename <- 'Catalog_vs_predictions'
         min.tx = 45
         K.values = 8
         MW = 1
-        WT = c(0, 0.2, 0.5, 0.8, 1)
+        WT = seq(0,1,by=0.1)
         blind = FALSE
         minimum_threshold = 0.3
     # -----------------------------------------------------------------------------
@@ -111,10 +112,8 @@
     names(Tanimoto_analysis) <- MW
     remove(min.wt)
 
-    file.to.save <- serialNext("RData/tanimoto_temp/Tanimoto_analysis.RData")
+    file.to.save <- serialNext("Analyses/Tanimoto_temp/Tanimoto_analysis.RData")
     save(x = Tanimoto_analysis, file = file.to.save)
-
-    save(x = Tanimoto_analysis, file = paste(serialNext("RData/tanimoto_temp/Tanimoto_analysis.RData"),)
 
     init.time <- Sys.time()
     for(n in 1:length(MW)) {
@@ -209,7 +208,6 @@
     }#n
     print(Sys.time() - init.time)
 
-
 # Catalog vs predictions
     accuracy  <- vector('list', 3)
     names(accuracy) <- c('Catalog', 'Predict', 'Algorithm')
@@ -227,7 +225,7 @@
             par(pch = 21,  xaxs = "i", yaxs = "i", family = "serif")
             foodwebs <- names(Tanimoto_analysis[[1]][[1]][[1]])
             names <- c('TSS','Score y', 'Score -y', 'Accuracy score')
-            col <- c("#FF8822","#99FF55","#2288FF")
+            col <- c("#FF8822","#449955","#2288FF")
             # col <- c("#FF000088","#00FF0088","#0000FF88")
             # col <- gray.colors(11, start = 0, end = 0.8, gamma = 2.2, alpha = NULL) # grey scale ramp
             # col <- sample(colours(), length(foodwebs))
@@ -257,3 +255,5 @@
             }
     } #j
     dev.off()
+
+save(x = Tanimoto_analysis, file = paste('Analyses/',filename,'.RData',sep=''))
