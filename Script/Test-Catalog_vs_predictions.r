@@ -31,9 +31,9 @@
     # -----------------------------------------------------------------------------
     # SCRIPT
     # -----------------------------------------------------------------------------
-    load("RData/Tanimoto_data.RData")
-    load("RData/interactions_source.RData")
-    suppressMessages(load("RData/Similarity.matrices.RData")) # For similarity matrices already evaluated
+    load("./RData/Tanimoto_data.RData")
+    load("./RData/interactions_source.RData")
+    suppressMessages(load("./RData/Similarity.matrices.RData")) # For similarity matrices already evaluated
 
 
     # S0: A large set of species and their preys, with column structure ['taxon', 'taxonomy', 'resource', 'non-resource']
@@ -112,7 +112,7 @@
     names(Tanimoto_analysis) <- MW
     remove(min.wt)
 
-    file.to.save <- serialNext("Analyses/Tanimoto_temp/Tanimoto_analysis.RData")
+    file.to.save <- serialNext("./Analyses/Tanimoto_temp/Tanimoto_analysis.RData")
     save(x = Tanimoto_analysis, file = file.to.save)
 
     init.time <- Sys.time()
@@ -216,7 +216,7 @@
     accuracy[[3]] <- tanimoto_accuracy(Tanimoto_analysis = Tanimoto_analysis)
 
 #Figure
-    pdf("Article/Catalog_vs_predictions.pdf",width=7,height=7)
+    pdf("./Article/Catalog_vs_predictions.pdf",width=7,height=7)
     # Plots
     par(mfrow=c(2,2))
     # Graph
@@ -256,4 +256,4 @@
     } #j
     dev.off()
 
-save(x = Tanimoto_analysis, file = paste('Analyses/',filename,'.RData',sep=''))
+save(x = Tanimoto_analysis, file = paste('./Analyses/',filename,'.RData',sep=''))
