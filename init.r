@@ -1,5 +1,8 @@
 # Run readme.r before other scripts
 rm(list=ls())
+ # for use in R console.
+ # set own relevant directory if working in R console, otherwise ignore if in terminal
+setwd("/Users/davidbeauchesne/Dropbox/PhD/PhD_obj2/Structure_Comm_EGSL/Predict_interactions")
 # -----------------------------------------------------------------------------
 # PROJECT:
 #    Evaluating the structure of the communities of the estuary
@@ -18,26 +21,26 @@ rm(list=ls())
 #   0. Setting up dataset with proper format for analysis
 #
 #       0.1 Data set from RData in interactions_catalog repository
-#           Script <- file = "Script/0-1-Tanimoto_data.r
-#           RData <- file = 'RData/Tanimoto_data.RData'
+#           Script <- file = "./Script/0-1-Tanimoto_data.r
+#           RData <- file = './RData/Tanimoto_data.RData'
 #
 #       0.2 Extracting sources for each binary interaction forming the catalogue
-#           Script <- file = "Script/0-1-Interactions_sources.r
-#           RData <- file = "RData/interactions_source.RData")
+#           Script <- file = "./Script/0-1-Interactions_sources.r
+#           RData <- file = "./RData/interactions_source.RData")
 #
 #   1. Calculating similarity matrices for resources and consumers
-#       Script <- file = 'Script/1-Similarity_matrix.r'
-#       RData <- file = 'RData/similarity_matrices.RData'
+#       Script <- file = './Script/1-Similarity_matrix.r'
+#       RData <- file = './RData/similarity_matrices.RData'
 #
 #   2. Tanimoto analysis for XXX
 #
 #       2.1 Tanimoto predictions for set of X parameters
-#           Script <- file = 'Script/2-1-Tanimoto_analysis.r'
-#           RData <- file = 'RData/Tanimoto_analysis.RData'
+#           Script <- file = './Script/2-1-Tanimoto_analysis.r'
+#           RData <- file = './RData/Tanimoto_analysis.RData'
 #
 #       2.2 Evaluation of analysis accuracy + tables and figures
-#           Script <- file = 'Script/2-2-Tanimoto_accuracy.r'
-#           RData <- file = 'RData/Tanimoto_accuracy.RData'
+#           Script <- file = './Script/2-2-Tanimoto_accuracy.r'
+#           RData <- file = './RData/Tanimoto_accuracy.RData'
 #           Figures <- file = ''
 #           Tables <- file = ''
 # -----------------------------------------------------------------------------
@@ -45,17 +48,17 @@ rm(list=ls())
 # -----------------------------------------------------------------------------
 # FUNCTIONS (add a description of the functions eventually)
 source("./Script/tanimoto.r") # basic tanimoto similarity
-source("Script/Tanimoto_traits.r") # extended tanimoto included trait/taxonomy vector
-source("Script/similarity_taxon.r") # similarity matrix for set of taxa
-source("Script/similarity_taxon_predict.r") #similarity of additional taxa in S1 not found in S0
-source("Script/two_way_tanimoto_predict.r") # interaction predictions from two-way Tanimoto algorithm
-source("Script/prediction_matrix.r") # predictions formatted to food web matrix format (S x S)
-source("Script/empirical_matrix.r") # predictions formatted to food web matrix format (S x S)
-source("Script/consumer_set_of_resource.R")
-source("Script/prediction_accuracy.r") #
-source("Script/tanimoto_accuracy.r") # calculating the accuracy of predictions from Tanimoto_predictions
-source("Script/serialNext.r") # function to avoid overwriting existing files in temporary analyses folder
-source("Script/eplot.r") # empty plot for figure generation
+source("./Script/tanimoto_traits.r") # extended tanimoto included trait/taxonomy vector
+source("./Script/similarity_taxon.r") # similarity matrix for set of taxa
+source("./Script/similarity_taxon_predict.r") #similarity of additional taxa in S1 not found in S0
+source("./Script/two_way_tanimoto_predict.r") # interaction predictions from two-way Tanimoto algorithm
+source("./Script/prediction_matrix.r") # predictions formatted to food web matrix format (S x S)
+source("./Script/empirical_matrix.r") # predictions formatted to food web matrix format (S x S)
+source("./Script/consumer_set_of_resource.R")
+source("./Script/prediction_accuracy.r") #
+source("./Script/tanimoto_accuracy.r") # calculating the accuracy of predictions from Tanimoto_predictions
+source("./Script/serialNext.r") # function to avoid overwriting existing files in temporary analyses folder
+source("./Script/eplot.r") # empty plot for figure generation
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
