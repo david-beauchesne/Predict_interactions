@@ -169,7 +169,7 @@ for(i in 1:nrow(Biotic_inter[[1]])) {
 interactions_sources <- Biotic_inter[[1]]
 interactions_sources <- interactions_sources[-which(interactions_sources[,'resource'] == "Copepod"), ]
 rownames(interactions_sources) <- seq(1,nrow(interactions_sources))
-save(x = interactions_sources, file = "RData/interactions_source.RData")
+save(x = interactions_sources, file = "./RData/interactions_source.RData")
 #
 # # Interactions unique avec sources
 # multi_inter <- which(duplicated(Biotic_inter[[1]][,1:3]))
