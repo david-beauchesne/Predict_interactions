@@ -197,6 +197,12 @@ emp.web.inter <- consumer_set_of_resource(consumer = inter.tot[, 'Predator'],
 
 # write.table(emp.web.inter, "Phil_data/1-emp_webs_interactions.txt", sep="\t")
 
+emp.web.resource <- resource_set_of_consumer(consumer = inter.tot[, 'Predator'],
+                                            resource = inter.tot[, 'Prey'],
+                                            inter_type = inter.tot[, 'FeedInter']
+                                            )
+
+
 # ----------------------------------------------------------------------------------
 # Third dataset: Predators with sets of prey and non-prey for Empirical Webs + GloBI
 # ----------------------------------------------------------------------------------
@@ -207,6 +213,11 @@ total.inter <- consumer_set_of_resource(consumer = Biotic_inter[[1]][, 'consumer
                                         )
 
 # write.table(total.inter, "Phil_data/2-total_interactions.txt", sep="\t")
+
+total.resource <- resource_set_of_consumer(consumer = Biotic_inter[[1]][, 'consumer'],
+                                            resource = Biotic_inter[[1]][, 'resource'],
+                                            inter_type = Biotic_inter[[1]][, 'inter']
+                                            )
 
 # ----------------------------
 # Fourth dataset: EGSL species
@@ -225,10 +236,12 @@ egsl <- egsl[-1209, ]
 # ----------------------------
 # RData
 # ----------------------------
-Tanimoto_data <- vector("list", 4)
+Tanimoto_data <- vector("list", 6)
 Tanimoto_data[[1]] <- taxon
 Tanimoto_data[[2]] <- emp.web.inter
 Tanimoto_data[[3]] <- total.inter
 Tanimoto_data[[4]] <- egsl
+Tanimoto_data[[5]] <- emp.web.resource
+Tanimoto_data[[6]] <- total.resource
 
 save(x = Tanimoto_data, file = "./RData/Tanimoto_data.RData")
