@@ -111,6 +111,11 @@
     names(Tanimoto_analysis) <- MW
     remove(min.wt)
 
+    file.to.save <- serialNext("RData/tanimoto_temp/Tanimoto_analysis.RData")
+    save(x = Tanimoto_analysis, file = file.to.save)
+
+    save(x = Tanimoto_analysis, file = paste(serialNext("RData/tanimoto_temp/Tanimoto_analysis.RData"),)
+
     init.time <- Sys.time()
     for(n in 1:length(MW)) {
         mw <- MW[n]
@@ -176,13 +181,6 @@
                         } #if blind or not blind
 
                         # Recalculate similarity
-                            # to.remove <- numeric()
-                            # to.recalculate <- which(S0[, 'taxon'] %in% S1)
-                            #
-                            # for(k in 1:length(S1)) {
-                            #     to.remove <- c(to.remove, which(S0[, 'taxon'] == S1[k]))
-                            # }
-                            # similarity.matrix <- similarity.matrix[-to.remove, -to.remove]    # Removing similarities to recalculate
                             similarity.matrix <- similarity_taxon_predict(S0 = S0,
                                                                                 S1 = S1,
                                                                                 wt = wt,
@@ -197,12 +195,12 @@
                                                                                     similarity.matrix = similarity.matrix,
                                                                                     minimum_threshold = minimum_threshold)
 
-                        save(x = Tanimoto_analysis, file = "RData/tanimoto_temp/Tanimoto_analysis.RData")
-                        remove(S0, S1, similarity.matrix, to.remove)
+                        save(x = Tanimoto_analysis, file = file.to.save)
+                        remove(S0, S1, similarity.matrix)
                         setTxtProgressBar(pb, j)
                     }#2nd loop for all C[i]
 
-                    save(x = Tanimoto_analysis, file = "RData/tanimoto_temp/Tanimoto_analysis.RData")
+                    save(x = Tanimoto_analysis, file = file.to.save)
                     remove(wt)
 
                 }#1st loop for all types of wt values
