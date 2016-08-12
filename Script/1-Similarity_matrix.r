@@ -30,6 +30,6 @@
     names(similarity.matrices) <- seq(0, 1, by = 0.1)
     for(i in 1:length(wt)) {
         similarity.matrices[[i]] <- similarity_taxon(S0 = S0_catalog, wt = wt[i])
-        save(x = similarity.matrices, file = "RData/Similarity.matrices.RData")
+        save(x = similarity.matrices, file = "./RData/Similarity.matrices.RData")
     }
-    save(x = similarity.matrices, file = "RData/Similarity.matrices.RData")
+    save(x = similarity.matrices, file = "./RData/Similarity.matrices.RData")
