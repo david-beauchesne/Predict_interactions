@@ -1,4 +1,4 @@
-# Run readme.r before other scripts
+# Run init.r before other scripts
 rm(list=ls())
  # for use in R console.
  # set own relevant directory if working in R console, otherwise ignore if in terminal
