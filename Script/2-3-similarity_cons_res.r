@@ -25,7 +25,6 @@
 # -----------------------------------------------------------------------------
 # SCRIPT
 # -----------------------------------------------------------------------------
-
 similarity_cons_res <- tanimoto_analysis(min.tx = 45,
                                         K.values = 8,
                                         MW = 1,
@@ -34,13 +33,15 @@ similarity_cons_res <- tanimoto_analysis(min.tx = 45,
                                         filename = 'similarity_cons_res')
 
 # Catalog vs predictions
+load("./RData/interactions_source.RData")
 accuracy  <- vector('list', 3)
 names(accuracy) <- c('Catalog', 'Predict', 'Algorithm')
-accuracy[[1]] <- tanimoto_accuracy(Tanimoto_analysis = Tanimoto_analysis, empirical.only = TRUE)
-accuracy[[2]] <- tanimoto_accuracy(Tanimoto_analysis = Tanimoto_analysis, predict.only = TRUE)
-accuracy[[3]] <- tanimoto_accuracy(Tanimoto_analysis = Tanimoto_analysis)
+accuracy[[1]] <- tanimoto_accuracy(Tanimoto_analysis = similarity_cons_res, empirical.only = TRUE)
+accuracy[[2]] <- tanimoto_accuracy(Tanimoto_analysis = similarity_cons_res, predict.only = TRUE)
+accuracy[[3]] <- tanimoto_accuracy(Tanimoto_analysis = similarity_cons_res)
 
 #Figure
+filename = 'Similarity_cons_res'
 pdf(paste('./Article/',filename,'.pdf',sep=''),width=7,height=7)
 
 # Plots
@@ -49,7 +50,7 @@ par(mfrow=c(2,2))
 for(j in 9:12) {
         eplot(xmin = -0.09, xmax = 1.09)
         par(pch = 21,  xaxs = "i", yaxs = "i", family = "serif")
-        foodwebs <- names(Tanimoto_analysis[[1]][[1]][[1]])
+        foodwebs <- names(similarity_cons_res[[1]][[1]][[1]])
         names <- c('TSS','Score y', 'Score -y', 'Accuracy score')
         col <- c("#FF8822","#449955","#2288FF")
         # col <- c("#FF000088","#00FF0088","#0000FF88")
@@ -81,5 +82,3 @@ for(j in 9:12) {
         }
 } #j
 dev.off()
-
-save(x = Tanimoto_analysis, file = paste('./Analyses/',filename,'.RData',sep=''))
