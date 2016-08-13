@@ -29,7 +29,7 @@
 similarity_cons_res <- tanimoto_analysis(min.tx = 45,
                                         K.values = 8,
                                         MW = 1,
-                                        WT = seq(0,1,by=0.1),
+                                        WT =  c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1),
                                         minimum_threshold = 0.3,
                                         filename = 'similarity_cons_res')
 
@@ -41,7 +41,8 @@ accuracy[[2]] <- tanimoto_accuracy(Tanimoto_analysis = Tanimoto_analysis, predic
 accuracy[[3]] <- tanimoto_accuracy(Tanimoto_analysis = Tanimoto_analysis)
 
 #Figure
-pdf("./Article/Catalog_vs_predictions.pdf",width=7,height=7)
+pdf(paste('./Article/',filename,'.pdf',sep=''),width=7,height=7)
+
 # Plots
 par(mfrow=c(2,2))
 # Graph
