@@ -217,7 +217,7 @@ tanimoto_analysis <- function(min.tx, K.values, MW, WT, minimum_threshold, simil
                                                                                     minimum_threshold = minimum_threshold)
 
                         save(x = Tanimoto_analysis, file = file.to.save)
-                        remove(S0, S1, similarity.matrix)
+                        remove(S0, S1, similarity.consumer, similarity.resource)
                         iteration <- iteration + 1
                         setTxtProgressBar(pb, iteration)
                     }#2nd loop for all C[i]
