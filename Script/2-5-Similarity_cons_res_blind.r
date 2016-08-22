@@ -42,7 +42,6 @@ accuracy[[2]] <- tanimoto_accuracy(Tanimoto_analysis = similarity_cons_res, pred
 accuracy[[3]] <- tanimoto_accuracy(Tanimoto_analysis = similarity_cons_res)
 
 #Figure
-filename = 'Similarity_cons_res'
 pdf(paste('./Article/',filename,'.pdf',sep=''),width=7,height=7)
 
 # Plots
@@ -51,7 +50,7 @@ par(mfrow=c(2,2))
 for(j in 9:12) {
         eplot(xmin = -0.09, xmax = 1.09)
         par(pch = 21,  xaxs = "i", yaxs = "i", family = "serif")
-        foodwebs <- names(similarity_cons_res[[1]][[1]][[1]])
+        # foodwebs <- names(similarity_cons_res_blind[[1]][[1]][[1]])
         names <- c('TSS','Score y', 'Score -y', 'Accuracy score')
         col <- c("#FF8822","#449955","#2288FF")
         # col <- c("#FF000088","#00FF0088","#0000FF88")
