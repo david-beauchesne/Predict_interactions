@@ -61,6 +61,9 @@ source("./Script/tanimoto_accuracy.r") # calculating the accuracy of predictions
 source("./Script/serialNext.r") # function to avoid overwriting existing files in temporary analyses folder
 source("./Script/eplot.r") # empty plot for figure generation
 source("./Script/tanimoto_analysis.r")
+source("./Script/catalog_predictions.r") # computing prediction accuracy ~ # taxa in catalog
+source("./Script/catalog_predictions_accuracy.r") # accuracy of predictions for accuracy ~ # taxa in catalog
+
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
