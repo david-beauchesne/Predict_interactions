@@ -256,9 +256,9 @@ for(j in 9:12) {
             mtext(text = "Minimum weight", side = 1, line = 2, at = 25, font = 2, cex = 1)
             mtext(text = MW, side = 1, line = 1, at = seq(nb.pts/length(MW), nb.pts, by = nb.pts/length(MW)) - ((nb.pts/length(MW)) / 2) + 0.5, font = 1, cex = 0.75)
             mtext(text = rep(WT, times = length(WT)), side = 3, line = 1, at = seq((nb.pts/length(MW))/length(WT), nb.pts, by = ((nb.pts/length(MW)) / length(WT))) - ((nb.pts/length(MW)) / length(WT) / 2) + 0.5, font = 1, cex = 0.75)
-            text(x = 1, y = 0.15, labels = 'Algorithm', font = 2, cex = 1, col = col[1], adj = 0)
+            text(x = 1, y = 0.15, labels = 'Catalog', font = 2, cex = 1, col = col[1], adj = 0)
             text(x = 1, y = 1.40, labels = 'Predictions', font = 2, cex = 1, col = col[2], adj = 0)
-            text(x = 1, y = 2.65, labels = 'Catalog', font = 2, cex = 1, col = col[3], adj = 0)
+            text(x = 1, y = 2.65, labels = 'Algorithm', font = 2, cex = 1, col = col[3], adj = 0)
 
         it <- 0
         for(i in 1:length(accuracy)) {
