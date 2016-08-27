@@ -36,7 +36,6 @@ catalog_predictions0 <- catalog_predictions(comm_id = TRUE,
                                             WT =  0.5,
                                             minimum_threshold = 0.3,
                                             filename = 'catalog_predictions0')
-accuracy0 <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions0, empirical.only = TRUE)
 
 catalog_predictions1 <- catalog_predictions(comm_id = TRUE,
                                             community = "Kortsch2015_arctic",
@@ -47,7 +46,6 @@ catalog_predictions1 <- catalog_predictions(comm_id = TRUE,
                                             WT =  0.5,
                                             minimum_threshold = 0.3,
                                             filename = 'catalog_predictions1')
-accuracy1 <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions1, empirical.only = TRUE)
 
 catalog_predictions <- catalog_predictions(comm_id = TRUE,
                                             community = "Kortsch2015_arctic",
@@ -59,27 +57,25 @@ catalog_predictions <- catalog_predictions(comm_id = TRUE,
                                             minimum_threshold = 0.3,
                                             filename = filename)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Catalog vs predictions
-load("./RData/interactions_source.RData")
-accuracy  <- vector('list', 3)
-names(accuracy) <- c('Catalog', 'Predict', 'Algorithm')
-accuracy[[1]] <- tanimoto_accuracy(Tanimoto_analysis = similarity_cons_res, empirical.only = TRUE)
-accuracy[[2]] <- tanimoto_accuracy(Tanimoto_analysis = similarity_cons_res, predict.only = TRUE)
-accuracy[[3]] <- tanimoto_accuracy(Tanimoto_analysis = similarity_cons_res)
+accuracy <- accuracy0 <- accuracy1 <-  vector('list', 3)
+names(accuracy) <- names(accuracy0) <- names(accuracy1) c('Catalog', 'Predict', 'Algorithm')
+accuracy[[1]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions, empirical.only = TRUE)
+accuracy[[2]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions, predict.only = TRUE)
+accuracy[[3]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions)
+
+accuracy0[[1]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions0, empirical.only = TRUE)
+accuracy0[[1]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions0, predict.only = TRUE)
+accuracy0[[1]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions0)
+
+accuracy1[[1]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions1, empirical.only = TRUE)
+accuracy1[[1]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions1, predict.only = TRUE)
+accuracy1[[1]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions1)
+
+accuracy[[1]] <- rbind(accuracy[[1]], accuracy0[[1]], accuracy1[[1]])
+accuracy[[2]] <- rbind(accuracy[[2]], accuracy0[[2]], accuracy1[[2]])
+accuracy[[3]] <- rbind(accuracy[[3]], accuracy0[[3]], accuracy1[[3]])
+
 
 #Figure
 pdf(paste('./Article/',filename,'.pdf',sep=''),width=7,height=7)
