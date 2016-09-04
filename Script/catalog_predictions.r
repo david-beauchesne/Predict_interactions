@@ -180,26 +180,42 @@ catalog_predictions <- function(min.tx = 45, K.values, MW, WT, minimum_threshold
                                 }
 
                                 # setting up the iterative process to evaluate the accuracy ~ # taxa in catalog
-                                    sample_iter <- sample(x = seq(1,length(S1)), size = round((percent_rm / 100) * length(S1)), replace = FALSE)
-                                    for(k in sample_iter) {
-                                      S0[S1[k], 'resource'] <- ""
-                                      S0[S1[k], 'non-resource'] <- ""
-                                      S0[S1[k], 'consumer'] <- ""
-                                      S0[S1[k], 'non-consumer'] <- ""
+                                # removing a certain percentage of the # of species for which there are interactions as consumers described in the original food web.
+
+                                inter_Cm <- unique(subset(interactions_sources[, 'consumer'], interactions_sources[, 'source'] == Cm[j] & interactions_sources[, 'inter'] == "1")) # Species for which there are interactions as consumer in Cm[j]
+
+                                interactions <- interactions_sources[-which(interactions_sources[, 'source'] == Cm[j]), 1:3] # interaction catalog without interactions coming from Cm[j]
+
+                                inter_Cm2 <- unique(interactions[which(interactions[, 'consumer'] %in% inter_Cm), 'consumer']) # consumers in Cm[j] for which information is still available in catalog after deletion of Cm[j] from catalog
+
+                                #Removing a percentage of consumers described in catalog
+                                    sample_iter <- sample(x = inter_Cm2, size = round((percent_rm / 100) * length(inter_Cm2)), replace = FALSE)
+                                    # sample_iter <- sample(x = seq(1,length(S1)), size = round((percent_rm / 100) * length(S1)), replace = FALSE) # To use if removing a percent of all taxa in original web
+                                    # for(k in sample_iter) {
+                                    #   S0[S1[k], 'resource'] <- ""
+                                    #   S0[S1[k], 'non-resource'] <- ""
+                                    #   S0[S1[k], 'consumer'] <- ""
+                                    #   S0[S1[k], 'non-consumer'] <- ""
+                                    # }
+
+                                    for(k in length(sample_iter)) {
+                                      S0[sample_iter[k], 'resource'] <- ""
+                                      S0[sample_iter[k], 'non-resource'] <- ""
+                                      S0[sample_iter[k], 'consumer'] <- ""
+                                      S0[sample_iter[k], 'non-consumer'] <- ""
                                     }
 
                                     S1_no_mod <- which(!S1 %in% sample_iter)
 
                                 # 2. Preexisting information kept to inform algorithm
-                                    if(length(S1_no_mod) == length(S1)) {
-                                        NULL
-                                    } else {
-                                    interactions <- interactions_sources[-which(interactions_sources[, 'source'] == Cm[j]), 1:3]
+                                    # if(length(S1_no_mod) == length(S1)) {
+                                        # NULL
+                                    # } else {
 
                                     # Only modifying those that are loosing data from the catalogue, less time
                                         to.change <- numeric()
                                         for(k in 1:length(S1_no_mod)) {
-                                            to.change <- c(to.change, which(interactions[, 'consumer'] == S1_no_mod[k]), which(interactions[, 'resource'] == S1_no_mod[k]))
+                                            to.change <- c(to.change, which(interactions[, 'consumer'] == S1[S1_no_mod[k]]), which(interactions[, 'resource'] == S1[S1_no_mod[k]]))
                                         }
                                         to.change <- unique(to.change)
 
@@ -219,11 +235,13 @@ catalog_predictions <- function(min.tx = 45, K.values, MW, WT, minimum_threshold
                                         for(k in 1:nrow(resource_set)) {
                                           S0[resource_set[k, 'consumer'], 3] <- resource_set[k, 'resource']
                                           S0[resource_set[k, 'consumer'], 4] <- resource_set[k, 'non-resource']
+                                        }
+                                        for(k in 1:nrow(consumer_set)) {
                                           S0[consumer_set[k, 'resource'], 5] <- consumer_set[k, 'consumer']
                                           S0[consumer_set[k, 'resource'], 6] <- consumer_set[k, 'non-consumer']
                                         }
                                     remove(interactions, resource_set, to.change)
-                                    }#if
+                                    # }#if
 
                                 # Recalculate similarity
                                     similarity.consumer <- similarity_taxon_predict(S0 = S0,
@@ -262,6 +280,12 @@ catalog_predictions <- function(min.tx = 45, K.values, MW, WT, minimum_threshold
             }#n
         }#o
     }#p
+    #Saving number of species in original web vs catalog once web removed
+    percent_original <- length(inter_Cm2) / length(inter_Cm)
+    x <- c(percent_original, length(inter_Cm), length(inter_Cm2))
+    file.to.save2 <- serialNext("./Analyses/Tanimoto_temp/Tanimoto_analysis_pc_tx.RData")
+    save(x = x, file = file.to.save2)
+
     close(pb)
     print(Sys.time() - init.time)
 
