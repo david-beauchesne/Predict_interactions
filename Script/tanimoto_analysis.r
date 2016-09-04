@@ -187,6 +187,8 @@ tanimoto_analysis <- function(min.tx, K.values, MW, WT, minimum_threshold, simil
                                 for(k in 1:nrow(resource_set)) {
                                   S0[resource_set[k, 'consumer'], 3] <- resource_set[k, 'resource']
                                   S0[resource_set[k, 'consumer'], 4] <- resource_set[k, 'non-resource']
+                                }
+                                for(k in 1:nrow(consumer_set)) {
                                   S0[consumer_set[k, 'resource'], 5] <- consumer_set[k, 'consumer']
                                   S0[consumer_set[k, 'resource'], 6] <- consumer_set[k, 'non-consumer']
                                 }
