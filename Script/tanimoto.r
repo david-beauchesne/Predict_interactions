@@ -14,7 +14,7 @@ tanimoto <- function(resource_x, resource_y) {
     } else if(resource_x == "" || resource_y == "") {
         return(0.0)
     } else {
-        inter <- sum(resource_x %in% resource_y)
+        inter <- length(resource_y[match(resource_x, resource_y, nomatch = 0)])
         return(inter / ((length(resource_x) + length(resource_y)) - inter))
     }#if
 }#end tanimoto function
