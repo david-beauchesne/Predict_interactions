@@ -15,7 +15,7 @@ two_way_tanimoto_predict <- function(Kc, Kr, S0, S1, MW, similarity.consumer, si
 
     # // TODO: Different similarity measurement for resources and consumers
 
-    # // REVIEW: Remove cannibalism from empirical data, or allow for it, or add parameter that allows or prevents cannibalism in the predictions
+    # // REVIEW: Remove cannibalism from empirical data, or allow for it, or add parameter that allows or prevents cannibalism in the predictions. There are lots of predicted cannibalism interations in the catalogue and empirical webs. Accuracy would increase if it was allowed.
 
 
     # Output
