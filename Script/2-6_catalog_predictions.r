@@ -94,7 +94,7 @@ accuracy[[1]] <- rbind(accuracy[[1]], accuracy0[[1]], accuracy1[[1]], accuracy2[
 accuracy[[2]] <- rbind(accuracy[[2]], accuracy0[[2]], accuracy1[[2]], accuracy2[[2]])
 accuracy[[3]] <- rbind(accuracy[[3]], accuracy0[[3]], accuracy1[[3]], accuracy2[[3]])
 
-percent_remove = c(0,10,20,40,60,80,100)
+percent_remove = c(0,10,20,30,40,50,60,70,80,90,100)
 nb_iter = 100
 K.values = 8
 MW = 1
