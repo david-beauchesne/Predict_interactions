@@ -25,7 +25,9 @@
 # SCRIPT
 # -----------------------------------------------------------------------------
 load("./RData/interactions_source.RData")
-filename = 'catalog_predictions2'
+filename1 = 'catalog_predictions2'
+filename2 = 'catalog_predictions3'
+
 
 catalog_predictions0 <- catalog_predictions(comm_id = TRUE,
                                             community = "Kortsch2015_arctic",
@@ -33,7 +35,7 @@ catalog_predictions0 <- catalog_predictions(comm_id = TRUE,
                                             nb_iter = 1,
                                             K.values = 8,
                                             MW = 1,
-                                            WT =  0.5,
+                                            WT =  c(0.5,1),
                                             minimum_threshold = 0.3,
                                             filename = 'catalog_predictions0')
 
@@ -43,29 +45,29 @@ catalog_predictions1 <- catalog_predictions(comm_id = TRUE,
                                             nb_iter = 1,
                                             K.values = 8,
                                             MW = 1,
-                                            WT =  0.5,
+                                            WT =  c(0.5,1),
                                             minimum_threshold = 0.3,
                                             filename = 'catalog_predictions1')
 
 catalog_predictions2 <- catalog_predictions(comm_id = TRUE,
                                             community = "Kortsch2015_arctic",
                                             percent_remove = c(10,20,40,60,80),
-                                            nb_iter = 100,
+                                            nb_iter = 50,
                                             K.values = 8,
                                             MW = 1,
-                                            WT =  0.5,
+                                            WT =  c(0.5,1),
                                             minimum_threshold = 0.3,
-                                            filename = filename)
+                                            filename = filename1)
 
 catalog_predictions3 <- catalog_predictions(comm_id = TRUE,
                                             community = "Kortsch2015_arctic",
                                             percent_remove = c(30,50,70,90),
-                                            nb_iter = 100,
+                                            nb_iter = 50,
                                             K.values = 8,
                                             MW = 1,
-                                            WT =  0.5,
+                                            WT =  c(0.5,1),
                                             minimum_threshold = 0.3,
-                                            filename = filename)
+                                            filename = filename2)
 
 
 # Catalog vs predictions
