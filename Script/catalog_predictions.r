@@ -192,24 +192,26 @@ catalog_predictions <- function(min.tx = 45, K.values, MW, WT, minimum_threshold
                                     # sample_iter <- sample(x = inter_Cm2, size = round((percent_rm / 100) * length(inter_Cm2)), replace = FALSE)
                                     sample_iter <- sample(x = S1, size = round((percent_rm / 100) * length(S1)), replace = FALSE) # To use if removing a percent of all taxa in original web
 
-                                    for(k in 1:length(sample_iter)) {
-                                      S0[sample_iter[k], 'resource'] <- ""
-                                      S0[sample_iter[k], 'non-resource'] <- ""
-                                      S0[sample_iter[k], 'consumer'] <- ""
-                                      S0[sample_iter[k], 'non-consumer'] <- ""
+                                    if(length(sample_iter) == 0) {
+                                        S1_no_mod <- S1
+                                    } else {
+                                        for(k in 1:length(sample_iter)) {
+                                          S0[sample_iter[k], 'resource'] <- ""
+                                          S0[sample_iter[k], 'non-resource'] <- ""
+                                          S0[sample_iter[k], 'consumer'] <- ""
+                                          S0[sample_iter[k], 'non-consumer'] <- ""
+                                        }
+                                        S1_no_mod <- which(!S1 %in% sample_iter)
                                     }
-
-                                    S1_no_mod <- which(!S1 %in% sample_iter)
 
                                 # 2. Preexisting information kept to inform algorithm
                                     if(length(S1_no_mod) == 0) {
                                         NULL
                                     } else {
-
                                     # Only modifying those that are loosing data from the catalogue, less time
                                         to.change <- numeric()
                                         for(k in 1:length(S1_no_mod)) {
-                                            to.change <- c(to.change, which(interactions[, 'consumer'] == S1[S1_no_mod[k]]), which(interactions[, 'resource'] == S1[S1_no_mod[k]]))
+                                            to.change <- c(to.change, which(interactions[, 'consumer'] == S1_no_mod[k]), which(interactions[, 'resource'] == S1_no_mod[k]))
                                         }
                                         to.change <- unique(to.change)
 
