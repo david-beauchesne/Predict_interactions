@@ -40,12 +40,13 @@
 
 \author[1*]{\textit{David Beauchesne}}
 \author[2]{\textit{Philippe Desjardins-Proulx}}
-\author[1]{\textit{Philippe Archambault}}
+\author[3]{\textit{Philippe Archambault}}
 \author[2]{\textit{Dominique Gravel}}
 }
 \affil[*]{email: \href{mailto:david.beauchesne@uqar.ca}{david.beauchesne@uqar.ca}}
 \affil[1]{Universit\'e du Qu\'ebec à Rimouski}
 \affil[2]{Universit\'e de Sherbrooke}
+\affil[3]{Université Laval}
 \date{\today}
 \maketitle
 
@@ -213,7 +214,8 @@ Otherwise, the algorithm passes to what we refer to as the predictive contributi
         \end{figure}
 
 \subsection{Algorithm prediction accuracy}
-We used the most extensive and taxonomically detailed datasets included in the catalogue (\textbf{ref}) to assess the prediction accuracy of the algorithm. Testing accuracy of a particular dataset was done by first removing all pairwise interacting originating from that dataset. Accuracy was evaluated using four different statistics:
+We used the most extensive and taxonomically detailed datasets included in the catalogue (\textbf{ref}) to assess the prediction accuracy of the algorithm. Testing accuracy of a particular dataset was done by first removing all pairwise interacting originating from that dataset. Accuracy was evaluated using three different statistics:
+
 \begin{enumerate}
  \item $Score_y$ is the fraction of interactions correctly predicted
      \begin{equation}
@@ -225,20 +227,15 @@ We used the most extensive and taxonomically detailed datasets included in the c
        Score_{\neg y}  = \frac{d}{b + d}
      \end{equation}
 
- \item Accuracy score is the normalized sum of correctly predicted interactions and non-interactions
-     \begin{equation}
-       Accuracy = \frac{a + d}{a + b + c + d},
-     \end{equation}
  \item TSS, The True Skilled Statistics (TSS) evaluated prediction success by considering both true and false predictions, returning a value ranging from 1 (prefect predictions) to 0 (inverted predictions; \textbf{ref}). %Allouche, Tsoar et Kadmon 2006; Gravel et al. 2013
      \begin{equation}
        TSS = \frac{(ad - bc)}{(a + c)(b + d)}
      \end{equation}
-
 \end{enumerate}
 
-where a is the number of links predicted (1) and observed (1), b is the number predicted (1) but not observed (0), c is the number predicted absent (0) but observed (1) and d is the number of predicted absent (0) and observed absent (0). These four statistics give a different perspective on prediction accuracy, focusing in turn on true interactions and non-interactions, on true events an on both true and false predictions.
+where a is the number of links predicted (1) and observed (1), b is the number predicted (1) but not observed (0), c is the number predicted absent (0) but observed (1) and d is the number of predicted absent (0) and observed absent (0). These three statistics give a different perspective on prediction accuracy, focusing in turn on true interactions and non-interactions, and on both true and false predictions.
 
-We evaluated the four statistics for the full algorithm, but also for the catalogue and the predictions individually to evaluate their respective contribution to the algorithm predictive accuracy. Multiple $w_t$ values were also tested to evaluate whether taxa similarity measured as a function of resource/consumer sets or taxonomy contributed more significantly towards increased predictive accuracy. The same was done with multiple $K$ values.
+We evaluated the three statistics for the full algorithm, but also for the catalogue and the predictions individually to evaluate their respective contribution to the algorithm predictive accuracy. Multiple $w_t$ values were also tested to evaluate whether taxa similarity measured as a function of resource/consumer sets or taxonomy contributed more significantly towards increased predictive accuracy. The same was done with multiple $K$ values.
 
 Finally, we evaluated the influence of the comprehensiveness of the catalogue on prediction accuracy. We selected the arctic food web from Kortsch et al. (2015) to evaluate this, as it is highly detailed and because almost all taxa found in it had information in the catalogue even when not included in the catalogue. We evaluated this by iteratively ($n$ = 50) removing a random percentage of information available in the catalogue for the food web and generating predictions from the algorithm as before. We tested with $w_t$ values = 0.5 and 1 in order to evaluate whether taxonomic similarity could support predictive accuracy in cases when empirical data for species in \textit{S1} in the catalogue is unavailable.
 
@@ -260,7 +257,7 @@ The overall predictive accuracy of the algorithm ranges between 80\% to almost 1
 
 \begin{figure}[h]
   \centering\includegraphics[width=0.85\textwidth]{multiple_parameters2.pdf}
-  \caption{The graph presents the four statistics as a function of trait weight, which varies between 0 and 1. A weight of 0 means that similarity is measured only using set of resources for each taxa, while a weight equal to 1 means that similarity is based solely on taxonomy. We present 6 food webs with over 50 taxa each and the Barnes et al. (2008) dataset.}
+  \caption{The graph presents the three statistics as a function of trait weight, which varies between 0 and 1. A weight of 0 means that similarity is measured only using set of resources for each taxa, while a weight equal to 1 means that similarity is based solely on taxonomy. We present 6 food webs with over 50 taxa each and the Barnes et al. (2008) dataset.}
   \label{fig:multi_param}
 \end{figure}
 
