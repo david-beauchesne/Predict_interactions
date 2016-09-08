@@ -193,7 +193,7 @@ catalog_predictions <- function(min.tx = 45, K.values, MW, WT, minimum_threshold
                                     sample_iter <- sample(x = S1, size = round((percent_rm / 100) * length(S1)), replace = FALSE) # To use if removing a percent of all taxa in original web
 
                                     if(length(sample_iter) == 0) {
-                                        S1_no_mod <- S1
+                                        S1_no_mod <- seq(1,length(S1))
                                     } else {
                                         for(k in 1:length(sample_iter)) {
                                           S0[sample_iter[k], 'resource'] <- ""
@@ -211,7 +211,7 @@ catalog_predictions <- function(min.tx = 45, K.values, MW, WT, minimum_threshold
                                     # Only modifying those that are loosing data from the catalogue, less time
                                         to.change <- numeric()
                                         for(k in 1:length(S1_no_mod)) {
-                                            to.change <- c(to.change, which(interactions[, 'consumer'] == S1_no_mod[k]), which(interactions[, 'resource'] == S1_no_mod[k]))
+                                            to.change <- c(to.change, which(interactions[, 'consumer'] == S1[S1_no_mod[k]]), which(interactions[, 'resource'] == S1[S1_no_mod[k]]))
                                         }
                                         to.change <- unique(to.change)
 
