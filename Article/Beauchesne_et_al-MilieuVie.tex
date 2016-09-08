@@ -1,0 +1,337 @@
+% \\TODO: Eventually, instead of narrowing the focus to families of empirical data observed, everything available in marine and coastal ecosystems should be extracted from GloBI. This could be achieved rather easily.
+
+% \\REVIEW: I am not convinced whether non-interactions are useful, as we are not even using them. Either we consider them in the algorithm to decrease probabilities of interactions are known to not happen, or we do not use them at all. I would tend to not use them since I am not convinced that non-interactions are valid data coming from food webs.
+
+
+
+
+\documentclass[letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{authblk}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+\definecolor{teal}{HTML}{008080}
+
+\hypersetup {
+  colorlinks = true, linkcolor = teal, citecolor = teal, urlcolor = teal,
+  pdfauthor = {Beauchesne, David},
+}
+
+\renewcommand\Affilfont{\itshape\small}
+\setcounter{section}{-1}
+
+\begin{document}
+
+\title{
+  \uppercase {Thinking outside the box - predicting biotic interactions in data-poor environments}
+}
+\uppercase{
+
+\author[1*]{\textit{David Beauchesne}}
+\author[2]{\textit{Philippe Desjardins-Proulx}}
+\author[1]{\textit{Philippe Archambault}}
+\author[2]{\textit{Dominique Gravel}}
+}
+\affil[*]{email: \href{mailto:david.beauchesne@uqar.ca}{david.beauchesne@uqar.ca}}
+\affil[1]{Universit\'e du Qu\'ebec à Rimouski}
+\affil[2]{Universit\'e de Sherbrooke}
+\date{\today}
+\maketitle
+
+%ADD RUNNING TITLE HERE, MUST NOT EXCEEN 55 CHARACTERS AND SPACES
+
+%UP TO 8 KEYWORDS
+% \keywords{predicting biotic interactions, machine learning, food webs, estuary and gulf of St.Lawrence}
+
+
+
+%------------------------------------------------------------------------------------------------------------------------
+% Notes:
+% Valoriser la compilation des données et la méthodologie utilisée pour atteindre les objectifs. Article d'avantage méthodologique.
+%
+% Objectif: décrire les interactions pour une communauté pour laquelle peu d'interactions sont connues, ou indisponibles.
+%
+
+\newpage
+\section{Abstract}
+% about 200 words, much too long at this point
+
+% Define whether I talk that much about taxonomic proximity or not. The fact is that set of consumers and resources seem to work much better, although taxonomy has to be useful in cases when there are no information on the species for which we are attempting to characterize interactions.
+
+Large networks of ecological interactions, such as food webs, are complex to characterize, be it empirically or theoretically. The former requires exhaustive observations, while the latter generally requires ample data to be validated. Although large empirical datasets describing pairwise consumer-resource interactions are increasingly available, full descriptions of entire ecosystems are still few and far between. We therefore wondered whether available data, albeit originating from different ecosystems, could be used to predict species interactions in data deficient ecosystems. \textit{A potential resolution for this issue lies in the taxonomic proximity between species, which increases their likelihood of sharing both consumers and resources.} To test this, we built a biotic interaction catalogue from a collection of \textit{94} empirical food webs, detailed predator-prey interaction databases and interactions from the Global Biotic Interaction (GloBI) database. We use an unsupervised machine learning method to predict interactions between any given set of taxa, given pairwise taxonomic proximity and known consumer and resource sets found in the interaction catalogue. Initial results suggest that pairwise interactions can be predicted with high accuracy, \textit{opening promising avenues for further research and for management initiatives}. The results are however dependent on the comprehensiveness of the catalogue rather than taxonomic proximity between taxa, with prediction accuracy decreasing concomitantly with information available through the catalogue. Given it’s high accuracy, this methodology could democratize the use of food webs and network level descriptors in remote location where empirical data is hard to gather. Network characteristics could then be efficiently evaluated and correlated to levels of environmental stressors in order to improve vulnerability assessments of ecosystems to global changes.
+
+
+\section{Introduction}
+% À venir
+
+% Interactions are described for a limited amount of taxa in varying types of environments.
+%
+% Describing the structure of a community often requires a thorough understanding of species composition and interactions locally. This kind of knowledge is often lacking.
+%
+% Species that are taxonomically closely related are thought to have a higher probability of sharing similar types predators and preys (refs). Based on that assumption, taxonomy could be used as a proxy to predict biotic interactions between taxa.
+%
+% Identify species that are likely to interact in any given environment by training models with empirical data coming from other communities.
+%
+% based on their taxonomic or phylogenetic proximity
+%
+% Our objective was therefore to test whether we could predict species interactions in a given community using empirical data gathered from other communities.
+
+
+% So the idea:
+
+
+% 1st par.: Challenge of fully describing interactions in a community.
+
+% Notes:
+%   J'aime pas ce paragraphe, mais il donne quand même une bonne idée de ce que je veux avancer comme premier paragraphe, surtout la première et la dernière phrase. Du moins jusqu'à ce que je détruise ce que j'ai écrit pour le reformater...
+
+To include in introduction: interactions can also be predicted by functional traits such as body size and metabolism type (e.g. Gravel et al 2013;), yet even those can be difficult to extensively characterize for multiple taxa. We therefore sought more readily available information for all taxa of interest.
+
+We therefore turned our attention towards phylogenies, taxonomies, to get more readily available data for each taxon of interest
+
+
+The study of ecosystem structure and function is increasingly focusing on communities of interacting species that form the biological backbone of ecosystems. Fully describing consumer-resource interactions can however be a daunting task due tho the sheer number of potential interactions, even for a limited number of species (Dodds and Nelson 2006). The empirical description of interactions at the community scale can thus be limited by logistical constraints (Dunne 2006; Morales-Castilla et al. 2015). In the context of environmental impact evaluation, the time required to gather empirical data can further diminish the applicability of such methodologies due to time constraints (ref).
+
+% -----------------------------
+% 2nd par.: Predicting interactions based on traits and phylogenies (See, among others, Eklof)
+
+% Notes:
+%   Find other references for first sentence, it's looks like auto-citation a lot: (e.g. Gravel et al., 2013; Albouy et al., 2014; Morales-Castilla et al., 2015).
+
+  % 'Because of shared evolutionary history, closely related species typically have similar traits [13], which in turn determine their trophic interactions. As such, similar species are more likely to consume or be consumed by similar species [8,14,15]. Evolutionary history could possibly then be used as a surrogate for trophically important traits. Therefore, it is likely that we could detect a signature of evolutionary history in the structure of food webs where closely related species should have specific patterns of interactions (Eklof et al. 2012, citation).' ?
+  % They explain it better than I do and I assume that my paragraph is much less interesting, to the point, relevant and factually correct. Plus, the second has absolutely no references to back it up, as everything essentially comes from Eklof et al 2012.
+
+  % 'Consumers are organized in groups forming a nested hierarchy, which better reflects the complexity and multidimensionality of most natural systems' Cattin et al. 2004
+
+Alternative approaches to predicting interactions among community members have thus been explored in order to efficiently resolve interaction webs using incomplete, imperfect or even unavailable data (e.g. Gravel et al., 2013; Morales-Castilla et al., 2015). These approaches rely on the use of proxies such as functional traits to infer interactions consumer-resource relationships (Morales-Castilla et al. 2015). Multiple traits can play a significant role in community dynamics and influence the presence and intensity of biotic interactions, like the influence of body size on predator-prey interactions, a literal take on \textit{big fish eats small fish} (Cohen et al., 2003; Brose et al., 2006; Gravel et al. 2013).
+
+Evolutionary processes causes closely related species to share similar traits. This proximity increases the likelihood of closely related species sharing consumer and resources. Furthermore, trait differentiation arises through evolution, dictated by the coevolutionary dynamics and trait matching of consumers and resources. It is therefore likely that phylogenies could serve as proxies of important traits and, by extention, help predict pairwise interactions.
+
+% -----------------------------
+% 3rd par.: Methodologies for interaction predictions: Machine-learning algorithms. Need large datasets to 'learn from'.
+
+
+
+% -----------------------------
+% 4th par.: Preexisting data available in different environment. Can we make use of the relationship between evolutionary processes and consumer-resource trait matching to construct large datasets from which we can infer other species interactions?
+These methodologies require large datasets from which models must be trained. There exist a large collection of empirical data that could be used to train such models. However, this collection comes from a wide variety of species and ecosystems.
+
+Could we make use of such data to predict interactions in a given community in which knowledge is lacking, based on the phylogenetic proximity of species. Is it a truism to say that a species spatially distant from each other are likely to consume other species that are closely related phylogenetically?
+
+
+% -----------------------------
+% 5th par.: Objective and predictions
+
+
+  Can we make use of existing heterogeneous data to predict interactions in a given community % Find better term than heterogeneous for this. I want to say that the data comes from many different studies, areas and types of ecosystems
+
+The goal is to obtain a fully or optimally resolved interaction matrix for all taxa in a given community, i.e. constructing the community metaweb, or its topology (Dunne 2006).
+
+
+
+  Consumer-resource trait matching dictate the interactions in a given community
+  Trait differentiation arise through evolution, dictated by the coevolutionary dynamics of consumer-resource
+
+
+  Thus, can we take advantage of available data to predict biotic interactions in data-poor environments? The objective of this paper is to use the link between taxonomic proximity and shared interactions to build models predicting biotic interactions in data poor ecosystems.
+
+
+
+\section{Methods}
+The objective of the methods is to predict the interactions for all taxa within an arbitrary set \textit{S1} using a set of taxa \textit{S0} with empirically described interactions and their similarity measured from taxa consumer/resource sets and their taxonomy. We couple the use of empirical data with an unsupervised machine learning method to achieve this.
+
+ \subsection{Biotic interaction catalogue}
+   % \\REVIEW: Verify 'scientific nomenclature'
+   % \\TODO: Appendix 1 Description of food web used. The majority come from GlobalWeb
+   % \\TODO: Add reference GlobalWeb database (http://globalwebdb.com)
+   % \\TODO: Verify references to add
+   % \\TODO: Add GloBI; http://www.globalbioticinteractions.org
+   % \\REVIEW: Verify number of taxa and number per taxa for first data compilation step
+
+We built a biotic interaction catalogue to serve as a set of taxa \textit{S0} with empirically described interactions. The empirical data used to construct the interaction catalogue was gathered in two successive steps. The first consisted of gathering data from a collection of 94 empirical food webs in marine and coastal ecosystems from which we extracted pairwise taxa interactions (Brose et al. 2005; Kortsch et al. 2015; GlobalWeb database; see Appendix 1 for a description of food webs). We also used a detailed predator-prey interaction database describing trophic relationships between XX predators and their prey (Barnes et al. 2008). From these datasets, only interactions between taxa at the taxonomic scale of the family or higher were selected for inclusion in the catalogue.
+
+As empirical food webs are vastly dominated by non-interactions, these datasets yielded a highly skewed distribution of interactions vs non-interactions. To counterbalance this, the second step of data compilation consisted of extracting observed interactions from the Global Biotic Interaction (GloBI) database (ref), which describes binary interactions for a wide range of taxa worldwide. We extracted all interactions available on GloBI for species belonging to the families of taxa identified through step 1. Interactions were extracted using the rGloBI package in R (ref). As for step 1, only interactions between taxa at the taxonomic scale of the family or higher were retained
+
+The nomenclature used between datasets and food webs varied substantially. Taxa names thus had to be verified, modified according to the scientific nomenclature and validated. This process was performed using the Taxize package in R (ref) and manually verified for errors. The same package was used to extract the taxonomy of all taxa for which interactions were obtained in previous steps. The complete R code and data used for the catalogue is available at \href{https://github.com/david-beauchesne/Interaction_catalog}{https://github.com/david-beauchesne/Interaction\_catalog}.
+
+  \subsection{Unsupervised machine learning}
+We use the \textit{K}-nearest neighbor (KNN) algorithm (\textbf{ref}) to predict pairwise interactions for a set of taxa \textit{S}. The KNN algorithm predicts missing entries or proposes additional entries by a majority vote based on the \textit{K} nearest (\textit{i.e.} most similar) entries. In this case, taxa are described by a set of resources when considered as a consumer, a set of consumers when considered as a resource and their taxonomy (\textit{i.e.} kingdom, phylum, class, order, family, genus, species). Similarity between taxa was evaluated using the Tanimoto similarity measure (\textbf{ref}), which compares two vectors with \textit{i} elements based on the number of elements they share and contain:
+
+\begin{equation}
+  tanimoto(\mathbf{x}, \mathbf{y}) = \frac{\sum_i x_i \land y_i}{\sum_i x_i \lor y_i},
+\end{equation}
+
+where $\land$ is bitwise \emph{and}, while $\lor$ is the bitwise \emph{or} operators. Adding a weighing scheme, we can measure the similarity using two different sets of vectors with \textit{i} and \textit{j} elements, respectively.
+
+\begin{equation}
+  tanimoto_t(\mathbf{x}, \mathbf{y}, w_t) = w_ttanimoto(\mathbf{x_i}, \mathbf{y_i}) + (1 - w_t)tanimoto(\mathbf{x_j}, \mathbf{y_j}),
+\end{equation}
+
+where $w_t$ is the weight given to vector \textit{i}, $\mathbf{x_i}$, $\mathbf{y_i}$ are the resource or consumer sets of the two taxa and $\mathbf{x_j}$ and $\mathbf{y_j}$ are the vectors for taxonomy of two taxa. When $w_t$ = 0 only resource or consumer sets are used to compute similarity, while $w_t$ = 1 solely uses taxonomy.
+
+
+  \subsection{Predicting interactions, Biotic predictor algorithm, Two-way Tanimoto algorithm, Feng shui name algorithm, Find a name for the algorithm}
+  % \\REVIEW: In the algorithm paragraph I do not discuss the following parameters, but should I? Right now they are in Figure \ref{fig:decision_diag} though.
+  % \\REVIEW: Minimum weight: minimum weight for candidate taxa to make it to predictions
+  % \\REVIEW: Minimum threshold: arbitrary value set to 0.3 (no scientific basis) for similarities. If under, KNN taxa are not retained as potential candidates and their weight is not added to the candidate taxa list. It seems trivial, technically if their similarity is so low it shouldn't interfere with results? It does in cases like the atlantic cod, which has over 600 listed resources. In that case, the iterative process goes through them all and a species with a similarity = 0.05 could end up adding a total of 30 to it's weight in the candidate list. We had two choice to deal with this issue. Either we set a variable MW that varies as a function of the number of candidate resources, or we set another minimum threshold for resource to make it into the candidate list, effectively resulting in two arbitrarily chosen values for the predictions.
+  % \\REVIEW: Cannibalism not allowed in this iteration of the algorithm, but it is present in empirical webs. Should be added at some point.
+
+The XXX algorithm is built on a series of logical steps in order to suggest a series of candidate resources for each taxon in \textit{S1} (Figure \ref{fig:decision_diag}). For all consumer taxa $T_C$ in \textit{S1}, the algorithm first verify whether it has empirical resources listed in the catalogue. When it does, if resource taxa $T_R$ are also in \textit{S1}, they are added as predicted resources for $T_C$. This corresponds to what we refer to as the catalogue contribution to resource predictions. Two taxa in \textit{S1} that are known to interact through the catalogue are automatically assumed to interact in \textit{S1}.
+
+Otherwise, the algorithm passes to what we refer to as the predictions, with candidate resources for $T_C$ identified with the KNN algorithm. If resource taxa $T_R$ are also in \textit{S1}, K most similar resource $T_R'$ are identified in \textit{S1} to add to a candidate resource list $C_R$ for $T_C$. Then for all $T_C$ in \textit{S1}, the algorithm identifies K most similar consumer $T_C'$ in \textit{S0} and extracts their resource sets. As before, if those resources are found in \textit{S1} they are added to $C_R$, otherwise K most similar resources $T_R'$ are identified in \textit{S1} to add to $C_R$. A more comprehensive mathematical description of the algorithm is available through Figure \ref{fig:decision_diag} and the complete R code and data used for the algorithm is available at \href{https://github.com/david-beauchesne/Predict_interactions}{https://github.com/david-beauchesne/Predict\_interactions}.
+
+        \begin{figure}
+          \centering\includegraphics[width=0.85\textwidth]{Decision_Diagram.png}
+          \caption{Description of the logical steps used by the algorithm to suggest a list of candidate resources ($C_R$) for each taxa ($T_C$) in \textit{S1}}
+          \label{fig:decision_diag}
+        \end{figure}
+
+\subsection{Algorithm prediction accuracy}
+We used the most extensive and taxonomically detailed datasets included in the catalogue (\textbf{ref}) to assess the prediction accuracy of the algorithm. Testing accuracy of a particular dataset was done by first removing all pairwise interacting originating from that dataset. Accuracy was evaluated using four different statistics:
+\begin{enumerate}
+ \item $Score_y$ is the fraction of interactions correctly predicted
+     \begin{equation}
+         Score_y = \frac{a}{a + c}
+     \end{equation}
+
+ \item $Score_{\neg y}$ is the fraction of non-interactions correctly predicted
+     \begin{equation}
+       Score_{\neg y}  = \frac{d}{b + d}
+     \end{equation}
+
+ \item Accuracy score is the normalized sum of correctly predicted interactions and non-interactions
+     \begin{equation}
+       Accuracy = \frac{a + d}{a + b + c + d},
+     \end{equation}
+ \item TSS, The True Skilled Statistics (TSS) evaluated prediction success by considering both true and false predictions, returning a value ranging from 1 (prefect predictions) to 0 (inverted predictions; \textbf{ref}). %Allouche, Tsoar et Kadmon 2006; Gravel et al. 2013
+     \begin{equation}
+       TSS = \frac{(ad - bc)}{(a + c)(b + d)}
+     \end{equation}
+
+\end{enumerate}
+
+where a is the number of links predicted (1) and observed (1), b is the number predicted (1) but not observed (0), c is the number predicted absent (0) but observed (1) and d is the number of predicted absent (0) and observed absent (0). These four statistics give a different perspective on prediction accuracy, focusing in turn on true interactions and non-interactions, on true events an on both true and false predictions.
+
+We evaluated the four statistics for the full algorithm, but also for the catalogue and the predictions individually to evaluate their respective contribution to the algorithm predictive accuracy. Multiple $w_t$ values were also tested to evaluate whether taxa similarity measured as a function of resource/consumer sets or taxonomy contributed more significantly towards increased predictive accuracy. The same was done with multiple $K$ values.
+
+Finally, we evaluated the influence of the comprehensiveness of the catalogue on prediction accuracy. We selected the arctic food web from Kortsch et al. (2015) to evaluate this, as it is highly detailed and because almost all taxa found in it had information in the catalogue even when not included in the catalogue. We evaluated this by iteratively ($n$ = 50) removing a random percentage of information available in the catalogue for the food web and generating predictions from the algorithm as before. We tested with $w_t$ values = 0.5 and 1 in order to evaluate whether taxonomic similarity could support predictive accuracy in cases when empirical data for species in \textit{S1} in the catalogue is unavailable.
+
+\newpage
+\section{Results}
+    \subsection{Biotic interaction catalogue}
+The data compilation process allowed us to build an interaction catalogue composed of 276708 pairwise interactions (interactions = 72110; non-interactions = 204598). A total of 9712 taxa (Superfamily = 15; Family = 591; Subfamily = 29; Tribe = 8; Genus = 1972; Species = 7097) are included in the catalogue, 4159 of which have data as consumers and 4375 as resources.
+
+    \subsection{Algorithm predictive accuracy}
+
+
+
+Important points from the results:
+    - High prediction accuracy
+    - Contribution to the algorithm from empirical data from the catalogue and predictions from the KNN algorithm
+
+    \begin{figure}
+      \centering\includegraphics[width=0.85\textwidth]{multiple_parameters2.pdf}
+
+      % \caption{}
+
+      % \label{fig:}
+    \end{figure}
+
+The graph presents the four statistics as a function of trait weight, which varies between 0 and 1. A weight of 0 means that similarity is measured only using set of resources for each taxa, while a weight equal to 1 means that similarity is based solely on taxonomy. We present 6 food webs with over 50 taxa each and the Barnes et al. (2008) dataset.
+
+The overall predictive power of the algorithm looks very interesting. Except for one food web, prediction accuracy varies mainly between 80\% to almost 100\% in certain cases. At first glance from the TSS and Accuracy score graphs, it may seem that the use of resource set only for similarity measurements (\textit{i.e.} wt = 0) yields better results than those with taxonomy (\textit{i.e.} wt = 1). However, caution must be exercised here. First, the catalogue was built from various sources that may have repeated values. While the catalogue itself only holds unique observations, it may very be the case that attempting to predict interactions of food webs from the catalogue with the catalogue may end up providing overinflated accuracy results, even if individual food web data are removed when predictions are made.
+
+    - Impact of decreased amount of information available
+
+    \begin{figure}
+      \centering\includegraphics[width=0.85\textwidth]{catalog_predictions2.pdf}
+
+      % \caption{}
+
+      % \label{fig:}
+    \end{figure}
+
+
+\subsection{First round of results}
+So now we have the first round of results in. Here is how I interpret them in multiple points
+
+We measure prediction accuracy based on four statistics:
+
+
+
+
+
+
+
+
+
+
+
+
+
+Secondly, there is the case of non-interactions. Looking at $Score_y$ and $Score_{\neg y}$, you can see that the trend in TSS and Accuracy score values are closely matching those of $Score_{\neg y}$. In opposition, the $Score_y$ are instead increasing with taxonomy being more important in the similarity measurements. There could be multiple explanations for this. First, the algorithm could simply perform poorly in predicting non-interactions, classifying them instead as interactions. However, I rather believe that the original empirical food webs are the ones doing poorly at observing non-interactions. Indeed, we assumed that non-interactions in empirical food webs meant that there were no interations between the species. However, most of the empirical webs had a strong focus attributed to higher order consumer species and very little attention given to other taxa (\textit{e.g.} benthic invertebrates). The catalogue of interactions, on the other hand, has a much broader focus than the original empirical webs. It therefore very well may be that wrongly classified non-interactions could indeed be real but unobserved interactions in natural systems.
+
+This would need to be tested at some point, but right now the only thing we could do is measure the level of accuracy for different large taxonomic groups such as fish, mammals, birds, benthic invertebrates, zooplankton, etc.
+
+This observation however raises the question of the utility of non-interactions in the analyses. At this point, the algorithm is coded to ignore non-interactions in the similarity measurements. Maybe it would make sense to do the same in the interpretation of the results itself. Or a third vector to the similarity measurements could be added that considers non-interactions as a set of resources not consumed by consumers (which we have in the data). Extended from this idea and the fact that taxonomically close species are more likely to share BOTH resources and predators, a fourth and fifth vector could also be added, corresponding to set of predators and set of non-predators, which we also have in the data. While set of predators would make sense as a third vector, more thought needs to be given to non-interactions stemming from empirical food webs and their actual value as observed data.
+
+Another interesting thought from this is the potential use of GloBI on its own to perform automated and quick analyses. If non-interactions are deemed unecessary or of dubious quality, focusing only on observed interactions could lead to the creation of a platform on which interactions in a given system could be easily predicted from GloBI alone, or almost. GloBI interactions data already holds taxonomic classification. It's quality is however unfortunately not uniform and care must be taken when it is used. In any case, if only interactions are considered, then a third party platform could be built that uses the algorithm built in this paper, the GloBI data and a list of species for which we wish to predict the interactions.
+
+In the meanwhile, there are multiple parameters that still need to be tested or adjusted in the algorithm, namely:
+\begin{enumerate}
+    \item taxonomic similarity measure instead of tanimoto similarity
+    \item multiple K values for the algorithm (set at 5 for both consumer and resource in this case)
+    \item multiple mean weight values, which determines the weight needed for candidate resources to be added to predicted resources in the algorithm
+    \item in an ideal world, another completely independant food web that was not used in the catalogue. Alternatively, I could remove completely the species from the catalogue for similarity measurements, ultimately corresponding to giving all the similarity weight to taxonomy (wt = 1). It is therefore already done in this analysis by comparing wt = 1 to wt = 0.
+    \item and multiple other analyses to verify the accuracy of the analyses (see list of tables and figures).
+\end{enumerate}
+
+
+
+Discussion
+
+The taxonomy alone does not seem enough to
+
+While taxonomy plays a significant role in influencing food web structure (Eklof et Stouffer 2015), it does not account for certain traits such as body size. Even though we advocate for as simple an approach as possible, we believe that in cases where the comprehensiveness of the catalogue does not encompass a significant portion of S1, traits could be added as a third set in the similarity measurement.
+
+% According to Eklof and Stouffer (2015), the phylogenetic component of food webs is a significant factor influencing the intervality of food webs. However, certain traits are not accounted by phylogenetic constraints, such as body size.
+
+\end{document}
+
+
+% According to Eklof and Stouffer (2015), the phylogenetic component of food webs is a significant factor influencing the intervality of food webs. However, certain traits are not accounted by phylogenetic constraints, such as body size.
+
+% predict* specie* interaction*
+%
+% Cite taxize
+% Scott Chamberlain and Eduard Szocs (2013). taxize - taxonomic search and retrieval in R. F1000Research, 2:191. URL: http://f1000research.com/articles/2-191/v2.
+%
+% Scott Chamberlain, Eduard Szocs, Carl Boettiger, Karthik Ram, Ignasi Bartomeus, and John Baumgartner (2014) taxize: Taxonomic information from around the web. R package version 0.3.0.
+% https://github.com/ropensci/taxize
+%
+%
+% \section{Figures et tableaux}
+%
+% \textit{Tables:}
+% \begin{enumerate}
+%   \item Description of empirical data used to obtain list of binary interactions
+%   \item Description of empirical binary interactions and data availability for large taxonomic groups (e.g. mammals, fish, benthic invertebrates). Needs to be defined.
+% \end{enumerate}
+%
+% \textit{Figures:}
+% \begin{enumerate}
+%   \item Predicting empirical food webs from empirical data catalogue. Figure of results \% efficiency as a function of the number of taxa in the food web. All species-species interactions of each empirical food web removed from empirical biotic interaction catalogue.
+%   \item Predicting interactions with differing levels of taxonomic resolution. (e.g. interactions aggregated at the species, genus, family level)
+%   \item Efficiency of predictions for large taxonomic groups.
+%   \item Representing the St. Lawrence food web. Heatmap with phylogeny as axes. Package heatmap3.
+% \end{enumerate}
+%
+% \textit{Figure additionnelle mais peut-être pas pour cet article?:}
+% \begin{enumerate}
+%   \item Predictive accuracy of method as a function of the amount of data available in the catalogue for large taxonomic groups. The idea would be to discuss the amount of data required in ``biological compartments'' for the learning method to be efficient.
+% \end{enumerate}
+
+% We selected a list of species forming the known biodiversity of the estuary and gulf of St. Lawrence in Canada. The species list available on CaRMS (ref) for this region was selected, and completed with a comprehensive list of marine birds (Allard et al. 2013) and marine mammals (Lesage, personnal communication), for a total of 1469 species.
+% The data compilation process yielded a total of 276708 binary interactions (interactions = 72110; non-interactions = 204598) for 9712 taxa (Superfamily = 15; Family = 591; Subfamily = 29; Tribe = 8; Genus = 1972; Species = 7097). Of that number, interactions for St. Lawrence taxa were described for 33\% of species, 64\% of genera and 82\% of families, although these interactions are not necessarily between two taxa found in the St. Lawrence.
