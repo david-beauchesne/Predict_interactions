@@ -95,61 +95,119 @@ accuracy[[2]] <- rbind(accuracy[[2]], accuracy0[[2]], accuracy1[[2]], accuracy2[
 accuracy[[3]] <- rbind(accuracy[[3]], accuracy0[[3]], accuracy1[[3]], accuracy2[[3]])
 
 percent_remove = c(0,10,20,30,40,50,60,70,80,90,100)
-nb_iter = 100
+nb_iter = 50
 K.values = 8
 MW = 1
-WT =  0.5
+WT =  c(0.5,1)
 minimum_threshold = 0.3
 
-#Figure
-pdf(paste('./Article/',filename,'.pdf',sep=''),width=12,height=7)
-# Plots
-par(mfrow=c(2,2))
-# layout(matrix(c(1,2,5,5,3,4), 3, 2, byrow = TRUE), heights = c(4.5,1,4.5))
+nb.pts <- length(percent_remove)
 
-# Graph
-for(j in 13:16) {
-        eplot(xmin = -0.09, xmax = 100, ymax = 3.5)
+#Figure version 1
+pdf(paste('./Article/','catalog_predictions','.pdf',sep=''),width=6,height=8)
+j = 14 #'Score'[y]
+        eplot(xmin = -1, xmax = 100 + 1, ymax = 3.6)
         par(pch = 21,  xaxs = "i", yaxs = "i", family = "serif")
-        names <- c('TSS','Score y', 'Score -y', 'Accuracy score')
-        col <- c("#FF8822","#449955","#2288FF")
-        # col <- c("#FF000000","#00FF0088","#0000FF88")
-        # col <- gray.colors(11, start = 0, end = 0.8, gamma = 2.2, alpha = NULL) # grey scale ramp
-        # col <- sample(colours(), length(foodwebs))
+        col <- c("#FF8822",'#5ED275','#9CCBFF')
+        col2 <- c("#FF8822",'#275A31','#0077FF')
+        col3 <- c("#FF8822","#449955","#2288FF")
 
         # Axes
-            axis(side = 1, at = seq(0, 100, by = 10), labels = FALSE, las = 1, pos = -0.1) #MW
+            axis(side = 1, at = seq(0, 100, by = 10), labels = FALSE, las = 1, pos = -0.05)
             axis(side = 2, at = seq(0, 1, by = 0.25), labels = seq(0, 1, by = 0.25), las = 1, pos = -1)
             axis(side = 2, at = seq(0, 1, by = 0.25)+1.25, labels = seq(0, 1, by = 0.25), las = 1, pos = -1)
             axis(side = 2, at = seq(0, 1, by = 0.25)+2.5, labels = seq(0, 1, by = 0.25), las = 1, pos = -1)
-            axis(side = 3, at = seq(0, 100, by = 10), labels = FALSE, las = 1, pos = 1.02 + 2.5) #wt
+            axis(side = 3, at = seq(0, 100, by = 10), labels = FALSE, las = 1, pos = 1.05 + 2.5)
             axis(side = 4, at = seq(0, 1, by = 0.25), labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1)
             axis(side = 4, at = seq(0, 1, by = 0.25)+1.25, labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1)
             axis(side = 4, at = seq(0, 1, by = 0.25)+2.5, labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1)
 
             abline(h = c(1.125,2.375), col = "black", lty = 2)
+            mtext(text = expression('Score'[y]), side = 2, line = 2, at = 1.75, font = 1.5, cex = 1)
+            mtext(text = expression(paste("Percent of taxa removed from ", italic(S0), ' (%)')), side = 1, line = 2, at = 50, font = 2, cex = 1)
+            mtext(text = seq(0, 100, by = 10), side = 1, line = 0, at = seq(0, 100, by = 10), font = 1, cex = 0.75)
+            mtext(text = seq(0, 100, by = 10), side = 3, line = -0.5, at = seq(0, 100, by = 10), font = 1, cex = 0.75)
+            text(x = 5, y = 0.15, labels = 'Catalog', font = 2, cex = 1, col = col3[1], adj = 0)
+            text(x = 5, y = 1.40, labels = 'Predictions', font = 2, cex = 1, col = col3[2], adj = 0)
+            text(x = 5, y = 2.65, labels = 'Algorithm', font = 2, cex = 1, col = col3[3], adj = 0)
 
-            mtext(text = names[j-8], side = 2, line = 2, at = 1.75, font = 2, cex = 1)
-            mtext(text = "Similarity weight", side = 3, line = 2, at = 25, font = 2, cex = 1)
-            mtext(text = "Minimum weight", side = 1, line = 2, at = 25, font = 2, cex = 1)
-            # mtext(text = MW, side = 1, line = 1, at = seq(nb.pts/length(MW), nb.pts, by = nb.pts/length(MW)) - ((nb.pts/length(MW)) / 2) + 0.5, font = 1, cex = 0.75)
-            # mtext(text = rep(WT, times = length(WT)), side = 3, line = 1, at = seq((nb.pts/length(MW))/length(WT), nb.pts, by = ((nb.pts/length(MW)) / length(WT))) - ((nb.pts/length(MW)) / length(WT) / 2) + 0.5, font = 1, cex = 0.75)
-            text(x = 0.1, y = 0.15, labels = 'Catalog', font = 2, cex = 1, col = col[1], adj = 0)
-            text(x = 0.1, y = 1.40, labels = 'Predictions', font = 2, cex = 1, col = col[2], adj = 0)
-            text(x = 0.1, y = 2.65, labels = 'Algorithm', font = 2, cex = 1, col = col[3], adj = 0)
 
         it <- 0
         for(i in 1:length(accuracy)) {
         # for(i in 2) {
-            points(x = as.numeric(accuracy[[i]][, 'pc_rm']), y = as.numeric(accuracy[[i]][, j]) + it, cex = 0.5, pch = 1, col = col[i])
-            lines(lowess(x = as.numeric(accuracy[[i]][, 'pc_rm']), y = as.numeric(accuracy[[i]][, j]) + it))
+            points(x = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '0.5'), 'pc_rm']), y = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '0.5'), j]) + it, cex = 0.5, pch = 1, col = col[i])
+            points(x = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '1'), 'pc_rm']), y = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '1'), j]) + it, cex = 0.5, pch = 1, col = col2[i])
+
+            lines(lowess(x = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '0.5'), 'pc_rm']), y = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '0.5'), j]) + it), col = col[i])
+            lines(lowess(x = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '1'), 'pc_rm']), y = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '1'), j]) + it), col = col2[i])
+
+            if(i == 2 || i == 3) {
+                text(x = 90, y = 0.9 + it, labels = expression(paste(italic('w'[t]), ' = 0.5')), col = col[i], font = 1, cex = 0.75)
+                text(x = 90, y = 0.8 + it, labels = expression(paste(italic('w'[t]), ' = 1')), col = col2[i], font = 1, cex = 0.75)
+            }
+
             it <- it + 1.25
         } #i
+dev.off()
 
-        # ## Add legend
-        # if(j == 9) {
-        #     legend(0.5, 0.5, lwd = 3, col = col, legend = names(accuracy), bty = 'n', y.intersp = 1)
-        # }
-} #j
+#Figure version 2
+pdf(paste('./Article/','catalog_predictions2','.pdf',sep=''),width=6,height=8)
+j = 14 #'Score'[y]
+        eplot(xmin = -1, xmax = 100 + 1, ymax = 3.6)
+        par(pch = 21,  xaxs = "i", yaxs = "i", family = "serif")
+        col <- c("#FF8822",'#5ED275','#9CCBFF')
+        col2 <- c("#FF8822",'#275A31','#0077FF')
+        col3 <- c("#FF8822","#449955","#2288FF")
 
+        # Axes
+            axis(side = 1, at = seq(0, 100, by = 10), labels = FALSE, las = 1, pos = -0.05)
+            axis(side = 2, at = seq(0, 1, by = 0.25), labels = seq(0, 1, by = 0.25), las = 1, pos = -1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 2, at = seq(0, 1, by = 0.25)+1.25, labels = seq(0, 1, by = 0.25), las = 1, pos = -1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 2, at = seq(0, 1, by = 0.25)+2.5, labels = seq(0, 1, by = 0.25), las = 1, pos = -1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 3, at = seq(0, 100, by = 10), labels = FALSE, las = 1, pos = 1.05 + 2.5)
+            axis(side = 4, at = seq(0, 1, by = 0.25), labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 4, at = seq(0, 1, by = 0.25)+1.25, labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 4, at = seq(0, 1, by = 0.25)+2.5, labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1, cex.axis = 0.75, font.axis = 1)
+
+            abline(h = c(1.125,2.375), col = "black", lty = 2)
+            mtext(text = expression('Score'[y]), side = 2, line = 2, at = 1.75, font = 1.5, cex = 1)
+            mtext(text = expression(paste("Percent of taxa removed from ", italic(S0), ' (%)')), side = 1, line = 2, at = 50, font = 2, cex = 1)
+            mtext(text = seq(0, 100, by = 10), side = 1, line = 0, at = seq(0, 100, by = 10), font = 1, cex = 0.75)
+            mtext(text = seq(0, 100, by = 10), side = 3, line = -0.5, at = seq(0, 100, by = 10), font = 1, cex = 0.75)
+            text(x = 5, y = 0.15, labels = 'Catalog', font = 2, cex = 1, col = col3[1], adj = 0)
+            text(x = 5, y = 1.40, labels = 'Predictions', font = 2, cex = 1, col = col3[2], adj = 0)
+            text(x = 5, y = 2.65, labels = 'Algorithm', font = 2, cex = 1, col = col3[3], adj = 0)
+
+
+        it <- 0
+        for(i in 1:length(accuracy)) {
+            if(i == 2 || i == 3) {
+                accuracy_mean <- aggregate(as.numeric(accuracy[[i]][,j]) ~ as.numeric(accuracy[[i]][, 'pc_rm']) + as.numeric(accuracy[[i]][, 'wt']), data=accuracy[[i]], FUN=function(x) c(mean=mean(x), sd=sd(x)))
+                accuracy_mean <- accuracy_mean[order(accuracy_mean[,2]), ]
+                # hack: we draw arrows but with very special "arrowheads" for error bars
+
+                arrows(seq(0,100,by=10), accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][,1] - accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 2]+it, seq(0,100,by=10), accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 1] + accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 2]+it, length=0.025, angle=90, code=3, col = col[i])
+                points(x = seq(0,100,by=10), y = accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 1]+it, cex = 0.75, pch = 22, col = col[i])
+
+                arrows(seq(0,100,by=10), accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][,1] - accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 2]+it, seq(0,100,by=10), accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 1] + accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 2]+it, length=0.025, angle=90, code=3, col = col2[i])
+                points(x = seq(0,100,by=10), y = accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 1]+it, cex = 0.75, pch = 22, col = col2[i])
+
+                lines(lowess(x = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '0.5'), 'pc_rm']), y = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '0.5'), j]) + it), col = col[i])
+                lines(lowess(x = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '1'), 'pc_rm']), y = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '1'), j]) + it), col = col2[i])
+
+                text(x = 90, y = 0.9 + it, labels = expression(paste(italic('w'[t]), ' = 0.5')), col = col[i], font = 1, cex = 0.75)
+                text(x = 90, y = 0.8 + it, labels = expression(paste(italic('w'[t]), ' = 1')), col = col2[i], font = 1, cex = 0.75)
+                } else {
+                    accuracy_mean <- aggregate(as.numeric(accuracy[[i]][,j]) ~ as.numeric(accuracy[[i]][, 'pc_rm']), data=accuracy[[i]], FUN=function(x) c(mean=mean(x), sd=sd(x)))
+                    accuracy_mean <- accuracy_mean[order(accuracy_mean[,1]), ]
+                    # hack: we draw arrows but with very special "arrowheads" for error bars
+
+                    arrows(seq(0,100,by=10), accuracy_mean[, 2][,1] - accuracy_mean[, 2][, 2]+it, seq(0,100,by=10), accuracy_mean[, 2][, 1] + accuracy_mean[, 2][, 2]+it, length=0.025, angle=90, code=3, col = col3[i])
+                    points(x = seq(0,100,by=10), y = accuracy_mean[, 2][, 1]+it, cex = 0.75, pch = 22, col = col3[i])
+
+                    lines(lowess(x = as.numeric(accuracy[[i]][, 'pc_rm']), y = as.numeric(accuracy[[i]][, j]) + it), col = col3[i])
+                }
+
+            it <- it + 1.25
+        } #i
 dev.off()
