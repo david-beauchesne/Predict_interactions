@@ -57,12 +57,18 @@ source("./Script/empirical_matrix.r") # predictions formatted to food web matrix
 source("./Script/consumer_set_of_resource.R")
 source("./Script/resource_set_of_consumer.R")
 source("./Script/prediction_accuracy.r") #
+source("./Script/prediction_accuracy_id.r") #
 source("./Script/tanimoto_accuracy.r") # calculating the accuracy of predictions from Tanimoto_predictions
 source("./Script/serialNext.r") # function to avoid overwriting existing files in temporary analyses folder
 source("./Script/eplot.r") # empty plot for figure generation
 source("./Script/tanimoto_analysis.r")
 source("./Script/catalog_predictions.r") # computing prediction accuracy ~ # taxa in catalog
 source("./Script/catalog_predictions_accuracy.r") # accuracy of predictions for accuracy ~ # taxa in catalog
+source("./Script/full_algorithm.r") # full algorithm with similarity measurements included
+source("./Script/similarity_full_algorithm.r") # similarity measurements for full algorithm
+source("./Script/duplicate_row_col.r") # function to combine duplicated row and column names
+source("./Script/bin_inter.r") # function to extract binary interaction from diet matrix
+
 
 # -----------------------------------------------------------------------------
 
