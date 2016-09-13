@@ -171,7 +171,11 @@ accuracy_SSL
 accuracy_SSL2
 
 for(i in 2:nrow(accuracy_SSL[[4]])) {
-    print(paste(rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 1]], "EATS", rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 2]]))
+    print(paste(rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 2]], "EATS", rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 1]]))
+}
+
+for(i in 2:nrow(accuracy_SSL[[3]])) {
+    print(paste(rownames(SSL_predict_mat_combine)[accuracy_SSL[[3]][i, 2]], "EATS", rownames(SSL_predict_mat_combine)[accuracy_SSL[[3]][i, 1]]))
 }
 
 
