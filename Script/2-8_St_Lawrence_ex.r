@@ -135,28 +135,65 @@ SSL_predict <- full_algorithm(Kc = 4,
                             wt = 0.5,
                             minimum_threshold = 0.3)
 
+SSL_predict2 <- full_algorithm(Kc = 4,
+                            Kr = 4,
+                            S0 = S0,
+                            S1 = S1,
+                            MW = 1,
+                            wt = 0.5,
+                            minimum_threshold = 0.2)
+
+SSL_predict_mat <- prediction_matrix(S1 = S1, predictions = SSL_predict)
+SSL_predict_mat2 <- prediction_matrix(S1 = S1, predictions = SSL_predict2)
+x <- SSL_predict_mat
+
+for(i in 1:nrow(sp_SSL)) {
+    Sx <- unique(unlist(str_split(sp_SSL[i,2], ' - ')))
+    for(j in 1:length(Sx)){
+        for(k in 1:length(S1))
+        if(S1[k] %in% Sx == TRUE) {
+            colnames(SSL_predict_mat)[k] <- rownames(SSL_predict_mat)[k] <- sp_SSL[i, 2]
+            colnames(SSL_predict_mat2)[k] <- rownames(SSL_predict_mat2)[k] <- sp_SSL[i, 2]
+        }
+    }
+}
+
+SSL_predict_mat_combine <- dupl_sp(SSL_predict_mat)
+SSL_predict_mat_combine2 <- dupl_sp(SSL_predict_mat2)
+
+SSL_emp <- SSL[[2]]
+colnames(SSL_emp) <- rownames(SSL_emp) <- sp_SSL[,2]
+SSL_emp <-  dupl_sp(SSL_emp)
+
+accuracy_SSL <- prediction_accuracy_id(predicted = SSL_predict_mat_combine, empirical = SSL_emp)
+accuracy_SSL2 <- prediction_accuracy_id(predicted = SSL_predict_mat_combine2, empirical = SSL_emp)
+accuracy_SSL
+accuracy_SSL2
+
+for(i in 2:nrow(accuracy_SSL[[4]])) {
+    print(paste(rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 1]], "EATS", rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 2]]))
+}
+
+
+SSL_bin_inter <- bin_inter(SSL_predict_mat_combine)
+SSL_bin_inter2 <- bin_inter(SSL_predict_mat_combine2)
+SSL_emp_bin <- bin_inter(SSL_emp)
+SSL_bin_inter <- SSL_bin_inter[which(SSL_bin_inter[, 'FeedInter'] == '1'), ]
+SSL_bin_inter2 <- SSL_bin_inter2[which(SSL_bin_inter2[, 'FeedInter'] == '1'), ]
+SSL_emp_bin <- SSL_emp_bin[which(SSL_emp_bin[, 'FeedInter'] == '1'), ]
+
+# Load package
+library(networkD3)
+# Plot
+simpleNetwork(as.data.frame(SSL_bin_inter[, c(1,3)]))
+simpleNetwork(as.data.frame(SSL_emp_bin[, c(1,3)]))
+
+
+
+
 
 # remplace , par ' - '
 # remplacer les noms de colonnes et lignes
 # combiner duplicatas
 # rouler fonction du catalogue pour séparer les lignes et colonnes qui ont plusieurs entrées?
 # faire l'analyse en séparant toutes les espèces listées, puis comparer l'analyse divisée, compartimenter les résultats (combiner les interactions des espèces qui sont dans un compartiment), et la réseau présenté dans l'article à partir de la matrice de diète.
-
-tanimoto_analysis <- function(min.tx, K.values, MW, WT, minimum_threshold, similarity = 'both', filename, blind = FALSE) {
-
-
-load("./RData/interactions_source.RData")
-filename <- 'multiple_parameters2'
-
-
-
-
-                        i = 1
-                        j = 1
-                        Kc = 4
-                        Kr = 4
-                        S0 = S0
-                        S1 = S1
-                        MW = 1
-                        wt = 0.5
-                        minimum_threshold = 0.3
