@@ -21,6 +21,9 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{makecell}
+\usepackage{draftwatermark}
+\SetWatermarkText{DRAFT}
+\SetWatermarkScale{4}
 
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 
@@ -200,7 +203,7 @@
 \section{Abstract} % about 200 words
 % \\TODO: verify 94 food webs
 
-Large networks of ecological interactions, such as food webs, are complex to characterize, be it empirically or theoretically. The former requires exhaustive observations, while the latter generally requires ample data to be validated. Although large empirical datasets describing pairwise consumer-resource interactions are increasingly available, full descriptions of entire ecosystems are still few and far between. We therefore wondered whether available data, albeit originating from different ecosystems, could be used to predict species interactions in data deficient ecosystems. To test this, we built a biotic interaction catalogue from a collection of \textit{94} empirical food webs, detailed predator-prey interaction databases and interactions from the Global Biotic Interaction (GloBI) database. We use an unsupervised machine learning method to predict interactions between any given set of taxa, given pairwise taxonomic proximity and known consumer and resource sets found in the interaction catalogue. Initial results suggest that pairwise interactions can be predicted with high accuracy. Although results are seemingly dependent on the comprehensiveness of the catalogue rather than the taxonomic similarity between taxa, taxonomy was found to complement well the catalogue and to allow the algorithm to perform well when the amount of information available through the catalogue decreased. Given it’s high accuracy, this methodology could democratize the use of food webs and network level descriptors in remote location where empirical data is hard to gather. Network characteristics could then be efficiently evaluated and correlated to levels of environmental stressors in order to improve vulnerability assessments of ecosystems to global changes, opening promising avenues for further research and for management initiatives.
+Large networks of ecological interactions, such as food webs, are complex to characterize, be it empirically or theoretically. The former requires exhaustive observations, while the latter generally requires ample data to be validated. We therefore wondered whether readily available data, namely empirically described interactions in a variety of ecosystems and taxonomy, could be combined to predict species interactions in data deficient ecosystems. To test this, we built a biotic interaction catalogue from a collection of \textit{94} empirical food webs, detailed predator-prey interaction databases and interactions from the Global Biotic Interaction (GloBI) database. We use an unsupervised machine learning method to predict interactions between any given set of taxa, given pairwise taxonomic proximity and known consumer and resource sets found in the interaction catalogue. Initial results suggest that pairwise interactions can be predicted with high accuracy. Although results are seemingly dependent on the comprehensiveness of the catalogue rather than the taxonomic similarity between taxa, taxonomy was found to complement well the catalogue and to allow the algorithm to perform well when the amount of information available through the catalogue decreased. Given it’s high accuracy, this methodology could democratize the use of food webs and network level descriptors in remote location where empirical data is hard to gather. Network characteristics could then be efficiently evaluated and correlated to levels of environmental stressors in order to improve vulnerability assessments of ecosystems to global changes, opening promising avenues for further research and for management initiatives.
 
 % ---------------------------------
 % ---------------------------------
@@ -208,81 +211,13 @@ Large networks of ecological interactions, such as food webs, are complex to cha
 % ---------------------------------
 % ---------------------------------
 \section{Introduction}
-% À venir
-% Define whether I talk that much about taxonomic proximity or not. The fact is that set of consumers and resources seem to work much better, although taxonomy has to be useful in cases when there are no information on the species for which we are attempting to characterize interactions.
+% \\REVIEW: verify source, Eklof et al 2012 for this citation, not 100% certain that's where it comes from
 
+Large networks of ecological interactions, such as food webs, are complex to characterize, be it empirically or theoretically. The former requires exhaustive observations, while the latter generally requires ample data to be validated. For this reason, studies focusing on communities of interacting species remain understudied even though we acknowledge the importance of considering the reticulated nature of complex networks (ref). When time is of the essence, the long term studies required quickly become impractical and the use of network level approaches relegated to the sideline (ref).
 
-% Interactions are described for a limited amount of taxa in varying types of environments.
-%
-% Describing the structure of a community often requires a thorough understanding of species composition and interactions locally. This kind of knowledge is often lacking.
-%
-% Species that are taxonomically closely related are thought to have a higher probability of sharing similar types predators and preys (refs). Based on that assumption, taxonomy could be used as a proxy to predict biotic interactions between taxa.
-%
-% Identify species that are likely to interact in any given environment by training models with empirical data coming from other communities.
-%
-% based on their taxonomic or phylogenetic proximity
-%
-% Our objective was therefore to test whether we could predict species interactions in a given community using empirical data gathered from other communities.
+Alternatively, a currently evolving approach is to predict interactions using proxies such as functional traits, phylogenies and spatial distributions to infer biotic interactions (e.g. Gravel et al., 2013; Morales-Castilla et al., 2015). For example, multiple traits can play a significant role in community dynamics and influence the presence and intensity of biotic interactions, like the influence of body size on predator-prey interactions, a literal take on \textit{big fish eats small fish} (Cohen et al., 2003; Brose et al., 2006; Gravel et al. 2013). However, the time required to gather the necessary data to apply those methods may still be restrictive, or the data be unavailable altogether, so much so that other methods have been developed to fill the gaps in knowledge (e.g. Schrodt et al. 2016).
 
-
-% So the idea:
-
-
-% 1st par.: Challenge of fully describing interactions in a community.
-
-% Notes:
-%   J'aime pas ce paragraphe, mais il donne quand même une bonne idée de ce que je veux avancer comme premier paragraphe, surtout la première et la dernière phrase. Du moins jusqu'à ce que je détruise ce que j'ai écrit pour le reformater...
-
-To include in introduction: interactions can also be predicted by functional traits such as body size and metabolism type (e.g. Gravel et al 2013;), yet even those can be difficult to extensively characterize for multiple taxa. We therefore sought more readily available information for all taxa of interest.
-
-We therefore turned our attention towards phylogenies, taxonomies, to get more readily available data for each taxon of interest
-
-
-The study of ecosystem structure and function is increasingly focusing on communities of interacting species that form the biological backbone of ecosystems. Fully describing consumer-resource interactions can however be a daunting task due tho the sheer number of potential interactions, even for a limited number of species (Dodds and Nelson 2006). The empirical description of interactions at the community scale can thus be limited by logistical constraints (Dunne 2006; Morales-Castilla et al. 2015). In the context of environmental impact evaluation, the time required to gather empirical data can further diminish the applicability of such methodologies due to time constraints (ref).
-
-% -----------------------------
-% 2nd par.: Predicting interactions based on traits and phylogenies (See, among others, Eklof)
-
-% Notes:
-%   Find other references for first sentence, it's looks like auto-citation a lot: (e.g. Gravel et al., 2013; Albouy et al., 2014; Morales-Castilla et al., 2015).
-
-  % 'Because of shared evolutionary history, closely related species typically have similar traits [13], which in turn determine their trophic interactions. As such, similar species are more likely to consume or be consumed by similar species [8,14,15]. Evolutionary history could possibly then be used as a surrogate for trophically important traits. Therefore, it is likely that we could detect a signature of evolutionary history in the structure of food webs where closely related species should have specific patterns of interactions (Eklof et al. 2012, citation).' ?
-  % They explain it better than I do and I assume that my paragraph is much less interesting, to the point, relevant and factually correct. Plus, the second has absolutely no references to back it up, as everything essentially comes from Eklof et al 2012.
-
-  % 'Consumers are organized in groups forming a nested hierarchy, which better reflects the complexity and multidimensionality of most natural systems' Cattin et al. 2004
-
-Alternative approaches to predicting interactions among community members have thus been explored in order to efficiently resolve interaction webs using incomplete, imperfect or even unavailable data (e.g. Gravel et al., 2013; Morales-Castilla et al., 2015). These approaches rely on the use of proxies such as functional traits to infer interactions consumer-resource relationships (Morales-Castilla et al. 2015). Multiple traits can play a significant role in community dynamics and influence the presence and intensity of biotic interactions, like the influence of body size on predator-prey interactions, a literal take on \textit{big fish eats small fish} (Cohen et al., 2003; Brose et al., 2006; Gravel et al. 2013).
-
-Evolutionary processes causes closely related species to share similar traits. This proximity increases the likelihood of closely related species sharing consumer and resources. Furthermore, trait differentiation arises through evolution, dictated by the coevolutionary dynamics and trait matching of consumers and resources. It is therefore likely that phylogenies could serve as proxies of important traits and, by extention, help predict pairwise interactions.
-
-% -----------------------------
-% 3rd par.: Methodologies for interaction predictions: Machine-learning algorithms. Need large datasets to 'learn from'.
-
-
-
-% -----------------------------
-% 4th par.: Preexisting data available in different environment. Can we make use of the relationship between evolutionary processes and consumer-resource trait matching to construct large datasets from which we can infer other species interactions?
-These methodologies require large datasets from which models must be trained. There exist a large collection of empirical data that could be used to train such models. However, this collection comes from a wide variety of species and ecosystems.
-
-Could we make use of such data to predict interactions in a given community in which knowledge is lacking, based on the phylogenetic proximity of species. Is it a truism to say that a species spatially distant from each other are likely to consume other species that are closely related phylogenetically?
-
-
-% -----------------------------
-% 5th par.: Objective and predictions
-
-
-  Can we make use of existing heterogeneous data to predict interactions in a given community % Find better term than heterogeneous for this. I want to say that the data comes from many different studies, areas and types of ecosystems
-
-The goal is to obtain a fully or optimally resolved interaction matrix for all taxa in a given community, i.e. constructing the community metaweb, or its topology (Dunne 2006).
-
-
-
-  Consumer-resource trait matching dictate the interactions in a given community
-  Trait differentiation arise through evolution, dictated by the coevolutionary dynamics of consumer-resource
-
-
-  Thus, can we take advantage of available data to predict biotic interactions in data-poor environments? The objective of this paper is to use the link between taxonomic proximity and shared interactions to build models predicting biotic interactions in data poor ecosystems.
-
+We therefore wondered whether more readily available data could be used to infer interactions in data deficient ecosystems. There is an increasing amount of data available describing worldwide species interactions, some freely available through the Global Biotic Interactions (GloBI) database (Poelen et al. 2014). Another readily available piece of information on species is their taxonomy, through initiatives like the World Register of Marine Species (WoRMS; Bailly et al. 2016). More than simple nomenclature, evolutionary processes are thought to influence consumer-resource relationships so that taxonomically related species would be more likely to share similar types of both consumers and resources (Eklof et al. 2012). Based on that assumption, taxonomy might be useful in predicting interactions for species lacking detailed information, but which have a taxonomically related species for which such information is available. The objective of this work is thus to combine empirical biotic interactions originating from a variety of ecosystems with taxonomic relatedness to predict interactions in data deficient ecosystems.
 
 % ---------------------------------
 % ---------------------------------
@@ -290,7 +225,7 @@ The goal is to obtain a fully or optimally resolved interaction matrix for all t
 % ---------------------------------
 % ---------------------------------
 \section{Methods}
-The objective of the methods is to predict the interactions for all taxa within an arbitrary set \textit{S1} using a set of taxa \textit{S0} with empirically described interactions and their similarity measured from consumer/resource sets and their taxonomy. We couple the use of empirical data with an unsupervised machine learning method to achieve this.
+The objective of the methodology presented is to predict the interactions between all taxa within an arbitrary set \textit{S1} using a set of taxa \textit{S0} with empirically described interactions from which we can extract sets of consumers and resources and their taxonomy. We couple the use of empirical data with an unsupervised machine learning method to achieve this.
 
  \subsection{Biotic interaction catalogue}
    % \\REVIEW: Verify 'scientific nomenclature'
@@ -300,7 +235,7 @@ The objective of the methods is to predict the interactions for all taxa within 
    % \\TODO: Add GloBI; http://www.globalbioticinteractions.org
    % \\REVIEW: Verify number of taxa and number per taxa for first data compilation step
 
-We built a biotic interaction catalogue to serve as a set of taxa \textit{S0} with empirically described interactions. The empirical data used to construct the interaction catalogue was gathered in two successive steps. The first consisted of gathering data from a collection of 94 empirical food webs in marine and coastal ecosystems from which we extracted pairwise taxa interactions (Brose et al. 2005; Kortsch et al. 2015; GlobalWeb database; see Appendix 1 for a description of food webs). We also used a detailed predator-prey interaction database describing trophic relationships between \textit{XX} predators and their prey (Barnes et al. 2008). From these datasets, only interactions between taxa at the taxonomic scale of the family or higher were selected for inclusion in the catalogue.
+We built a biotic interaction catalogue to serve as a set of taxa \textit{S0} with empirically described interactions. The empirical data used to construct the interaction catalogue was gathered in two successive steps. The first consisted of gathering data from a collection of 94 empirical food webs in marine and coastal ecosystems from which we extracted pairwise taxa interactions (Brose et al. 2005; Kortsch et al. 2015; GlobalWeb database). We also used a detailed predator-prey interaction database describing trophic relationships between \textit{XX} predators and their prey (Barnes et al. 2008). From these datasets, only interactions between taxa at the taxonomic scale of the family or higher were selected for inclusion in the catalogue.
 
 As empirical food webs are vastly dominated by non-interactions, these datasets yielded a highly skewed distribution of interactions vs non-interactions. To counterbalance this, the second step of data compilation consisted of extracting observed interactions from the Global Biotic Interaction (GloBI) database (ref), which describes binary interactions for a wide range of taxa worldwide. We extracted all interactions available on GloBI for species belonging to the families of taxa identified through step 1. Interactions were extracted using the rGloBI package in R (ref). As for step 1, only interactions between taxa at the taxonomic scale of the family or higher were retained
 
@@ -453,7 +388,15 @@ We thank the Fond de Recherche Québécois Nature et Technologie (FRQNT) and the
 % Scott Chamberlain, Eduard Szocs, Carl Boettiger, Karthik Ram, Ignasi Bartomeus, and John Baumgartner (2014) taxize: Taxonomic information from around the web. R package version 0.3.0.
 % https://github.com/ropensci/taxize
 %
+% Jorrit H. Poelen, James D. Simons and Chris J. Mungall. (2014). Global Biotic Interactions: An open infrastructure to share and analyze species-interaction datasets. Ecological Informatics. http://dx.doi.org/10.1016/j.ecoinf.2014.08.005
 %
+% Bailly, N.; Boury-Esnault, N.; Brandão, S.N.; Costello, M.J.; Gofas, S.; Hernandez, F.; Horton, T.; Kroh, A.; Mees, J.; Paulay, G.; Poore, G.; Rosenberg, G.; Stöhr, S.; Decock, W.; Dekeyzer, S.; Vandepitte, L.; Vanhoorne, B.; Vranken, S.; Adams, M.J.; Adlard, R.; Adriaens, P.; Agatha, S.; Ahn, K.J.; Ahyong, S.; Alvarez, B.; Anderson, G.; Angel, M.; Arango, C.; Artois, T.; Atkinson, S.; Barber, A.; Bartsch, I.; Bellan-Santini, D.; Berta, A.; Bieler, R.; Błażewicz-Paszkowycz, M.; Bock, P.; Böttger-Schnack, R.; Bouchet, P.; Boyko, C.B.; Bray, R.; Bruce, N.L.; Cairns, S.; Campinas Bezerra, T.N.; Cárdenas, P.; Carstens, E.; Catalano, S.; Cedhagen, T.; Chan, B.K.; Chan, T.Y.; Cheng, L.; Churchill, M.; Coleman, C.O.; Collins, A.G.; Crandall, K.A.; Cribb, T.; Dahdouh-Guebas, F.; Daly, M.; Daneliya, M.; Dauvin, J.C.; Davie, P.; De Grave, S.; de Mazancourt, V.; Defaye, D.; d'Hondt, J.L.; Dijkstra, H.; Dohrmann, M.; Dolan, J.; Drapun, I.; Eisendle-Flöckner, U.; Eitel, M.; Encarnação, S.C.d.; Epler, J.; Ewers-Saucedo, C.; Faber, M.; Feist, S.; Finn, J.; Fišer, C.; Fonseca, G.; Fordyce, E.; Foster, W.; Frank, J.H.; Fransen, C.; Furuya, H.; Galea, H.; Garcia-Alvarez, O.; Gasca, R.; Gaviria-Melo, S.; Gerken, S.; Gheerardyn, H.; Gibson, D.; Gil, J.; Gittenberger, A.; Glasby, C.; Glover, A.; Gordon, D.; Grabowski, M.; Gravili, C.; Guerra-García, J.M..; Guidetti, R.; Guilini, K.; Guiry, M.D.; Hajdu, E.; Hallermann, J.; Hayward, B.; Hendrycks, E.; Herrera Bachiller, A.; Ho, J.s.; Høeg, J.; Holovachov, O.; Hooper, J.; Hughes, L.; Hummon, W.; Hyzny, M.; Iseto, T.; Ivanenko, S.; Iwataki, M.; Jarms, G.; Jaume, D..; Jazdzewski, K.; Kaminski, M.; Karanovic, I.; Kim, Y.H.; King, R.; Kirk, P.M.; Kolb, J.; Kotov, A.; Krapp-Schickel, T.; Kremenetskaia, A.; Kristensen, R.; Kullander, S.; La Perna, R.; Lambert, G.; Lazarus, D.; LeCroy, S.; Leduc, D.; Lefkowitz, E.J.; Lemaitre, R.; Lörz, A.N.; Lowry, J.; Macpherson, E.; Madin, L.; Mah, C.; Mamos, T.; Manconi, R.; Mapstone, G.; Marshall, B.; Marshall, D.J.; McInnes, S.; Meidla, T.; Meland, K.; Merrin, K.; Messing, C.; Miljutin, D.; Mills, C.; Mokievsky, V.; Molodtsova, T.; Monniot, F.; Mooi, R.; Morandini, A.C.; Moreira da Rocha, R.; Moretzsohn, F.; Mortelmans, J.; Mortimer, J.; Musco, L.; Neubauer, T.A.; Neuhaus, B.; Ng, P.; Nielsen, C.; Nishikawa, T.; Norenburg, J.; O'Hara, T.; Okahashi, H.; Opresko, D.; Osawa, M.; Ota, Y.; Parker, A.; Patterson, D.; Paxton, H.; Perrier, V.; Perrin, W.; Petrescu, I.; Picton, B.; Pilger, J.F.; Pisera, A.; Polhemus, D.; Pugh, P.; Reimer, J.D.; Reuscher, M.; Rius, M.; Rützler, K.; Rzhavsky, A.; Saiz-Salinas, J.; Santos, S.; Sartori, A.F.; Satoh, A.; Schatz, H.; Schierwater, B.; Schmidt-Rhaesa, A.; Schneider, S.; Schönberg, C.; Schuchert, P.; Self-Sullivan, C.; Senna, A.R.; Serejo, C.; Shamsi, S.; Sharma, J.; Shenkar, N.; Sicinski, J.; Siegel, V.; Sinniger, F.; Sivell, D.; Sket, B.; Smit, H.; Smol, N.; Souza-Filho, J.F..; Stampar, S.N.; Sterrer, W.; Stienen, E.; Strand, M.; Suárez-Morales, E.; Summers, M.; Suttle, C.; Swalla, B.J.; Taiti, S.; Tandberg, A.H.; Tang, D.; Tasker, M.; Taylor, J.; Tchesunov, A.; ten Hove, H.; ter Poorten, J.J.; Thomas, J.; Thuesen, E.V.; Thurston, M.; Thuy, B.; Timi, J.T.; Timm, T.; Todaro, A.; Turon, X.; Tyler, S.; Uetz, P.; Utevsky, S.; Vacelet, J.; Vader, W.; Väinölä, R.; van der Meij, S.E.; van Ofwegen, L.; van Soest, R.; Van Syoc, R.; Venekey, V.; Vonk, R.; Vos, C.; Walker-Smith, G.; Walter, T.C.; Watling, L.; Whipps, C.; White, K.; Williams, G.; Wilson, R.; Wyatt, N.; Wylezich, C.; Yasuhara, M.; Zanol, J.; Zeidler, W. (2016). World Register of Marine Species. Available from http://www.marinespecies.org at VLIZ. Accessed 2016-09-13. doi:10.14284/170
+
+
+
+
+
+
 % \section{Figures et tableaux}
 %
 % \textit{Tables:}
