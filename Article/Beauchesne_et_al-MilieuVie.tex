@@ -195,9 +195,13 @@ In total, there were empirical data available through the catalogue for 53 out o
 % ---------------------------------
 % ---------------------------------
 \section{Discussion}
-We show that out of the box interaction inference for a set of taxa with incomplete or unavailable preexisting information can be achieved with high accuracy using a combination of empirical data describing biotic interactions and taxonomic relatedness. Although the efficiency of the algorithm is dependent on the comprehensiveness of the interactions catalogue, taxonomic proximity acts as a complement to increase the number of observed interactions correctly predicted. Taxonomic proximity also supports the efficiency of the algorithm when catalogue comprehensiveness decreases. Overall, we believe that the methods performs well and offers promising avenues for further research and management initiatives. 
+We show that out of the box interaction inference for a set of taxa with incomplete or unavailable preexisting information can be achieved with high accuracy using a combination of empirical data describing biotic interactions and taxonomic relatedness. Although the efficiency of the algorithm is dependent on the comprehensiveness of the interactions catalogue, taxonomic proximity acts as a complement to increase the number of observed interactions correctly predicted. Taxonomic proximity also supports the efficiency of the algorithm when catalogue comprehensiveness decreases. Overall, we believe that the methods performs well and offers promising avenues for further research and management initiatives.
 
 \subsection{Algorithm accuracy}
+
+
+
+
 \subsubsection{Misclassified non-interactions}
 Interactions vs non-interactions, misclassified non-interactions: real? Could be that non-interactions are not actually observed. Can we really trust $Score_{\neg y}$ then?
 
@@ -211,13 +215,9 @@ Furthermore, the algorithm is currently coded to ignore non-interactions in the 
 Like atlantic cod and large demersal feeders such as the atlantic halibut consuming whales and birds.
 
 
-\subsubsection{Usefulness of taxonomy in topology prediction}
+\subsubsection{Usefulness of taxonomic relatedness}
+ While we found that taxonomy could be useful as a complement to predictions made using empirical data, the accuracy of predictions made using the KNN algorithm are quite low. Other uses of this machine learning approach have been known to achieve much higher prediction rates (\textit{e.g.} \textbf{refs}), which leaves us to believe that taxonomy is not the optimal proxy for predicting interactions. While evolutionary history plays a significant role in influencing consumer-resource trait matching and food web structure (\textbf{ref}), phylogenetic constraints does not account efficiently for certain traits such as body size (Eklöf and Stouffer 2015). Including traits like body size and metabolism as an additional component of this algorithm could thus help increasing overall prediction accuracy, especially in cases where the catalogue lacks data on taxa for which interactions have to be predicted. Although promising, such an approach would undermine the premise under which this method was built and which constitutes its main strength, predicting interactions in data deficient environments using readily available data.
 
- Interestingly, as the proportion of \textit{S1} taxa in the catalogue decreases, the similarity measured with taxonomy only performs better, with predictions performed with $w_t$ = 1 surpassing those made with $w_t$ = 0.5 as percent of taxa removed from catalogue increases. Taxonomy could thus be highly useful in data poor environments that also lack data in the catalogue.
-
-While taxonomy plays a significant role in influencing food web structure (Eklof et Stouffer 2015), it does not account for certain traits such as body size. Even though we advocate for as simple an approach as possible, we believe that in cases where the comprehensiveness of the catalogue does not encompass a significant portion of S1, traits could be added as a third set in the similarity measurement.
-
-% According to Eklof and Stouffer (2015), the phylogenetic component of food webs is a significant factor influencing the intervality of food webs. However, certain traits are not accounted by phylogenetic constraints, such as body size.
 
 
 
