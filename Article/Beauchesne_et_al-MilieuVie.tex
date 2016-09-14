@@ -12,9 +12,6 @@
 
 % \\IDEA: Another interesting thought from this is the potential use of GloBI on its own to perform automated and quick analyses. If non-interactions are deemed unecessary or of dubious quality, focusing only on observed interactions could lead to the creation of a platform on which interactions in a given system could be easily predicted from GloBI alone, or almost. GloBI interactions data already holds taxonomic classification. It's quality is however unfortunately not uniform and care must be taken when it is used. In any case, if only interactions (1) are considered, then a third party platform could be built that uses the algorithm built in this paper, the GloBI data and a list of species for which we wish to predict the interactions.
 
-% \\IDEA: Add a simple working example of a food web.
-
-
 \documentclass[letterpaper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{authblk}
@@ -22,7 +19,6 @@
 \usepackage{graphicx}
 \usepackage{makecell}
 \usepackage{draftwatermark}
-\usepackage{mdframed}
 \SetWatermarkText{DRAFT}
 \SetWatermarkScale{4}
 
@@ -61,15 +57,6 @@
 
 %UP TO 8 KEYWORDS
 % \keywords{predicting biotic interactions, machine learning, food webs, estuary and gulf of St.Lawrence}
-
-
-
-%------------------------------------------------------------------------------------------------------------------------
-% Notes:
-% Valoriser la compilation des données et la méthodologie utilisée pour atteindre les objectifs. Article d'avantage méthodologique.
-%
-% Objectif: décrire les interactions pour une communauté pour laquelle peu d'interactions sont connues, ou indisponibles.
-%
 
 \newpage
 
@@ -173,13 +160,15 @@ We evaluated the three statistics for the complete algorithm and for the catalog
 
 Finally, we evaluated the influence of the comprehensiveness of the catalogue on prediction accuracy. We selected the arctic food web from Kortsch et al. (2015). This food web was selected as it is highly detailed taxonomically and because empirical data remains available for most of its taxa after its exclusion from the catalogue. We iteratively and randomly ($n$ = 50) removed a percentage of empirical data describing the food web taxa from the catalogue before generating new predictions with the algorithm. We also tested $w_t$ values of 0.5 and 1 to evaluate whether taxonomic similarity could support predictive accuracy in cases when empirical data for species in \textit{S1} in the catalogue is unavailable.
 
+\subsection{Southern Gulf of Saint Lawrence}
+    As an example, we used the XXX algorithm to predict interactions in the Southern Gulf of Saint Lawrence (SGSL) in eastern Canada. The empirical data and taxa list come from Savenkoff et al. (2004). They present a list of 29 functional groups for a total of 80 taxa. As their analysis was performed on the functional groups rather than the taxa themselves, we used the algorithm to predict interactions between all 80 taxa, which we aggregated back to their original functional groups to compare with interactions presented in Savenkoff et al. (2004).
+
 % ---------------------------------
 % ---------------------------------
 %            RESULTS
 % ---------------------------------
 % ---------------------------------
 % \\TODO: Not MW, MT and accuracy score. The goal of the paper is to present the methodology and it just takes away from my main message. Accuracy score is taken out mainly because as non-interations vastly outnumber interactions, that graph essentially gives the same information as the score -y one. So now we would have three statistics instead of 4. Makes more sense I believe.
-% \\TODO: Change figure 1 to take out accuracy score and K values. Set K = 8, since it's what is used for Figure 2.
 % \\TODO: include name of datasets used in figure captions
 
 \section{Results}
@@ -193,12 +182,20 @@ Similarity being predominantly measured with resource/consumer sets ($w_t$ close
 
 The partitioning of the catalogue and predictive portions of the algorithm shows that it is dependent on the comprehensiveness of the catalogue for high prediction accuracy (Figures \ref{fig:multi_param}, \ref{fig:catalog_pred}). As the amount of empirical data available in the catalogue decreases so does the overall accuracy of the algorithm (Figures \ref{fig:catalog_pred}). The predictive contribution of the algorithm however slows down the decrease in the prediction efficiency of the algorithm. Prediction accuracy still remains around 75\% with only 40\% of \textit{S1} taxa found in the catalogue (Figures \ref{fig:catalog_pred}). Furthermore, the use of taxonomy for similarity measurements is more efficient as empirical data becomes scarcer and no different than resource/consumer sets for the complete algorithm when ample data is available (Figures \ref{fig:catalog_pred}).
 
+    \subsection{Southern Gulf of Saint Lawrence}
+In total, there were empirical data available through the catalogue for 53 out of 80 SGSL taxa. The XXX algorithm correctly predicted approximately 75\% of interactions ($a$) and non-interactions ($d$) extracted from Savenkoff et al. (2004). It however predicted an additional 113 interactions ($c$) that were not noted in Savenkoff et al. (2004) and failed to predict 44 observed interactions that were ($c$).
+
+
+%     a           b           c           d         TSS     ScoreY1     ScoreY0         FSS
+% 126.0000000 113.0000000  44.0000000 342.0000000   0.4928248   0.7411765   0.7516484   0.7488000
+
 % ---------------------------------
 % ---------------------------------
 %           DISCUSSION
 % ---------------------------------
 % ---------------------------------
 \section{Discussion}
+We show that out of the box interaction inference for a set of taxa with incomplete or unavailable preexisting information can be achieved with high accuracy using a combination of empirical data describing biotic interactions and taxonomic relatedness. Although the efficiency of the algorithm is dependent on the comprehensiveness of the interactions catalogue, taxonomic proximity acts as a complement to increase the number of observed interactions correctly predicted. Taxonomic proximity also supports the efficiency of the algorithm when catalogue comprehensiveness decreases. Overall, we believe that the methods performs well and offers promising avenues for further research and management initiatives. 
 
 \subsection{Algorithm accuracy}
 \subsubsection{Misclassified non-interactions}
@@ -208,6 +205,12 @@ The algorithm could simply perform poorly in predicting non-interactions, classi
 
 Furthermore, the algorithm is currently coded to ignore non-interactions in the similarity measurements. Maybe it would make sense to do the same in the interpretation of the results itself. Or a third vector to the similarity measurements could be added that considers non-interactions as a set of resources not consumed by consumers (which we have in the data). While this could make sense, more thought needs to be given to non-interactions stemming from empirical food webs and their actual value as observed data. If we think them valuable, then extra logical steps could be added to the algorithm to decrease probabilities of taxa being proposed as candidate resources by the KNN algorithm when they were observed to not interact in food webs.
 
+\subsection{Southern Gulf of Saint Lawrence}
+
+
+Like atlantic cod and large demersal feeders such as the atlantic halibut consuming whales and birds.
+
+
 \subsubsection{Usefulness of taxonomy in topology prediction}
 
  Interestingly, as the proportion of \textit{S1} taxa in the catalogue decreases, the similarity measured with taxonomy only performs better, with predictions performed with $w_t$ = 1 surpassing those made with $w_t$ = 0.5 as percent of taxa removed from catalogue increases. Taxonomy could thus be highly useful in data poor environments that also lack data in the catalogue.
@@ -215,6 +218,9 @@ Furthermore, the algorithm is currently coded to ignore non-interactions in the 
 While taxonomy plays a significant role in influencing food web structure (Eklof et Stouffer 2015), it does not account for certain traits such as body size. Even though we advocate for as simple an approach as possible, we believe that in cases where the comprehensiveness of the catalogue does not encompass a significant portion of S1, traits could be added as a third set in the similarity measurement.
 
 % According to Eklof and Stouffer (2015), the phylogenetic component of food webs is a significant factor influencing the intervality of food webs. However, certain traits are not accounted by phylogenetic constraints, such as body size.
+
+
+
 
 \subsection{Perspectives}
 \subsubsection{Democratizing the use of network level predictors}
@@ -248,7 +254,7 @@ We thank the Fond de Recherche Québécois Nature et Technologie (FRQNT) and the
         \hline
         \hline
         $T_1$ &         $\{a, b, c\}$ &     $\{T_2, T_3, T_{12}\}$ &    $\{T_4\}$         \\
-        $T_2$ &         $\{e, f, g\}$ &      &                          $\{T_1, T_5\}$    \\
+        $T_2$ &         $\{e, f, g\}$ &      &                           $\{T_1, T_5\}$    \\
         $T_3$ &         $\{i, j, k\}$ &      &                          $\{T_5\}$         \\
         $T_4$ &         $\{m, n, o\}$ &     $\{T_1, T_5\}$ &                              \\
         $T_5$ &         $\{a, b, d\}$ &     $\{T_8, T_9\}$ &            $\{T_4\}$         \\
@@ -284,18 +290,18 @@ We thank the Fond de Recherche Québécois Nature et Technologie (FRQNT) and the
       \begin{tabular}{c|ccccccccccccc}
         & $T_1$ & $T_2$ & $T_3$ & $T_4$ & $T_5$ & $T_6$ & $T_7$ & $T_8$ & $T_9$ & $T_{10}$ & $T_{11}$ & $T_{12}$ \\
         \hline
-        $T_1$       & -     & 0     & 0 & 0 & 0, 1 & 0.3, 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_2$       & 0     & -     & 0, 0.5 & 0 & 0 & 0 & 0, 0.3 & 0, 0.3 & 0, 0.5 & 0 & 0 & 0, 0.5  \\
-        $T_3$       & 0     & 0     & -                         & 0 & 0 & 0 & 0 & 0, 0.5 & 0, 1 & 0 & 0 & 0  \\
-        $T_4$       & 0     & 0     & 0                         & - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_5$       & 0.5   & 0     & 0                         & 0 & - & 0.3, 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_6$       & 0     & 0     & 0.2                       & 0 & 0 & - & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_7$       & 0     & 0.5   & 0                         & 0 & 0 & 0 & - & 0, 0.3 & 0 & 0 & 0 & 0, 0.5  \\
-        $T_8$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & - & 0 & 0 & 0 & 0  \\
-        $T_9$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & 0.5 & - & 0 & 0 & 0  \\
-        $T_{10}$    & 0     & 0     & 0.5           & 0 & 0 & 0.2 & 0 & 0 & 0 & - & 0 & 0 \\
-        $T_{11}$    & 0     & 0     & 0             & 0.5 & 0 & 0 & 0 & 0 & 0 & 0 & - & 0 \\
-        $T_{12}$    & 0     & 0     & 0             & 0 & 0 & 0.5 & 0 & 0.2 & 0.2 & 0 & 0 & - \\
+        $T_1$       & -     & 0     & 0         & 0     & 0, 1  & 0.3, 1    & 0         & 0         & 0         & 0     & 0     & 0         \\
+        $T_2$       & 0     & -     & 0, 0.5    & 0     & 0     & 0         & 0, 0.3    & 0, 0.3    & 0, 0.5    & 0     & 0     & 0, 0.5    \\
+        $T_3$       & 0     & 0     & -         & 0     & 0     & 0         & 0         & 0, 0.5    & 0, 1      & 0     & 0     & 0         \\
+        $T_4$       & 0     & 0     & 0         & -     & 0     & 0         & 0         & 0         & 0         & 0     & 0     & 0         \\
+        $T_5$       & 0.5   & 0     & 0         & 0     & -     & 0.3, 1    & 0         & 0         & 0         & 0     & 0     & 0         \\
+        $T_6$       & 0     & 0     & 0.2       & 0     & 0     & -         & 0         & 0         & 0         & 0     & 0     & 0         \\
+        $T_7$       & 0     & 0.5   & 0         & 0     & 0     & 0         & -         & 0, 0.3    & 0         & 0     & 0     & 0, 0.5    \\
+        $T_8$       & 0     & 0     & 0         & 0     & 0     & 0         & 0         & -         & 0         & 0     & 0     & 0         \\
+        $T_9$       & 0     & 0     & 0         & 0     & 0     & 0         & 0         & 0.5       & -         & 0     & 0     & 0         \\
+        $T_{10}$    & 0     & 0     & 0.5       & 0     & 0     & 0.2       & 0         & 0         & 0         & -     & 0     & 0         \\
+        $T_{11}$    & 0     & 0     & 0         & 0.5   & 0     & 0         & 0         & 0         & 0         & 0     & -     & 0         \\
+        $T_{12}$    & 0     & 0     & 0         & 0     & 0     & 0.5       & 0         & 0.2       & 0.2       & 0     & 0     & -         \\
       \end{tabular}
     \end{table}
 
@@ -317,14 +323,14 @@ We thank the Fond de Recherche Québécois Nature et Technologie (FRQNT) and the
     \end{figure}
 
 \newpage
-    \begin{figure}[h!]
+    \begin{figure}[h]
       \centering\includegraphics[width=0.85\textwidth, height=12cm]{multiple_parameters2.pdf}
       \caption{The graph presents the three statistics as a function of trait weight, which varies between 0 and 1. A weight of 0 means that similarity is measured only using set of resources for each taxa, while a weight equal to 1 means that similarity is based solely on taxonomy. We present 6 food webs with over 50 taxa each and the Barnes et al. (2008) dataset.}
       \label{fig:multi_param}
     \end{figure}
 
-\newpage    
-    \begin{figure}[h!]
+\newpage
+    \begin{figure}[h]
       \centering\includegraphics[width=0.85\textwidth]{catalog_predictions2.pdf}
       \caption{Graph presenting predictive accuracy as a function of the amount of information available in the catalogue. The arctic food web from Kortsch et al. (2015) was used for this, as it is highly detailed and because almost all taxa found in it had information in the catalogue even when not included in the catalogue. A random percentage of taxa in the web was iteratively removed from the catalogue (n = 50) before predicting interactions with the XXX algorithm.}
       \label{fig:catalog_pred}
