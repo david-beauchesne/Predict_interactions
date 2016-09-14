@@ -190,6 +190,11 @@ SSL_emp_bin <- SSL_emp_bin[which(SSL_emp_bin[, 'FeedInter'] == '1'), ]
 x <- which(S0[, 'taxon'] %in% S1)
 length(which(S0[x,'resource'] != "" | S0[x,'consumer'] != ""))
 
+id_b <- matrix(nrow = nrow(accuracy_SSL[[4]]), ncol = 2, data = NA, dimnames = list(c(), c('consumer','resource')))
+for(i in 2:nrow(accuracy_SSL[[4]])) {
+    id_b[i,1] <- rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 1]]
+    id_b[i,2] <- rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 2]]
+}
 
 
 
