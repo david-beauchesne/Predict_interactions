@@ -81,7 +81,7 @@
 \section{Abstract} % about 200 words
 % \\TODO: verify 94 food webs
 
-Large networks of ecological interactions, such as food webs, are complex to characterize, be it empirically or theoretically. The former requires exhaustive observations, while the latter generally requires ample data to be validated. We therefore wondered whether readily available data, namely empirically described interactions in a variety of ecosystems and taxonomy, could be combined to predict species interactions in data deficient ecosystems. To test this, we built a biotic interaction catalogue from a collection of \textit{94} empirical food webs, detailed predator-prey interaction databases and interactions from the Global Biotic Interaction (GloBI) database. We use an unsupervised machine learning method to predict interactions between any given set of taxa, given pairwise taxonomic proximity and known consumer and resource sets found in the interaction catalogue. Initial results suggest that pairwise interactions can be predicted with high accuracy. Although results are seemingly dependent on the comprehensiveness of the catalogue rather than the taxonomic similarity between taxa, taxonomy was found to complement well the catalogue and to allow the algorithm to perform well when the amount of information available through the catalogue decreased. Given it’s high accuracy, this methodology could democratize the use of food webs and network level descriptors in remote location where empirical data is hard to gather. Network characteristics could then be efficiently evaluated and correlated to levels of environmental stressors in order to improve vulnerability assessments of ecosystems to global changes, opening promising avenues for further research and for management initiatives.
+Large networks of ecological interactions, such as food webs, are complex to characterize, be it empirically or theoretically. The former requires exhaustive observations, while the latter generally requires ample data to be validated. We therefore wondered whether readily available data, namely empirically described interactions in a variety of ecosystems and taxonomy, could be combined to predict species interactions in data deficient ecosystems. To test this, we built a biotic interactions catalogue from a collection of \textit{94} empirical food webs, detailed predator-prey interaction databases and interactions from the Global Biotic Interactions (GloBI) database. We used an unsupervised machine learning method to predict interactions between any given set of taxa, given pairwise taxonomic proximity and known consumer and resource sets found in the interaction catalogue. Initial results suggest that pairwise interactions can be predicted with high accuracy. Although results are seemingly dependent on the comprehensiveness of the catalogue rather than the taxonomic similarity between taxa, taxonomy was found to complement well the catalogue and to allow the algorithm to perform well when the amount of information available through the catalogue decreased. Given it’s high accuracy, this methodology could democratize the use of food webs and network level descriptors in remote location where empirical data is hard to gather. Network characteristics could then be efficiently evaluated and correlated to levels of environmental stressors in order to improve vulnerability assessments of ecosystems to global changes, opening promising avenues for further research and for management initiatives.
 
 % ---------------------------------
 % ---------------------------------
@@ -93,7 +93,7 @@ Large networks of ecological interactions, such as food webs, are complex to cha
 
 Large networks of ecological interactions, such as food webs, are complex to characterize, be it empirically or theoretically. The former requires exhaustive observations, while the latter generally requires ample data to be validated. For this reason, studies focusing on communities of interacting species remain understudied even though we acknowledge the importance of considering the reticulated nature of complex networks (ref). When time is of the essence, the long term studies required quickly become impractical and the use of network level approaches relegated to the sideline (ref).
 
-Alternatively, a currently evolving approach is to predict interactions using proxies such as functional traits, phylogenies and spatial distributions to infer biotic interactions (e.g. Gravel et al., 2013; Morales-Castilla et al., 2015). For example, multiple traits can play a significant role in community dynamics and influence the presence and intensity of biotic interactions, like the influence of body size on predator-prey interactions, a literal take on \textit{big fish eats small fish} (Cohen et al., 2003; Brose et al., 2006; Gravel et al. 2013). However, the time required to gather the necessary data to apply those methods may still be restrictive, or the data be unavailable altogether, so much so that other methods have been developed to fill the gaps in knowledge (e.g. Schrodt et al. 2016).
+Alternatively, a currently evolving approach is to predict interactions using proxies such as functional traits, phylogenies and spatial distributions (e.g. Gravel et al., 2013; Morales-Castilla et al., 2015). For example, multiple traits can play a significant role in community dynamics and influence the presence and intensity of biotic interactions, like the influence of body size on predator-prey interactions, a literal take on \textit{big fish eats small fish} (Cohen et al., 2003; Brose et al., 2006; Gravel et al. 2013). However, the time required to gather the necessary data to apply those methods may still be restrictive, or the data be unavailable altogether, so much so that other methods have been developed to fill the gaps in knowledge (e.g. Schrodt et al. 2016).
 
 We therefore wondered whether more readily available data could be used to infer interactions in data deficient ecosystems. There is an increasing amount of data available describing worldwide species interactions, some freely available through the Global Biotic Interactions (GloBI) database (Poelen et al. 2014). Another readily available piece of information on species is their taxonomy, through initiatives like the World Register of Marine Species (WoRMS; Bailly et al. 2016). More than simple nomenclature, evolutionary processes are thought to influence consumer-resource relationships so that taxonomically related species would be more likely to share similar types of both consumers and resources (Eklof et al. 2012; Morales-Castilla et al. 2015). Based on that assumption, taxonomy might be useful in predicting interactions for species lacking detailed information, but which have a taxonomically related species for which such information is available. The objective of this work is thus to combine empirical biotic interactions originating from a variety of ecosystems with taxonomic relatedness to predict interactions in data deficient ecosystems.
 
@@ -146,81 +146,6 @@ The XXX algorithm is built on a series of logical steps that ultimately predicts
 
 Otherwise, the algorithm passes to what we refer to as the predictive contribution to resource predictions, with candidate resources for $T_C$ identified with the KNN algorithm. If $T_R$ are also in \textit{S1}, K most similar resource $T_R'$ are identified in \textit{S1} to add to $C_R$. Then for all $T_C$ in \textit{S1}, the algorithm identifies K most similar consumer $T_C'$ in \textit{S0} and extracts their resource sets. As before, if those resources are found in \textit{S1} they are added to $C_R$, otherwise K most similar resources $T_R'$ are identified in \textit{S1} to add to $C_R$. A simple working example is presented at Figure \ref{fig:example}. Other parameters are used in the algorithm, but not presented here for the sake of message clarity. A more comprehensive mathematical description of the algorithm and the parameters used is however available through Figure \ref{fig:decision_diag} and the complete R code and data used for the algorithm is available at \href{https://github.com/david-beauchesne/Predict_interactions}{https://github.com/david-beauchesne/Predict\_interactions}.
 
-    % Example begin
-    \newpage
-        \begin{table}[h!]
-          \centering
-          \begin{tabular}{cccc}
-            \hline
-            \textit{S0} taxa ID & taxonomy &          resource &             consumer        \\
-            \hline
-            \hline
-            $T_1$ &         $\{a, b, c\}$ &     $\{T_2, T_3, T_{12}\}$ &    $\{T_4\}$         \\
-            $T_2$ &         $\{e, f, g\}$ &      &                          $\{T_1, T_5\}$    \\
-            $T_3$ &         $\{i, j, k\}$ &      &                          $\{T_5\}$         \\
-            $T_4$ &         $\{m, n, o\}$ &     $\{T_1, T_5\}$ &                              \\
-            $T_5$ &         $\{a, b, d\}$ &     $\{T_8, T_9\}$ &            $\{T_4\}$         \\
-            $T_6$ &         $\{i, q, r\}$ &     $\{T_2, T_8\}$ &            $\{T_4\}$         \\
-            $T_7$ &         $\{e, f, h\}$ &      &                          $\{T_1, T_6\}$    \\
-            $T_8$ &         $\{s, t, u\}$ &      &                          $\{T_5, T_6\}$    \\
-            $T_9$ &         $\{s, t, v\}$ &      &                          $\{T_5\}$         \\
-            $T_{10}$ &      $\{i, j, l\}$ &      &                                            \\
-            $T_{11}$ &      $\{m, n, p\}$ &      &                                            \\
-            $T_{12}$ &      $\{q, r, s\}$ &      &                          $\{T_1\}$         \\
-            \hline
-          \end{tabular}
-          \quad \quad
-          \begin{tabular}{c}
-              \hline
-              \textit{S1} taxa ID \\
-              \hline\hline
-              $T_1$ \\
-              $T_9$ \\
-              $T_{10}$ \\
-              $T_{11}$ \\
-              $T_{12}$ \\
-              \hline
-              \\  \\  \\  \\  \\  \\  \\
-          \end{tabular}
-        \end{table}
-
-        \centerline{Similarity measured with set of resources/consumers}
-
-        \begin{table}[h!]
-          \centering
-          \small
-          \begin{tabular}{c|ccccccccccccc}
-            & $T_1$ & $T_2$ & $T_3$ & $T_4$ & $T_5$ & $T_6$ & $T_7$ & $T_8$ & $T_9$ & $T_{10}$ & $T_{11}$ & $T_{12}$ \\
-            \hline
-            $T_1$       & -     & 0     & 0 & 0 & 0, 1 & 0.3, 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
-            $T_2$       & 0     & -     & 0, 0.5 & 0 & 0 & 0 & 0, 0.3 & 0, 0.3 & 0, 0.5 & 0 & 0 & 0, 0.5  \\
-            $T_3$       & 0     & 0     & -                         & 0 & 0 & 0 & 0 & 0, 0.5 & 0, 1 & 0 & 0 & 0  \\
-            $T_4$       & 0     & 0     & 0                         & - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
-            $T_5$       & 0.5   & 0     & 0                         & 0 & - & 0.3, 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
-            $T_6$       & 0     & 0     & 0.2                       & 0 & 0 & - & 0 & 0 & 0 & 0 & 0 & 0  \\
-            $T_7$       & 0     & 0.5   & 0                         & 0 & 0 & 0 & - & 0, 0.3 & 0 & 0 & 0 & 0, 0.5  \\
-            $T_8$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & - & 0 & 0 & 0 & 0  \\
-            $T_9$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & 0.5 & - & 0 & 0 & 0  \\
-            $T_{10}$    & 0     & 0     & 0.5           & 0 & 0 & 0.2 & 0 & 0 & 0 & - & 0 & 0 \\
-            $T_{11}$    & 0     & 0     & 0             & 0.5 & 0 & 0 & 0 & 0 & 0 & 0 & - & 0 \\
-            $T_{12}$    & 0     & 0     & 0             & 0 & 0 & 0.5 & 0 & 0.2 & 0.2 & 0 & 0 & - \\
-          \end{tabular}
-        \end{table}
-
-        \centerline{Similarity measured with taxonomy}
-
-        \begin{figure}[h!]
-        \centering\includegraphics[height = 5cm, width = 5cm]{example.pdf}
-        \caption{Simple example of logical steps through the algorithm}
-        \label{fig:example}
-        \end{figure}
-    % Example finish
-
-        \begin{figure}[h]
-          \centering\includegraphics[width=0.85\textwidth]{Decision_Diagram.png}
-          \caption{Description of the logical steps used by the algorithm to suggest a list of candidate resources ($C_R$) for each taxa ($T_C$) in \textit{S1}}
-          \label{fig:decision_diag}
-        \end{figure}
 
 \subsection{Algorithm prediction accuracy}
 We used the most extensive and taxonomically detailed datasets included in the catalogue (\textbf{ref}) to assess the prediction accuracy of the algorithm. Testing accuracy of a particular dataset was done by first removing from the catalogue all pairwise interacting originating from that dataset. Accuracy was evaluated using three different statistics:
@@ -264,19 +189,7 @@ The data compilation process allowed us to build an interaction catalogue compos
     \subsection{Algorithm predictive accuracy}
 The overall predictive accuracy of the algorithm ranges between 80\% to almost 100\% in certain cases (Figure \ref{fig:multi_param}), except for one food web (\textit{i.e.} \textbf{ref}). Both interactions and non-interactions are well predicted by the algorithm. TSS scores are lower than $Score_y$ and $Score_{\neg y}$ due to misclassified interactions and non-interactions. This can also be observed through the effect of varying $K$ values, which increases the number of potential candidate resources for each taxa in the predictive portion of the algorithm. Prediction accuracy increases for interactions, while it decreases for non-interactions, as $K$ values increase. This means that non-interactions are misclassified as interactions in the process of increasing $Score_y$, consequently decreasing $Score_{\neg y}$.
 
-\begin{figure}[h!]
-  \centering\includegraphics[width=0.85\textwidth, height=12cm]{multiple_parameters2.pdf}
-  \caption{The graph presents the three statistics as a function of trait weight, which varies between 0 and 1. A weight of 0 means that similarity is measured only using set of resources for each taxa, while a weight equal to 1 means that similarity is based solely on taxonomy. We present 6 food webs with over 50 taxa each and the Barnes et al. (2008) dataset.}
-  \label{fig:multi_param}
-\end{figure}
-
 Similarity being predominantly measured with resource/consumer sets ($w_t$ closer to 0) yielded better predictions than when measured with taxonomy ($w_t$ closer to 1; Figure \ref{fig:multi_param}). Resource/consumer sets therefore appears to serve as a better predictor of similarity between taxa for interactions predictions. It is nonetheless interesting to note that although the predictive contribution of the algorithm decreases as $w_t$ increases, an increased mean and decreased variability values for the TSS and $Score_y$ statistics is also observed (Figure \ref{fig:multi_param})). This suggests that while using taxonomy for similarity measurements yields lower predictive accuracy, it may also complement the catalogue contribution by predicting interactions not captured through empirical data, effectively increasing the predictive accuracy of the complete algorithm.
-
-\begin{figure}[h!]
-  \centering\includegraphics[width=0.85\textwidth]{catalog_predictions2.pdf}
-  \caption{Graph presenting predictive accuracy as a function of the amount of information available in the catalogue. The arctic food web from Kortsch et al. (2015) was used for this, as it is highly detailed and because almost all taxa found in it had information in the catalogue even when not included in the catalogue. A random percentage of taxa in the web was iteratively removed from the catalogue (n = 50) before predicting interactions with the XXX algorithm.}
-  \label{fig:catalog_pred}
-\end{figure}
 
 The partitioning of the catalogue and predictive portions of the algorithm shows that it is dependent on the comprehensiveness of the catalogue for high prediction accuracy (Figures \ref{fig:multi_param}, \ref{fig:catalog_pred}). As the amount of empirical data available in the catalogue decreases so does the overall accuracy of the algorithm (Figures \ref{fig:catalog_pred}). The predictive contribution of the algorithm however slows down the decrease in the prediction efficiency of the algorithm. Prediction accuracy still remains around 75\% with only 40\% of \textit{S1} taxa found in the catalogue (Figures \ref{fig:catalog_pred}). Furthermore, the use of taxonomy for similarity measurements is more efficient as empirical data becomes scarcer and no different than resource/consumer sets for the complete algorithm when ample data is available (Figures \ref{fig:catalog_pred}).
 
@@ -322,6 +235,100 @@ While taxonomy plays a significant role in influencing food web structure (Eklof
 
 \section{Acknowledgements}
 We thank the Fond de Recherche Québécois Nature et Technologie (FRQNT) and the Natural Science and Engineering Council of Canada (CRSNG) for financial support. This project is also supported by Québec Océan, the Quebec Centre for Biodiversity Science (QCBS), and the Notre Golfe and CHONeII networks. We also wish to thank K. Cazelles for constructive comments and suggestions.
+
+\newpage
+\subsection{Box 1}
+% Example begin
+\newpage
+    \begin{table}[h!]
+      \centering
+      \begin{tabular}{cccc}
+        \hline
+        \textit{S0} taxa ID & taxonomy &          resource &             consumer        \\
+        \hline
+        \hline
+        $T_1$ &         $\{a, b, c\}$ &     $\{T_2, T_3, T_{12}\}$ &    $\{T_4\}$         \\
+        $T_2$ &         $\{e, f, g\}$ &      &                          $\{T_1, T_5\}$    \\
+        $T_3$ &         $\{i, j, k\}$ &      &                          $\{T_5\}$         \\
+        $T_4$ &         $\{m, n, o\}$ &     $\{T_1, T_5\}$ &                              \\
+        $T_5$ &         $\{a, b, d\}$ &     $\{T_8, T_9\}$ &            $\{T_4\}$         \\
+        $T_6$ &         $\{i, q, r\}$ &     $\{T_2, T_8\}$ &            $\{T_4\}$         \\
+        $T_7$ &         $\{e, f, h\}$ &      &                          $\{T_1, T_6\}$    \\
+        $T_8$ &         $\{s, t, u\}$ &      &                          $\{T_5, T_6\}$    \\
+        $T_9$ &         $\{s, t, v\}$ &      &                          $\{T_5\}$         \\
+        $T_{10}$ &      $\{i, j, l\}$ &      &                                            \\
+        $T_{11}$ &      $\{m, n, p\}$ &      &                                            \\
+        $T_{12}$ &      $\{q, r, s\}$ &      &                          $\{T_1\}$         \\
+        \hline
+      \end{tabular}
+      \quad \quad
+      \begin{tabular}{c}
+          \hline
+          \textit{S1} taxa ID \\
+          \hline\hline
+          $T_1$ \\
+          $T_9$ \\
+          $T_{10}$ \\
+          $T_{11}$ \\
+          $T_{12}$ \\
+          \hline
+          \\  \\  \\  \\  \\  \\  \\
+      \end{tabular}
+    \end{table}
+
+    \centerline{Similarity measured with set of resources/consumers}
+
+    \begin{table}[h!]
+      \centering
+      \small
+      \begin{tabular}{c|ccccccccccccc}
+        & $T_1$ & $T_2$ & $T_3$ & $T_4$ & $T_5$ & $T_6$ & $T_7$ & $T_8$ & $T_9$ & $T_{10}$ & $T_{11}$ & $T_{12}$ \\
+        \hline
+        $T_1$       & -     & 0     & 0 & 0 & 0, 1 & 0.3, 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
+        $T_2$       & 0     & -     & 0, 0.5 & 0 & 0 & 0 & 0, 0.3 & 0, 0.3 & 0, 0.5 & 0 & 0 & 0, 0.5  \\
+        $T_3$       & 0     & 0     & -                         & 0 & 0 & 0 & 0 & 0, 0.5 & 0, 1 & 0 & 0 & 0  \\
+        $T_4$       & 0     & 0     & 0                         & - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
+        $T_5$       & 0.5   & 0     & 0                         & 0 & - & 0.3, 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
+        $T_6$       & 0     & 0     & 0.2                       & 0 & 0 & - & 0 & 0 & 0 & 0 & 0 & 0  \\
+        $T_7$       & 0     & 0.5   & 0                         & 0 & 0 & 0 & - & 0, 0.3 & 0 & 0 & 0 & 0, 0.5  \\
+        $T_8$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & - & 0 & 0 & 0 & 0  \\
+        $T_9$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & 0.5 & - & 0 & 0 & 0  \\
+        $T_{10}$    & 0     & 0     & 0.5           & 0 & 0 & 0.2 & 0 & 0 & 0 & - & 0 & 0 \\
+        $T_{11}$    & 0     & 0     & 0             & 0.5 & 0 & 0 & 0 & 0 & 0 & 0 & - & 0 \\
+        $T_{12}$    & 0     & 0     & 0             & 0 & 0 & 0.5 & 0 & 0.2 & 0.2 & 0 & 0 & - \\
+      \end{tabular}
+    \end{table}
+
+    \centerline{Similarity measured with taxonomy}
+
+    \begin{figure}[h!]
+    \centering\includegraphics[height = 5cm, width = 5cm]{example.pdf}
+    \caption{Simple example of logical steps through the algorithm}
+    \label{fig:example}
+    \end{figure}
+% Example finish
+
+\newpage
+\subsection{Figures}
+    \begin{figure}[h]
+      \centering\includegraphics[width=0.85\textwidth]{Decision_Diagram.png}
+      \caption{Description of the logical steps used by the algorithm to suggest a list of candidate resources ($C_R$) for each taxa ($T_C$) in \textit{S1}}
+      \label{fig:decision_diag}
+    \end{figure}
+
+\newpage
+    \begin{figure}[h!]
+      \centering\includegraphics[width=0.85\textwidth, height=12cm]{multiple_parameters2.pdf}
+      \caption{The graph presents the three statistics as a function of trait weight, which varies between 0 and 1. A weight of 0 means that similarity is measured only using set of resources for each taxa, while a weight equal to 1 means that similarity is based solely on taxonomy. We present 6 food webs with over 50 taxa each and the Barnes et al. (2008) dataset.}
+      \label{fig:multi_param}
+    \end{figure}
+
+\newpage    
+    \begin{figure}[h!]
+      \centering\includegraphics[width=0.85\textwidth]{catalog_predictions2.pdf}
+      \caption{Graph presenting predictive accuracy as a function of the amount of information available in the catalogue. The arctic food web from Kortsch et al. (2015) was used for this, as it is highly detailed and because almost all taxa found in it had information in the catalogue even when not included in the catalogue. A random percentage of taxa in the web was iteratively removed from the catalogue (n = 50) before predicting interactions with the XXX algorithm.}
+      \label{fig:catalog_pred}
+    \end{figure}
 
 \end{document}
 
