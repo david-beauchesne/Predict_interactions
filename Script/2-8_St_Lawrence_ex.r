@@ -186,6 +186,13 @@ SSL_bin_inter <- SSL_bin_inter[which(SSL_bin_inter[, 'FeedInter'] == '1'), ]
 SSL_bin_inter2 <- SSL_bin_inter2[which(SSL_bin_inter2[, 'FeedInter'] == '1'), ]
 SSL_emp_bin <- SSL_emp_bin[which(SSL_emp_bin[, 'FeedInter'] == '1'), ]
 
+# SSL species with interactions noted in catalogue
+x <- which(S0[, 'taxon'] %in% S1)
+length(which(S0[x,'resource'] != "" | S0[x,'consumer'] != ""))
+
+
+
+
 # Load package
 library(networkD3)
 # Plot
