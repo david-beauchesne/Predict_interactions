@@ -22,37 +22,11 @@
 \usepackage{graphicx}
 \usepackage{makecell}
 \usepackage{draftwatermark}
+\usepackage{mdframed}
 \SetWatermarkText{DRAFT}
 \SetWatermarkScale{4}
 
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
-
-% \usepackage{tikz}
-% \newcommand\diag[4]{%
-%   \multicolumn{1}{p{#2}}{\hskip-\tabcolsep
-%   $\vcenter{\begin{tikzpicture}[baseline=0,anchor=south west,inner sep=#1]
-%   \path[use as bounding box] (0,0) rectangle (#2+2\tabcolsep,\baselineskip);
-%   \node[minimum width={#2+2\tabcolsep},minimum height=\baselineskip+\extrarowheight] (box) {};
-%   \draw (box.north west) -- (box.south east);
-%   \node[anchor=south west] at (box.south west) {#3};
-%   \node[anchor=north east] at (box.north east) {#4};
-%  \end{tikzpicture}}$\hskip-\tabcolsep}}
-
- \usepackage{tikz}
- \newcommand\diag[4]{%
-   \multicolumn{1}{p{#2}}{\hskip-\tabcolsep
-   $\vcenter{\begin{tikzpicture}[baseline=0,anchor=south west,inner sep=#1]
-   \path[use as bounding box] (0,0) rectangle (#2+2\tabcolsep,\baselineskip);
-   \node[minimum width={#2+2\tabcolsep},minimum height=\baselineskip+\extrarowheight] (box) {};
-   \draw (box.north west) -- (box.south east);
-   \node[anchor=south west] at (.1,-0.1) {#3};
-   \node[anchor=north east] at (.9,.499) {#4};
-  \end{tikzpicture}}$\hskip-\tabcolsep}}
-
-
-% \diag{.1em}{.5cm}{$a_i$}{$b_j$}
-
-\setlength{\extrarowheight}{0.1cm}
 
 \definecolor{teal}{HTML}{008080}
 
@@ -65,102 +39,6 @@
 \setcounter{section}{0}
 
 \begin{document}
-
-    \begin{table}
-      \centering
-      \begin{tabular}{cccc}
-        \hline
-        \textit{S0} taxa ID & taxonomy &          resource &             consumer        \\
-        \hline
-        \hline
-        $T_1$ &         $\{a, b, c\}$ &     $\{T_2, T_3, T_{12}\}$ &    $\{T_4\}$         \\
-        $T_2$ &         $\{e, f, g\}$ &      &                          $\{T_1, T_5\}$    \\
-        $T_3$ &         $\{i, j, k\}$ &      &                          $\{T_5\}$         \\
-        $T_4$ &         $\{m, n, o\}$ &     $\{T_1, T_5\}$ &                              \\
-        $T_5$ &         $\{a, b, d\}$ &     $\{T_8, T_9\}$ &            $\{T_4\}$         \\
-        $T_6$ &         $\{i, q, r\}$ &     $\{T_2, T_8\}$ &            $\{T_4\}$         \\
-        $T_7$ &         $\{e, f, h\}$ &      &                          $\{T_1, T_6\}$    \\
-        $T_8$ &         $\{s, t, u\}$ &      &                          $\{T_5, T_6\}$    \\
-        $T_9$ &         $\{s, t, v\}$ &      &                          $\{T_5\}$         \\
-        $T_{10}$ &      $\{i, j, l\}$ &      &                                            \\
-        $T_{11}$ &      $\{m, n, p\}$ &      &                                            \\
-        $T_{12}$ &      $\{q, r, s\}$ &      &                          $\{T_1\}$         \\
-        \hline
-      \end{tabular}
-      \quad \quad
-      \begin{tabular}{c}
-          \hline
-          \textit{S1} taxa ID \\
-          \hline\hline
-          $T_1$ \\
-          $T_9$ \\
-          $T_{10}$ \\
-          $T_{11}$ \\
-          $T_{12}$ \\
-          \hline
-          \\  \\  \\  \\  \\  \\  \\
-      \end{tabular}
-    \end{table}
-
-\centerline{Similarity measured with set of resources/consumers}
-
-    \begin{table}[h!]
-      \centering
-      \small
-      \begin{tabular}{c|ccccccccccccc}
-        & $T_1$ & $T_2$ & $T_3$ & $T_4$ & $T_5$ & $T_6$ & $T_7$ & $T_8$ & $T_9$ & $T_{10}$ & $T_{11}$ & $T_{12}$ \\
-        \hline
-        $T_1$       & -     & 0     & 0 & 0 & \diag{.1em}{.5cm}{0}{1} & \diag{.1em}{.5cm}{0.25}{1} & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_2$       & 0     & -     & \diag{.1em}{.5cm}{0}{0.5} & 0 & 0 & 0 & \diag{.1em}{.5cm}{0}{0.33} & \diag{.1em}{.5cm}{0}{0.3} & \diag{.1em}{.5cm}{0}{0.5} & 0 & 0 & \diag{.1em}{.5cm}{0}{0.5}  \\
-        $T_3$       & 0     & 0     & -                         & 0 & 0 & 0 & 0 & \diag{.1em}{.5cm}{0}{0.5} & \diag{.1em}{.5cm}{0}{1} & 0 & 0 & 0  \\
-        $T_4$       & 0     & 0     & 0                         & - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_5$       & 0.5   & 0     & 0                         & 0 & - & \diag{.1em}{.5cm}{0.33}{1} & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_6$       & 0     & 0     & 0.2                       & 0 & 0 & - & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_7$       & 0     & 0.5   & 0                         & 0 & 0 & 0 & - & \diag{.1em}{.5cm}{0}{0.3} & 0 & 0 & 0 & \diag{.1em}{.5cm}{0}{0.5}  \\
-        $T_8$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & - & 0 & 0 & 0 & 0  \\
-        $T_9$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & 0.5 & - & 0 & 0 & 0  \\
-        $T_{10}$    & 0     & 0     & 0.5           & 0 & 0 & 0.2 & 0 & 0 & 0 & - & 0 & 0 \\
-        $T_{11}$    & 0     & 0     & 0             & 0.5 & 0 & 0 & 0 & 0 & 0 & 0 & - & 0 \\
-        $T_{12}$    & 0     & 0     & 0             & 0 & 0 & 0.5 & 0 & 0.2 & 0.2 & 0 & 0 & - \\
-      \end{tabular}
-    \end{table}
-
-\centerline{Similarity measured with taxonomy}
-
-
-
-\centerline{Similarity measured with set of resources/consumers}
-
-    \begin{table}[h!]
-      \centering
-      \small
-      \begin{tabular}{c|ccccccccccccc}
-        & $T_1$ & $T_2$ & $T_3$ & $T_4$ & $T_5$ & $T_6$ & $T_7$ & $T_8$ & $T_9$ & $T_{10}$ & $T_{11}$ & $T_{12}$ \\
-        \hline
-        $T_1$       & -     & 0     & 0 & 0 & 0, 1 & 0.3, 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_2$       & 0     & -     & 0, 0.5 & 0 & 0 & 0 & 0, 0.3 & 0, 0.3 & 0, 0.5 & 0 & 0 & 0, 0.5  \\
-        $T_3$       & 0     & 0     & -                         & 0 & 0 & 0 & 0 & 0, 0.5 & 0, 1 & 0 & 0 & 0  \\
-        $T_4$       & 0     & 0     & 0                         & - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_5$       & 0.5   & 0     & 0                         & 0 & - & 0.3, 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_6$       & 0     & 0     & 0.2                       & 0 & 0 & - & 0 & 0 & 0 & 0 & 0 & 0  \\
-        $T_7$       & 0     & 0.5   & 0                         & 0 & 0 & 0 & - & 0, 0.3 & 0 & 0 & 0 & 0, 0.5  \\
-        $T_8$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & - & 0 & 0 & 0 & 0  \\
-        $T_9$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & 0.5 & - & 0 & 0 & 0  \\
-        $T_{10}$    & 0     & 0     & 0.5           & 0 & 0 & 0.2 & 0 & 0 & 0 & - & 0 & 0 \\
-        $T_{11}$    & 0     & 0     & 0             & 0.5 & 0 & 0 & 0 & 0 & 0 & 0 & - & 0 \\
-        $T_{12}$    & 0     & 0     & 0             & 0 & 0 & 0.5 & 0 & 0.2 & 0.2 & 0 & 0 & - \\
-      \end{tabular}
-    \end{table}
-
-\centerline{Similarity measured with taxonomy}
-
-
-
-
-
-
-
-\newpage
 
 \title{
   \uppercase {Thinking outside the box - predicting biotic interactions in data-poor environments}
@@ -217,7 +95,7 @@ Large networks of ecological interactions, such as food webs, are complex to cha
 
 Alternatively, a currently evolving approach is to predict interactions using proxies such as functional traits, phylogenies and spatial distributions to infer biotic interactions (e.g. Gravel et al., 2013; Morales-Castilla et al., 2015). For example, multiple traits can play a significant role in community dynamics and influence the presence and intensity of biotic interactions, like the influence of body size on predator-prey interactions, a literal take on \textit{big fish eats small fish} (Cohen et al., 2003; Brose et al., 2006; Gravel et al. 2013). However, the time required to gather the necessary data to apply those methods may still be restrictive, or the data be unavailable altogether, so much so that other methods have been developed to fill the gaps in knowledge (e.g. Schrodt et al. 2016).
 
-We therefore wondered whether more readily available data could be used to infer interactions in data deficient ecosystems. There is an increasing amount of data available describing worldwide species interactions, some freely available through the Global Biotic Interactions (GloBI) database (Poelen et al. 2014). Another readily available piece of information on species is their taxonomy, through initiatives like the World Register of Marine Species (WoRMS; Bailly et al. 2016). More than simple nomenclature, evolutionary processes are thought to influence consumer-resource relationships so that taxonomically related species would be more likely to share similar types of both consumers and resources (Eklof et al. 2012). Based on that assumption, taxonomy might be useful in predicting interactions for species lacking detailed information, but which have a taxonomically related species for which such information is available. The objective of this work is thus to combine empirical biotic interactions originating from a variety of ecosystems with taxonomic relatedness to predict interactions in data deficient ecosystems.
+We therefore wondered whether more readily available data could be used to infer interactions in data deficient ecosystems. There is an increasing amount of data available describing worldwide species interactions, some freely available through the Global Biotic Interactions (GloBI) database (Poelen et al. 2014). Another readily available piece of information on species is their taxonomy, through initiatives like the World Register of Marine Species (WoRMS; Bailly et al. 2016). More than simple nomenclature, evolutionary processes are thought to influence consumer-resource relationships so that taxonomically related species would be more likely to share similar types of both consumers and resources (Eklof et al. 2012; Morales-Castilla et al. 2015). Based on that assumption, taxonomy might be useful in predicting interactions for species lacking detailed information, but which have a taxonomically related species for which such information is available. The objective of this work is thus to combine empirical biotic interactions originating from a variety of ecosystems with taxonomic relatedness to predict interactions in data deficient ecosystems.
 
 % ---------------------------------
 % ---------------------------------
@@ -266,7 +144,77 @@ where $w_t$ is the weight given to vector \textit{i}, $\mathbf{x_i}$, $\mathbf{y
 
 The XXX algorithm is built on a series of logical steps that ultimately predicts a candidate resources list $C_R$ for each taxon in \textit{S1} (Figure \ref{fig:decision_diag}). For all consumer taxa $T_C$ in \textit{S1}, the algorithm first verify whether it has empirical resources $T_R$ listed in the catalogue. When it does, if $T_R$ are also in \textit{S1}, they are added as predicted resources for $T_C$. This corresponds to what we refer to as the catalogue contribution to resource predictions. Two taxa in \textit{S1} that are known to interact through the catalogue are automatically assumed to interact in \textit{S1}.
 
-Otherwise, the algorithm passes to what we refer to as the predictive contribution to resource predictions, with candidate resources for $T_C$ identified with the KNN algorithm. If $T_R$ are also in \textit{S1}, K most similar resource $T_R'$ are identified in \textit{S1} to add to $C_R$. Then for all $T_C$ in \textit{S1}, the algorithm identifies K most similar consumer $T_C'$ in \textit{S0} and extracts their resource sets. As before, if those resources are found in \textit{S1} they are added to $C_R$, otherwise K most similar resources $T_R'$ are identified in \textit{S1} to add to $C_R$. Other parameters are used in the algorithm, but not presented here for the sake of message clarity. A more comprehensive mathematical description of the algorithm and the parameters used is however available through Figure \ref{fig:decision_diag} and the complete R code and data used for the algorithm is available at \href{https://github.com/david-beauchesne/Predict_interactions}{https://github.com/david-beauchesne/Predict\_interactions}.
+Otherwise, the algorithm passes to what we refer to as the predictive contribution to resource predictions, with candidate resources for $T_C$ identified with the KNN algorithm. If $T_R$ are also in \textit{S1}, K most similar resource $T_R'$ are identified in \textit{S1} to add to $C_R$. Then for all $T_C$ in \textit{S1}, the algorithm identifies K most similar consumer $T_C'$ in \textit{S0} and extracts their resource sets. As before, if those resources are found in \textit{S1} they are added to $C_R$, otherwise K most similar resources $T_R'$ are identified in \textit{S1} to add to $C_R$. A simple working example is presented at Figure \ref{fig:example}. Other parameters are used in the algorithm, but not presented here for the sake of message clarity. A more comprehensive mathematical description of the algorithm and the parameters used is however available through Figure \ref{fig:decision_diag} and the complete R code and data used for the algorithm is available at \href{https://github.com/david-beauchesne/Predict_interactions}{https://github.com/david-beauchesne/Predict\_interactions}.
+
+    % Example begin
+    \newpage
+        \begin{table}[h!]
+          \centering
+          \begin{tabular}{cccc}
+            \hline
+            \textit{S0} taxa ID & taxonomy &          resource &             consumer        \\
+            \hline
+            \hline
+            $T_1$ &         $\{a, b, c\}$ &     $\{T_2, T_3, T_{12}\}$ &    $\{T_4\}$         \\
+            $T_2$ &         $\{e, f, g\}$ &      &                          $\{T_1, T_5\}$    \\
+            $T_3$ &         $\{i, j, k\}$ &      &                          $\{T_5\}$         \\
+            $T_4$ &         $\{m, n, o\}$ &     $\{T_1, T_5\}$ &                              \\
+            $T_5$ &         $\{a, b, d\}$ &     $\{T_8, T_9\}$ &            $\{T_4\}$         \\
+            $T_6$ &         $\{i, q, r\}$ &     $\{T_2, T_8\}$ &            $\{T_4\}$         \\
+            $T_7$ &         $\{e, f, h\}$ &      &                          $\{T_1, T_6\}$    \\
+            $T_8$ &         $\{s, t, u\}$ &      &                          $\{T_5, T_6\}$    \\
+            $T_9$ &         $\{s, t, v\}$ &      &                          $\{T_5\}$         \\
+            $T_{10}$ &      $\{i, j, l\}$ &      &                                            \\
+            $T_{11}$ &      $\{m, n, p\}$ &      &                                            \\
+            $T_{12}$ &      $\{q, r, s\}$ &      &                          $\{T_1\}$         \\
+            \hline
+          \end{tabular}
+          \quad \quad
+          \begin{tabular}{c}
+              \hline
+              \textit{S1} taxa ID \\
+              \hline\hline
+              $T_1$ \\
+              $T_9$ \\
+              $T_{10}$ \\
+              $T_{11}$ \\
+              $T_{12}$ \\
+              \hline
+              \\  \\  \\  \\  \\  \\  \\
+          \end{tabular}
+        \end{table}
+
+        \centerline{Similarity measured with set of resources/consumers}
+
+        \begin{table}[h!]
+          \centering
+          \small
+          \begin{tabular}{c|ccccccccccccc}
+            & $T_1$ & $T_2$ & $T_3$ & $T_4$ & $T_5$ & $T_6$ & $T_7$ & $T_8$ & $T_9$ & $T_{10}$ & $T_{11}$ & $T_{12}$ \\
+            \hline
+            $T_1$       & -     & 0     & 0 & 0 & 0, 1 & 0.3, 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            $T_2$       & 0     & -     & 0, 0.5 & 0 & 0 & 0 & 0, 0.3 & 0, 0.3 & 0, 0.5 & 0 & 0 & 0, 0.5  \\
+            $T_3$       & 0     & 0     & -                         & 0 & 0 & 0 & 0 & 0, 0.5 & 0, 1 & 0 & 0 & 0  \\
+            $T_4$       & 0     & 0     & 0                         & - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            $T_5$       & 0.5   & 0     & 0                         & 0 & - & 0.3, 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            $T_6$       & 0     & 0     & 0.2                       & 0 & 0 & - & 0 & 0 & 0 & 0 & 0 & 0  \\
+            $T_7$       & 0     & 0.5   & 0                         & 0 & 0 & 0 & - & 0, 0.3 & 0 & 0 & 0 & 0, 0.5  \\
+            $T_8$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & - & 0 & 0 & 0 & 0  \\
+            $T_9$       & 0     & 0     & 0                         & 0 & 0 & 0 & 0 & 0.5 & - & 0 & 0 & 0  \\
+            $T_{10}$    & 0     & 0     & 0.5           & 0 & 0 & 0.2 & 0 & 0 & 0 & - & 0 & 0 \\
+            $T_{11}$    & 0     & 0     & 0             & 0.5 & 0 & 0 & 0 & 0 & 0 & 0 & - & 0 \\
+            $T_{12}$    & 0     & 0     & 0             & 0 & 0 & 0.5 & 0 & 0.2 & 0.2 & 0 & 0 & - \\
+          \end{tabular}
+        \end{table}
+
+        \centerline{Similarity measured with taxonomy}
+
+        \begin{figure}[h!]
+        \centering\includegraphics[height = 5cm, width = 5cm]{example.pdf}
+        \caption{Simple example of logical steps through the algorithm}
+        \label{fig:example}
+        \end{figure}
+    % Example finish
 
         \begin{figure}[h]
           \centering\includegraphics[width=0.85\textwidth]{Decision_Diagram.png}
