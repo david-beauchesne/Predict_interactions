@@ -73,7 +73,7 @@ digraph boxes_and_circles{
     4 [label = <<I>T<SUB>11</SUB></I>>]
     5 [label = <<I>T<SUB>12</SUB></I>>]
 
-
+    edge [dir = back]
     1 -> 2 [arrowsize = 0.5]
     1 -> 3 [arrowsize = 0.5]
     1 -> 5 [arrowsize = 0.5]
