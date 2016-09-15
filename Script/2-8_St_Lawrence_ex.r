@@ -31,9 +31,41 @@ SSL <- South_St_Lawrence
 SSL[[2]][which(SSL[[2]] > 0)] <- 1
 rownames(SSL[[2]]) <- colnames(SSL[[2]]) <- SSL[[3]]
 
-sp_SSL <- matrix(ncol = 2, nrow = 29, data = NA, dimnames = list(c(), c('ACCR','SP')))
+sp_SSL <- matrix(ncol = 3, nrow = 29, data = NA, dimnames = list(c(), c('ACCR','SP','FG')))
 
 sp_SSL[,1] <- c('WHA','HAS','HOS','GRS','HSE','SEA','LCO','SCO','LGH','SAP','LAP','FLO','SKA','RED','LDF','SDF','CAP','LPF','PISF','PLSF','SHR','LCRU','ECH','MOL','POL','OBI','LZOO','SZOO','PHY')
+
+sp_SSL[,3] <- c('Cetaceans',
+'Harp seals',
+'Hooded seals',
+'Grey seals',
+'Harbour seals',
+'Seabirds',
+'Atlantic cod',
+'Atlantic cod',
+'Greenland halibut',
+'American plaice',
+'American plaice',
+'Flounders',
+'Skates',
+'Redfish',
+'Large demersal feeders',
+'Small demersal feeders',
+'Capelin',
+'Large pelagic feeders',
+'Piscivorous small pelagic feeders',
+'Planktivorous small pelagic feeders',
+'Shrimp',
+'Large crustaceans',
+'Echinoderms',
+'Molluscs',
+'Polychates',
+'Other benthic invertebrates',
+'Large zooplankton',
+'Small zooplankton',
+'Phytoplankton')
+
+
 
 sp_SSL[,2] <- c('Balaenoptera physalus - Balaenoptera acutorostrata - Megaptera novaeangliae - Phocoena phocoena - Lagenorhynchus acutus - Lagenorhynchus albirostris',
 'Pagophilus groenlandicus',
@@ -170,13 +202,13 @@ accuracy_SSL2 <- prediction_accuracy_id(predicted = SSL_predict_mat_combine2, em
 accuracy_SSL
 accuracy_SSL2
 
-for(i in 2:nrow(accuracy_SSL[[4]])) {
-    print(paste(rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 2]], "EATS", rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 1]]))
-}
-
-for(i in 2:nrow(accuracy_SSL[[3]])) {
-    print(paste(rownames(SSL_predict_mat_combine)[accuracy_SSL[[3]][i, 2]], "EATS", rownames(SSL_predict_mat_combine)[accuracy_SSL[[3]][i, 1]]))
-}
+# for(i in 2:nrow(accuracy_SSL[[4]])) {
+#     print(paste(rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 2]], "EATS", rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 1]]))
+# }
+#
+# for(i in 2:nrow(accuracy_SSL[[3]])) {
+#     print(paste(rownames(SSL_predict_mat_combine)[accuracy_SSL[[3]][i, 2]], "EATS", rownames(SSL_predict_mat_combine)[accuracy_SSL[[3]][i, 1]]))
+# }
 
 
 SSL_bin_inter <- bin_inter(SSL_predict_mat_combine)
@@ -190,10 +222,16 @@ SSL_emp_bin <- SSL_emp_bin[which(SSL_emp_bin[, 'FeedInter'] == '1'), ]
 x <- which(S0[, 'taxon'] %in% S1)
 length(which(S0[x,'resource'] != "" | S0[x,'consumer'] != ""))
 
-id_b <- matrix(nrow = nrow(accuracy_SSL[[4]]), ncol = 2, data = NA, dimnames = list(c(), c('consumer','resource')))
+id_c <- matrix(nrow = nrow(accuracy_SSL[[4]]), ncol = 2, data = NA, dimnames = list(c(), c('consumer','resource')))
 for(i in 2:nrow(accuracy_SSL[[4]])) {
-    id_b[i,1] <- rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 1]]
-    id_b[i,2] <- rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 2]]
+    id_c[i,1] <- rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 1]]
+    id_c[i,2] <- rownames(SSL_predict_mat_combine)[accuracy_SSL[[4]][i, 2]]
+}
+
+id_b <- matrix(nrow = nrow(accuracy_SSL[[3]]), ncol = 2, data = NA, dimnames = list(c(), c('consumer','resource')))
+for(i in 2:nrow(accuracy_SSL[[3]])) {
+    id_b[i,1] <- rownames(SSL_predict_mat_combine)[accuracy_SSL[[3]][i, 1]]
+    id_b[i,2] <- rownames(SSL_predict_mat_combine)[accuracy_SSL[[3]][i, 2]]
 }
 
 
@@ -213,3 +251,269 @@ simpleNetwork(as.data.frame(SSL_emp_bin[, c(1,3)]))
 # combiner duplicatas
 # rouler fonction du catalogue pour séparer les lignes et colonnes qui ont plusieurs entrées?
 # faire l'analyse en séparant toutes les espèces listées, puis comparer l'analyse divisée, compartimenter les résultats (combiner les interactions des espèces qui sont dans un compartiment), et la réseau présenté dans l'article à partir de la matrice de diète.
+
+
+pp <- which(SSL_emp_bin[,'Predator'] == "Scomber scombrus - Illex illecebrosus" | SSL_emp_bin[,'Prey'] == "Scomber scombrus - Illex illecebrosus")
+cap <- which(SSL_emp_bin[,'Predator'] == "Mallotus villosus" | SSL_emp_bin[,'Prey'] == "Mallotus villosus")
+SSL_emp_part <- SSL_emp_bin[unique(c(pp,cap)), ]
+
+
+pp <- which(SSL_bin_inter[,'Predator'] == "Scomber scombrus - Illex illecebrosus" | SSL_bin_inter[,'Prey'] == "Scomber scombrus - Illex illecebrosus")
+
+cap <- which(SSL_bin_inter[,'Predator'] == "Mallotus villosus" | SSL_bin_inter[,'Prey'] == "Mallotus villosus")
+SSL_pred_part <- SSL_bin_inter[unique(c(pp,cap)), ]
+
+for(i in 1:nrow(sp_SSL)){
+    SSL_emp_part[which(SSL_emp_part[, 'Predator'] == sp_SSL[i,2]), 'Predator'] <- sp_SSL[i,3]
+    SSL_emp_part[which(SSL_emp_part[, 'Prey'] == sp_SSL[i,2]), 'Prey'] <- sp_SSL[i,3]
+    SSL_pred_part[which(SSL_pred_part[, 'Predator'] == sp_SSL[i,2]), 'Predator'] <- sp_SSL[i,3]
+    SSL_pred_part[which(SSL_pred_part[, 'Prey'] == sp_SSL[i,2]), 'Prey'] <- sp_SSL[i,3]
+}
+
+unique(c(SSL_emp_part,SSL_pred_part))
+
+SSL_pred_part <- gsub("1", "->",SSL_pred_part)
+SSL_pred_part <- gsub("Skates", "1",SSL_pred_part)
+SSL_pred_part <- gsub("Cetaceans", "2",SSL_pred_part)
+SSL_pred_part <- gsub("Hooded seals", "3",SSL_pred_part)
+SSL_pred_part <- gsub("Atlantic cod", "4",SSL_pred_part)
+SSL_pred_part <- gsub("Grey seals", "5",SSL_pred_part)
+SSL_pred_part <- gsub("Harp seals", "6",SSL_pred_part)
+SSL_pred_part <- gsub("Seabirds", "7",SSL_pred_part)
+SSL_pred_part <- gsub("Harbour seals", "8",SSL_pred_part)
+SSL_pred_part <- gsub("Greenland halibut", "9",SSL_pred_part)
+SSL_pred_part <- gsub("Piscivorous small pelagic feeders", "10",SSL_pred_part)
+SSL_pred_part <- gsub("Redfish", "11",SSL_pred_part)
+SSL_pred_part <- gsub("Large pelagic feeders", "12",SSL_pred_part)
+SSL_pred_part <- gsub("Large demersal feeders", "13",SSL_pred_part)
+SSL_pred_part <- gsub("Capelin", "14",SSL_pred_part)
+SSL_pred_part <- gsub("Small demersal feeders","15",SSL_pred_part)
+SSL_pred_part <- gsub("Planktivorous small pelagic feeders", "16",SSL_pred_part)
+SSL_pred_part <- gsub("Small zooplankton", "17",SSL_pred_part)
+SSL_pred_part <- gsub("Flounders", "18",SSL_pred_part)
+SSL_pred_part <- gsub("Large crustaceans", "19",SSL_pred_part)
+SSL_pred_part <- gsub("American plaice", "20",SSL_pred_part)
+SSL_pred_part <- gsub("Shrimp", "21",SSL_pred_part)
+
+SSL_emp_part <- gsub("1", "->",SSL_emp_part)
+SSL_emp_part <- gsub("Skates", "1",SSL_emp_part)
+SSL_emp_part <- gsub("Cetaceans", "2",SSL_emp_part)
+SSL_emp_part <- gsub("Hooded seals", "3",SSL_emp_part)
+SSL_emp_part <- gsub("Atlantic cod", "4",SSL_emp_part)
+SSL_emp_part <- gsub("Grey seals", "5",SSL_emp_part)
+SSL_emp_part <- gsub("Harp seals", "6",SSL_emp_part)
+SSL_emp_part <- gsub("Seabirds", "7",SSL_emp_part)
+SSL_emp_part <- gsub("Harbour seals", "8",SSL_emp_part)
+SSL_emp_part <- gsub("Greenland halibut", "9",SSL_emp_part)
+SSL_emp_part <- gsub("Piscivorous small pelagic feeders", "10",SSL_emp_part)
+SSL_emp_part <- gsub("Redfish", "11",SSL_emp_part)
+SSL_emp_part <- gsub("Large pelagic feeders", "12",SSL_emp_part)
+SSL_emp_part <- gsub("Large demersal feeders", "13",SSL_emp_part)
+SSL_emp_part <- gsub("Capelin", "14",SSL_emp_part)
+SSL_emp_part <- gsub("Small demersal feeders", "15",SSL_emp_part)
+SSL_emp_part <- gsub("Planktivorous small pelagic feeders", "16",SSL_emp_part)
+SSL_emp_part <- gsub("Small zooplankton", "17",SSL_emp_part)
+SSL_emp_part <- gsub("Flounders", "18",SSL_emp_part)
+SSL_emp_part <- gsub("Large crustaceans", "19",SSL_emp_part)
+SSL_emp_part <- gsub("American plaice", "20",SSL_emp_part)
+SSL_emp_part <- gsub("Shrimp", "21",SSL_emp_part)
+
+SSL_emp_part
+SSL_pred_part
+
+library(DiagrammeR)
+grViz("
+
+digraph boxes_and_circles{
+
+    node [shape = box
+            # fixedsize = TRUE
+            # width = 2.5
+            ]
+            1 [label =  <Skates>]
+            2 [label =  <Cetaceans>]
+            3 [label =  <Hooded seals>]
+            4 [label =  <Atlantic cod>]
+            5 [label =  <Grey seals>]
+            6 [label =  <Harp seals>]
+            7 [label =  <Seabirds>]
+            8 [label =  <Harbour seals>]
+            9 [label =  <Greenland halibut>]
+            10 [label =  <Piscivorous small<br/>pelagic feeders>]
+            11 [label =  <Redfish>]
+            12 [label =  <Large pelagic<br/>feeders>]
+            13 [label =  <Large demersal<br/>feeders>]
+            14 [label =  <Capelin>]
+            15 [label =  <Small demersal<br/>feeders>]
+            16 [label =  <Planktivorous small<br/>pelagic feeders>]
+            17 [label =  <Small zooplankton>]
+            18 [label =  <Flounders>]
+            19 [label =  <Large crustaceans>]
+            20 [label =  <American plaice>]
+            21 [label =  <Shrimp>]
+
+    edge [dir = back]
+            7 -> 12 [color = 'transparent']
+            7 -> 13 [color = 'transparent']
+            7 -> 20 [color = 'transparent']
+            7 -> 18 [color = 'transparent']
+            7 -> 4 [color = 'transparent']
+            8 -> 12 [color = 'transparent']
+            8 -> 13 [color = 'transparent']
+            8 -> 20 [color = 'transparent']
+            8 -> 18 [color = 'transparent']
+            8 -> 4 [color = 'transparent']
+            12 -> 15 [color = 'transparent']
+            12 -> 16 [color = 'transparent']
+            13 -> 15 [color = 'transparent']
+            13 -> 16 [color = 'transparent']
+            20 -> 15 [color = 'transparent']
+            20 -> 16 [color = 'transparent']
+            18 -> 15 [color = 'transparent']
+            18 -> 16 [color = 'transparent']
+            4 -> 15 [color = 'transparent']
+            4 -> 16 [color = 'transparent']
+            15 -> 21 [color = 'transparent']
+            15 -> 19 [color = 'transparent']
+            16 -> 21 [color = 'transparent']
+            16 -> 19 [color = 'transparent']
+
+            2 -> 11 [color = 'transparent']
+            2 -> 1 [color = 'transparent']
+            2 -> 9 [color = 'transparent']
+            3 -> 11 [color = 'transparent']
+            3 -> 1 [color = 'transparent']
+            3 -> 9 [color = 'transparent']
+            5 -> 11 [color = 'transparent']
+            5 -> 1 [color = 'transparent']
+            5 -> 9 [color = 'transparent']
+            6 -> 11 [color = 'transparent']
+            6 -> 1 [color = 'transparent']
+            6 -> 9 [color = 'transparent']
+
+            #Empirical
+            1 -> 10 [color = 'green']
+            2 -> 10 [color = 'green']
+            3 -> 10 [color = 'black']
+            4 -> 10 [color = 'green']
+            5 -> 10 [color = 'black']
+            6 -> 10 [color = 'black']
+            7 -> 10 [color = 'black']
+            8 -> 10 [color = 'green']
+            9 -> 10 [color = 'black']
+            10 -> 16 [color = 'green']
+            10 -> 14 [color = 'green']
+            10 -> 17 [color = 'green']
+            11 -> 10 [color = 'black']
+            12 -> 10 [color = 'green']
+            13 -> 10 [color = 'green']
+            1 -> 14 [color = 'green']
+            2 -> 14 [color = 'green']
+            3 -> 14 [color = 'green']
+            4 -> 14 [color = 'green']
+            5 -> 14 [color = 'green']
+            14 -> 17 [color = 'green']
+            15 -> 14 [color = 'green']
+            6 -> 14 [color = 'green']
+            7 -> 14 [color = 'green']
+            8 -> 14 [color = 'green']
+            9 -> 14 [color = 'green']
+            11 -> 14 [color = 'green']
+            12 -> 14 [color = 'green']
+            13 -> 14 [color = 'green']
+
+            # #Predictions
+
+            18 -> 10 [color = 'blue']
+            15 -> 10 [color = 'blue']
+            10 -> 1 [color = 'blue']
+            10 -> 21 [color = 'blue']
+            10 -> 4 [color = 'blue']
+            10 -> 18 [color = 'blue']
+            10 -> 15 [color = 'blue']
+            10 -> 7 [color = 'blue']
+            10 -> 8 [color = 'blue']
+            10 -> 10 [color = 'blue']
+            10 -> 12 [color = 'blue']
+            10 -> 13 [color = 'blue']
+            19 -> 14 [color = 'blue']
+            16 -> 14 [color = 'blue']
+            20 -> 14 [color = 'blue']
+            18 -> 14 [color = 'blue']
+            14 -> 14 [color = 'blue']
+}
+")
+
+
+# #Empirical
+# 1 -> 10 [color = 'blue']
+# 2 -> 10 [color = 'blue']
+# 3 -> 10 [color = '']
+# 4 -> 10 [color = 'blue']
+# 5 -> 10 [color = '']
+# 6 -> 10 [color = '']
+# 7 -> 10 [color = '']
+# 8 -> 10 [color = '']
+# 9 -> 10 [color = '']
+# 10 -> 16 [color = '']
+# 10 -> 14 [color = '']
+# 10 -> 17 [color = '']
+# 11 -> 10 [color = '']
+# 12 -> 10 [color = '']
+# 13 -> 10 [color = '']
+# 1 -> 14 [color = '']
+# 2 -> 14 [color = '']
+# 3 -> 14 [color = '']
+# 4 -> 14 [color = '']
+# 5 -> 14 [color = '']
+# 14 -> 17 [color = '']
+# 15 -> 14 [color = '']
+# 6 -> 14 [color = '']
+# 7 -> 14 [color = '']
+# 8 -> 14 [color = '']
+# 9 -> 14 [color = '']
+# 11 -> 14 [color = '']
+# 12 -> 14 [color = '']
+# 13 -> 14 [color = '']
+
+# #Predictions
+# 1 -> 10
+# 2 -> 10
+# 4 -> 10
+# 18 -> 10
+# 15 -> 10
+# 8 -> 10
+# 10 -> 1
+# 10 -> 21
+# 10 -> 16
+# 10 -> 4
+# 10 -> 18
+# 10 -> 14
+# 10 -> 15
+# 10 -> 17
+# 10 -> 7
+# 10 -> 8
+# 10 -> 10
+# 10 -> 12
+# 10 -> 13
+# 12 -> 10
+# 13 -> 10
+# 1 -> 14
+# 2 -> 14
+# 19 -> 14
+# 16 -> 14
+# 3 -> 14
+# 4 -> 14
+# 5 -> 14
+# 20 -> 14
+# 18 -> 14
+# 14 -> 14
+# 14 -> 17
+# 15 -> 14
+# 6 -> 14
+# 7 -> 14
+# 8 -> 14
+# 9 -> 14
+# 11 -> 14
+# 12 -> 14
+# 13 -> 14
