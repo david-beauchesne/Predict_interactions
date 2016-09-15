@@ -54,8 +54,8 @@ source("./Script/similarity_taxon_predict.r") #similarity of additional taxa in 
 source("./Script/two_way_tanimoto_predict.r") # interaction predictions from two-way Tanimoto algorithm
 source("./Script/prediction_matrix.r") # predictions formatted to food web matrix format (S x S)
 source("./Script/empirical_matrix.r") # predictions formatted to food web matrix format (S x S)
-source("./Script/consumer_set_of_resource.R")
-source("./Script/resource_set_of_consumer.R")
+source("./Script/consumer_set_of_resource.r")
+source("./Script/resource_set_of_consumer.r")
 source("./Script/prediction_accuracy.r") #
 source("./Script/prediction_accuracy_id.r") #
 source("./Script/tanimoto_accuracy.r") # calculating the accuracy of predictions from Tanimoto_predictions
