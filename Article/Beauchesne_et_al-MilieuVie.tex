@@ -130,6 +130,7 @@ where $w_t$ is the weight given to vector \textit{i}, $\mathbf{x_i}$, $\mathbf{y
 
 % DG: iTunes is using this type of algorithm to recommend music, so that following its logic, I popose 'iEat'
 % PA: ok voici des exemple: praedictio (prediction en latin); Taxoweb; praedictio commercium (prediction des interaction en latin); prediweb; bionet; Predictaxo; Nataxo
+
 % Have to change S1 through S17. S is already used for parameters...
 
 The XXX algorithm is built on a series of logical steps that ultimately predicts a candidate resources list $C_R$ for each taxon in \textit{S1} (Figure \ref{fig:decision_diag}). For all consumer taxa $T_C$ in \textit{S1}, the algorithm first verify whether it has empirical resources $T_R$ listed in the catalogue (Step S1, Figure \ref{fig:decision_diag}). When it does, if $T_R$ are also in \textit{S1}, they are added as predicted resources for $T_C$ (S2, S3). This corresponds to what we refer to as the catalogue contribution to resource predictions. Two taxa in \textit{S1} that are known to interact through the catalogue are automatically assumed to interact in \textit{S1}.
@@ -185,7 +186,7 @@ Similarity being predominantly measured with resource/consumer sets ($w_t$ close
 The partitioning of the catalogue and predictive portions of the algorithm shows that it is dependent on the comprehensiveness of the catalogue for high prediction accuracy (Figures \ref{fig:multi_param}, \ref{fig:catalog_pred}). As the amount of empirical data available in the catalogue decreases so does the overall accuracy of the algorithm (Figures \ref{fig:catalog_pred}). The predictive contribution of the algorithm however slows down the decrease in the prediction efficiency of the algorithm. Prediction accuracy still remains around 75\% with only 40\% of \textit{S1} taxa found in the catalogue (Figures \ref{fig:catalog_pred}). Furthermore, the use of taxonomy for similarity measurements is more efficient as empirical data becomes scarcer and no different than resource/consumer sets for the complete algorithm when ample data is available (Figures \ref{fig:catalog_pred}).
 
     \subsection{Southern Gulf of Saint Lawrence}
-As an example, we used the XXX algorithm to predict interactions in the Southern Gulf of Saint Lawrence (SGSL) in eastern Canada. The empirical data and taxa list come from Savenkoff et al. (2004). They present a list of 29 functional groups for a total of 80 taxa. As their analysis was performed on the functional groups rather than the taxa themselves, we used the algorithm to predict interactions between all 80 taxa, which we aggregated back to their original functional groups to compare with interactions presented in Savenkoff et al. (2004). In total, there were empirical data available in the catalogue for 53 out of 80 SGSL taxa. The XXX algorithm correctly predicted approximately 75\% of interactions ($a$) and non-interactions ($d$) extracted from Savenkoff et al. (2004). It however predicted an additional 113 interactions ($c$) that were not noted in Savenkoff et al. (2004) and failed to predict 44 observed interactions that were ($c$).
+As an example, we used the XXX algorithm to predict interactions in the Southern Gulf of Saint Lawrence (SGSL) in eastern Canada. The empirical data and taxa list come from Savenkoff et al. (2004). They present a list of 29 functional groups for a total of 80 taxa. As their analysis was performed on the functional groups rather than the taxa themselves, we used the algorithm to predict interactions between all 80 taxa, which we aggregated back to their original functional groups to compare with interactions presented in Savenkoff et al. (2004). In total, there were empirical data available in the catalogue for 53 out of 80 SGSL taxa. The XXX algorithm correctly predicted approximately 75\% of interactions ($a$) and non-interactions ($d$) extracted from Savenkoff et al. (2004). It however predicted an additional 113 interactions ($c$) that were not noted in Savenkoff et al. (2004) and failed to predict 44 observed interactions that were ($c$), which explains a TSS score of 0.49. An example of the network predictions centered on the interactions of the capelin (\textit{Mallotus villosus}) and piscivorous small pelagic feeders (\textit{e.g. Scomber scombrus $and$ Illex illecebrosus}; Figure \ref{fig:SGSL}).
 
 
 %     a           b           c           d         TSS     ScoreY1     ScoreY0         FSS
@@ -326,15 +327,15 @@ From these, the algorithm goes through logical steps (Figure \ref{fig:decision_d
   \begin{tabular}{cl}
       Steps \\
       \hline
-      \textbf{1}        &$I(T_1,T_R)$ in \textit{S0}? \\
-      \textbf{2}        &$T_R$ in \textit{S1}? \\
-      \textbf{4:7}      &$T_2$ = no $\rightarrow$ $t(T_2, T_{R'}, w_t)$ = NA   \\
-      \textbf{4:7}      &$T_3$ = no $\rightarrow$ $t(T_2, T_{R'}, w_t)$ = $T_{10}$ = 0.5 \\
-      \textbf{3}        &$T_{12}$ = yes    \\  \\
-      \textbf{8}        &$t(T_1, T_{C'}, w_t)$ = $T_5$ = 0.5            \\
-      \textbf{9}        &I($T_5$,$T_R$) in \textit{S1}? \\
-      \textbf{13:16}    &$T_8$ = no $\rightarrow$ $t(T_8, T_{R'}, w_t)$ = $T_9$ = 0.5  \\
-      \textbf{10:12}    &$T_9$ = yes   \\
+      1        &$I(T_1,T_R)$ in \textit{S0}? \\
+      2        &$T_R$ in \textit{S1}? \\
+      4-7      &$T_2$ = no $\rightarrow$ $t(T_2, T_{R'}, w_t)$ = NA   \\
+      4-7      &$T_3$ = no $\rightarrow$ $t(T_2, T_{R'}, w_t)$ = $T_{10}$ = 0.5 \\
+      3        &$T_{12}$ = yes    \\  \\
+      8        &$t(T_1, T_{C'}, w_t)$ = $T_5$ = 0.5            \\
+      9        &I($T_5$,$T_R$) in \textit{S1}? \\
+      13-16    &$T_8$ = no $\rightarrow$ $t(T_8, T_{R'}, w_t)$ = $T_9$ = 0.5  \\
+      10-12    &$T_9$ = yes   \\
   \end{tabular}
   \begin{tabular}{c|c}
      & \\  \\  \\  \\  \\  \\  \\  \\  \\  \\  \\
@@ -356,7 +357,7 @@ The logical steps allow us to predict a set of resources for $T_1$ = \{$T_9$, $T
 
 \centerline{\textbf{$w_t$ = 0 \quad \quad \quad \quad \quad $w_t$ = 1} \quad}
     \begin{figure}[h!]
-    \centering\includegraphics[height = 6cm]{example.pdf}
+    \centering\includegraphics[height = 6cm]{example.png}
     \end{figure}
 % Example finish
 
@@ -383,6 +384,14 @@ The logical steps allow us to predict a set of resources for $T_1$ = \{$T_9$, $T
       \centering\includegraphics[width=0.85\textwidth]{catalog_predictions2.pdf}
       \caption{Graph presenting predictive accuracy as a function of the amount of information available in the catalogue. The arctic food web from Kortsch et al. (2015) was used for this, as it is highly detailed and because almost all taxa found in it had information in the catalogue even when not included in the catalogue. A random percentage of taxa in the web was iteratively removed from the catalogue (n = 50) before predicting interactions with the XXX algorithm.}
       \label{fig:catalog_pred}
+    \end{figure}
+
+% Figure 4
+\newpage
+    \begin{figure}[h]
+      \centering\includegraphics[width=\textwidth]{SGSL.png}
+      \caption{Example of results from the algorithm with the Network of the Southern Gulf of Saint Lawrence (Savenkoff et al. 2004) centered on interactions of the capelin (\textit{Mallotus villosus}) and piscivorous small pelagic feeders (\textit{e.g. Scomber scombrus $and$ Illex illecebrosus}). Edge with colors green were both predicted and observed, black were observed only and blue were predicted only.}
+      \label{fig:SGSL}
     \end{figure}
 
 \end{document}
