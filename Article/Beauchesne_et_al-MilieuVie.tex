@@ -12,6 +12,8 @@
 
 % \\IDEA: Another interesting thought from this is the potential use of GloBI on its own to perform automated and quick analyses. If non-interactions are deemed unecessary or of dubious quality, focusing only on observed interactions could lead to the creation of a platform on which interactions in a given system could be easily predicted from GloBI alone, or almost. GloBI interactions data already holds taxonomic classification. It's quality is however unfortunately not uniform and care must be taken when it is used. In any case, if only interactions (1) are considered, then a third party platform could be built that uses the algorithm built in this paper, the GloBI data and a list of species for which we wish to predict the interactions.
 
+% \\REVIEW: By adding 1 to weight instead of similarity with minimum threshold used in second portion of algorithm I may be including low similarity resources... To think about carefully!
+
 \documentclass[letterpaper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{authblk}
@@ -380,11 +382,6 @@ The logical steps allow us to predict a set of resources for $T_1$ = {$T_9$, $T_
 
 \end{document}
 
-
-% According to Eklof and Stouffer (2015), the phylogenetic component of food webs is a significant factor influencing the intervality of food webs. However, certain traits are not accounted by phylogenetic constraints, such as body size.
-
-% predict* specie* interaction*
-%
 % Cite taxize
 % Scott Chamberlain and Eduard Szocs (2013). taxize - taxonomic search and retrieval in R. F1000Research, 2:191. URL: http://f1000research.com/articles/2-191/v2.
 %
@@ -394,32 +391,3 @@ The logical steps allow us to predict a set of resources for $T_1$ = {$T_9$, $T_
 % Jorrit H. Poelen, James D. Simons and Chris J. Mungall. (2014). Global Biotic Interactions: An open infrastructure to share and analyze species-interaction datasets. Ecological Informatics. http://dx.doi.org/10.1016/j.ecoinf.2014.08.005
 %
 % Bailly, N.; Boury-Esnault, N.; Brandão, S.N.; Costello, M.J.; Gofas, S.; Hernandez, F.; Horton, T.; Kroh, A.; Mees, J.; Paulay, G.; Poore, G.; Rosenberg, G.; Stöhr, S.; Decock, W.; Dekeyzer, S.; Vandepitte, L.; Vanhoorne, B.; Vranken, S.; Adams, M.J.; Adlard, R.; Adriaens, P.; Agatha, S.; Ahn, K.J.; Ahyong, S.; Alvarez, B.; Anderson, G.; Angel, M.; Arango, C.; Artois, T.; Atkinson, S.; Barber, A.; Bartsch, I.; Bellan-Santini, D.; Berta, A.; Bieler, R.; Błażewicz-Paszkowycz, M.; Bock, P.; Böttger-Schnack, R.; Bouchet, P.; Boyko, C.B.; Bray, R.; Bruce, N.L.; Cairns, S.; Campinas Bezerra, T.N.; Cárdenas, P.; Carstens, E.; Catalano, S.; Cedhagen, T.; Chan, B.K.; Chan, T.Y.; Cheng, L.; Churchill, M.; Coleman, C.O.; Collins, A.G.; Crandall, K.A.; Cribb, T.; Dahdouh-Guebas, F.; Daly, M.; Daneliya, M.; Dauvin, J.C.; Davie, P.; De Grave, S.; de Mazancourt, V.; Defaye, D.; d'Hondt, J.L.; Dijkstra, H.; Dohrmann, M.; Dolan, J.; Drapun, I.; Eisendle-Flöckner, U.; Eitel, M.; Encarnação, S.C.d.; Epler, J.; Ewers-Saucedo, C.; Faber, M.; Feist, S.; Finn, J.; Fišer, C.; Fonseca, G.; Fordyce, E.; Foster, W.; Frank, J.H.; Fransen, C.; Furuya, H.; Galea, H.; Garcia-Alvarez, O.; Gasca, R.; Gaviria-Melo, S.; Gerken, S.; Gheerardyn, H.; Gibson, D.; Gil, J.; Gittenberger, A.; Glasby, C.; Glover, A.; Gordon, D.; Grabowski, M.; Gravili, C.; Guerra-García, J.M..; Guidetti, R.; Guilini, K.; Guiry, M.D.; Hajdu, E.; Hallermann, J.; Hayward, B.; Hendrycks, E.; Herrera Bachiller, A.; Ho, J.s.; Høeg, J.; Holovachov, O.; Hooper, J.; Hughes, L.; Hummon, W.; Hyzny, M.; Iseto, T.; Ivanenko, S.; Iwataki, M.; Jarms, G.; Jaume, D..; Jazdzewski, K.; Kaminski, M.; Karanovic, I.; Kim, Y.H.; King, R.; Kirk, P.M.; Kolb, J.; Kotov, A.; Krapp-Schickel, T.; Kremenetskaia, A.; Kristensen, R.; Kullander, S.; La Perna, R.; Lambert, G.; Lazarus, D.; LeCroy, S.; Leduc, D.; Lefkowitz, E.J.; Lemaitre, R.; Lörz, A.N.; Lowry, J.; Macpherson, E.; Madin, L.; Mah, C.; Mamos, T.; Manconi, R.; Mapstone, G.; Marshall, B.; Marshall, D.J.; McInnes, S.; Meidla, T.; Meland, K.; Merrin, K.; Messing, C.; Miljutin, D.; Mills, C.; Mokievsky, V.; Molodtsova, T.; Monniot, F.; Mooi, R.; Morandini, A.C.; Moreira da Rocha, R.; Moretzsohn, F.; Mortelmans, J.; Mortimer, J.; Musco, L.; Neubauer, T.A.; Neuhaus, B.; Ng, P.; Nielsen, C.; Nishikawa, T.; Norenburg, J.; O'Hara, T.; Okahashi, H.; Opresko, D.; Osawa, M.; Ota, Y.; Parker, A.; Patterson, D.; Paxton, H.; Perrier, V.; Perrin, W.; Petrescu, I.; Picton, B.; Pilger, J.F.; Pisera, A.; Polhemus, D.; Pugh, P.; Reimer, J.D.; Reuscher, M.; Rius, M.; Rützler, K.; Rzhavsky, A.; Saiz-Salinas, J.; Santos, S.; Sartori, A.F.; Satoh, A.; Schatz, H.; Schierwater, B.; Schmidt-Rhaesa, A.; Schneider, S.; Schönberg, C.; Schuchert, P.; Self-Sullivan, C.; Senna, A.R.; Serejo, C.; Shamsi, S.; Sharma, J.; Shenkar, N.; Sicinski, J.; Siegel, V.; Sinniger, F.; Sivell, D.; Sket, B.; Smit, H.; Smol, N.; Souza-Filho, J.F..; Stampar, S.N.; Sterrer, W.; Stienen, E.; Strand, M.; Suárez-Morales, E.; Summers, M.; Suttle, C.; Swalla, B.J.; Taiti, S.; Tandberg, A.H.; Tang, D.; Tasker, M.; Taylor, J.; Tchesunov, A.; ten Hove, H.; ter Poorten, J.J.; Thomas, J.; Thuesen, E.V.; Thurston, M.; Thuy, B.; Timi, J.T.; Timm, T.; Todaro, A.; Turon, X.; Tyler, S.; Uetz, P.; Utevsky, S.; Vacelet, J.; Vader, W.; Väinölä, R.; van der Meij, S.E.; van Ofwegen, L.; van Soest, R.; Van Syoc, R.; Venekey, V.; Vonk, R.; Vos, C.; Walker-Smith, G.; Walter, T.C.; Watling, L.; Whipps, C.; White, K.; Williams, G.; Wilson, R.; Wyatt, N.; Wylezich, C.; Yasuhara, M.; Zanol, J.; Zeidler, W. (2016). World Register of Marine Species. Available from http://www.marinespecies.org at VLIZ. Accessed 2016-09-13. doi:10.14284/170
-
-
-
-
-
-
-% \section{Figures et tableaux}
-%
-% \textit{Tables:}
-% \begin{enumerate}
-%   \item Description of empirical data used to obtain list of binary interactions
-%   \item Description of empirical binary interactions and data availability for large taxonomic groups (e.g. mammals, fish, benthic invertebrates). Needs to be defined.
-% \end{enumerate}
-%
-% \textit{Figures:}
-% \begin{enumerate}
-%   \item Predicting empirical food webs from empirical data catalogue. Figure of results \% efficiency as a function of the number of taxa in the food web. All species-species interactions of each empirical food web removed from empirical biotic interaction catalogue.
-%   \item Predicting interactions with differing levels of taxonomic resolution. (e.g. interactions aggregated at the species, genus, family level)
-%   \item Efficiency of predictions for large taxonomic groups.
-%   \item Representing the St. Lawrence food web. Heatmap with phylogeny as axes. Package heatmap3.
-% \end{enumerate}
-%
-% \textit{Figure additionnelle mais peut-être pas pour cet article?:}
-% \begin{enumerate}
-%   \item Predictive accuracy of method as a function of the amount of data available in the catalogue for large taxonomic groups. The idea would be to discuss the amount of data required in ``biological compartments'' for the learning method to be efficient.
-% \end{enumerate}
-
-% We selected a list of species forming the known biodiversity of the estuary and gulf of St. Lawrence in Canada. The species list available on CaRMS (ref) for this region was selected, and completed with a comprehensive list of marine birds (Allard et al. 2013) and marine mammals (Lesage, personnal communication), for a total of 1469 species.
-% The data compilation process yielded a total of 276708 binary interactions (interactions = 72110; non-interactions = 204598) for 9712 taxa (Superfamily = 15; Family = 591; Subfamily = 29; Tribe = 8; Genus = 1972; Species = 7097). Of that number, interactions for St. Lawrence taxa were described for 33\% of species, 64\% of genera and 82\% of families, although these interactions are not necessarily between two taxa found in the St. Lawrence.
