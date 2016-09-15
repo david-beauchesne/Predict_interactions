@@ -32,16 +32,16 @@ prediction_accuracy_id <- function(predicted, empirical) {
         for(j in 1:nrow(predicted)) {
             if(predicted[i,j] == 1 && empirical[i,j] == 1) {
                 efficiency[1] <- efficiency[1] + 1
-                aa <- rbind(aa,c(i,j))
+                aa <- rbind(aa,c(j,i))
             } else if(predicted[i,j] == 1 && empirical[i,j] == 0) {
                 efficiency[2] <- efficiency[2] + 1
-                bb <- rbind(bb,c(i,j))
+                bb <- rbind(bb,c(j,i))
             } else if(predicted[i,j] == 0 && empirical[i,j] == 1) {
                 efficiency[3] <- efficiency[3] + 1
-                cc <- rbind(cc,c(i,j))
+                cc <- rbind(cc,c(j,i))
             } else if(predicted[i,j] == 0 && empirical[i,j] == 0) {
                 efficiency[4] <- efficiency[4] + 1
-                dd <- rbind(dd,c(i,j))
+                dd <- rbind(dd,c(j,i))
             }
         }
     }
