@@ -108,6 +108,8 @@ full_algorithm <- function(Kc, Kr, S0, S1, MW, wt, minimum_threshold) {
                 break
             } else if(similar.consumer[j, 'similarity'] == '0') { # if similarity l == 0, no candidates provided
                 NULL
+            } else if(similar.consumer[j, 'similarity'] < minimum_threshold) {
+                NULL
             } else {
 
                 # It's possible that consumers in the list have high taxonomic similarity, but no recorded resource
