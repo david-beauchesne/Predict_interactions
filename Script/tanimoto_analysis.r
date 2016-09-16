@@ -15,6 +15,8 @@ tanimoto_analysis <- function(min.tx, K.values, MW, WT, minimum_threshold, simil
     # -----------------------------------------------------------------------------
     load("./RData/Tanimoto_data.RData")
     load("./RData/interactions_source.RData")
+    load("./RData/S0_catalog.RData")
+
     if(similarity == 'both') { # For similarity matrices already evaluated
         suppressMessages(load("./RData/Similarity_consumers.RData"))
         suppressMessages(load("./RData/Similarity_resources.RData"))
@@ -23,19 +25,6 @@ tanimoto_analysis <- function(min.tx, K.values, MW, WT, minimum_threshold, simil
     } else if (similarity == 'resource') {
         suppressMessages(load("./RData/Similarity_resources.RData"))
     }
-
-    # S0: A large set of species and their preys, with column structure ['taxon', 'taxonomy', 'resource', 'non-resource', 'consumer', 'non-consumer']
-    # Format interaction catalogue to fit this table format
-        S0_catalog <- matrix(nrow = nrow(Tanimoto_data[[1]]), ncol = 6, data = "", dimnames = list(Tanimoto_data[[1]][, 'taxon'], c('taxon', 'taxonomy', 'resource', 'non-resource', 'consumer', 'non-consumer')))
-        S0_catalog[, 1] <- Tanimoto_data[[1]][, 'taxon']
-        S0_catalog[, 2] <- Tanimoto_data[[1]][, 'kingdom | phylum | class | order | family | genus | species']
-        # From binary interactions catalogue with consumer, resources, interaction or non-interaction
-        for(k in 1:nrow(Tanimoto_data[[3]])) {
-            S0_catalog[Tanimoto_data[[3]][k, 'consumer'], 3] <- Tanimoto_data[[3]][k, 'resource']
-            S0_catalog[Tanimoto_data[[3]][k, 'consumer'], 4] <- Tanimoto_data[[3]][k, 'non-resource']
-            S0_catalog[Tanimoto_data[[3]][k, 'consumer'], 5] <- Tanimoto_data[[6]][k, 'consumer']
-            S0_catalog[Tanimoto_data[[3]][k, 'consumer'], 6] <- Tanimoto_data[[6]][k, 'non-consumer']
-        }
 
     # setting up the analyses for multiple communities
     # Data for communities on which to test the algorithm
