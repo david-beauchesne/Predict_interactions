@@ -222,6 +222,13 @@ for(i in 2:nrow(accuracy_SSL[[3]])) {
     id_b[i,1] <- rownames(SSL_predict_mat_combine)[accuracy_SSL[[3]][i, 1]]
     id_b[i,2] <- rownames(SSL_predict_mat_combine)[accuracy_SSL[[3]][i, 2]]
 }
+for(i in 1:nrow(sp_SSL)){
+    id_c[which(id_c[, 'consumer'] == sp_SSL[i,2]), 'consumer'] <- sp_SSL[i,3]
+    id_c[which(id_c[, 'resource'] == sp_SSL[i,2]), 'resource'] <- sp_SSL[i,3]
+    id_b[which(id_b[, 'consumer'] == sp_SSL[i,2]), 'consumer'] <- sp_SSL[i,3]
+    id_b[which(id_b[, 'resource'] == sp_SSL[i,2]), 'resource'] <- sp_SSL[i,3]
+}
+
 
 
 pp <- which(SSL_emp_bin[,'Predator'] == "Scomber scombrus - Illex illecebrosus" | SSL_emp_bin[,'Prey'] == "Scomber scombrus - Illex illecebrosus")
@@ -324,16 +331,6 @@ digraph boxes_and_circles{
             21 [label =  <Shrimp>]
 
     edge [dir = back]
-            7 -> 12 [color = 'transparent']
-            7 -> 13 [color = 'transparent']
-            7 -> 20 [color = 'transparent']
-            7 -> 18 [color = 'transparent']
-            7 -> 4 [color = 'transparent']
-            8 -> 12 [color = 'transparent']
-            8 -> 13 [color = 'transparent']
-            8 -> 20 [color = 'transparent']
-            8 -> 18 [color = 'transparent']
-            8 -> 4 [color = 'transparent']
             12 -> 15 [color = 'transparent']
             12 -> 16 [color = 'transparent']
             13 -> 15 [color = 'transparent']
@@ -362,20 +359,17 @@ digraph boxes_and_circles{
             6 -> 1 [color = 'transparent']
             6 -> 9 [color = 'transparent']
 
-            #Empirical
+            #Empirical & predictions
             1 -> 10 [color = 'green']
             2 -> 10 [color = 'green']
-            3 -> 10 [color = 'black']
+            3 -> 10 [color = 'green']
             4 -> 10 [color = 'green']
-            5 -> 10 [color = 'black']
-            6 -> 10 [color = 'black']
-            7 -> 10 [color = 'black']
+            6 -> 10 [color = 'green']
+            7 -> 10 [color = 'green']
             8 -> 10 [color = 'green']
-            9 -> 10 [color = 'black']
             10 -> 16 [color = 'green']
             10 -> 14 [color = 'green']
             10 -> 17 [color = 'green']
-            11 -> 10 [color = 'black']
             12 -> 10 [color = 'green']
             13 -> 10 [color = 'green']
             1 -> 14 [color = 'green']
@@ -393,17 +387,18 @@ digraph boxes_and_circles{
             12 -> 14 [color = 'green']
             13 -> 14 [color = 'green']
 
-            # #Predictions
+            # Empirical only
+            5 -> 10 [color = 'black']
+            9 -> 10 [color = 'black']
+            11 -> 10 [color = 'black']
 
+            # Predictions only
             18 -> 10 [color = 'blue']
             15 -> 10 [color = 'blue']
-            10 -> 1 [color = 'blue']
             10 -> 21 [color = 'blue']
             10 -> 4 [color = 'blue']
             10 -> 18 [color = 'blue']
             10 -> 15 [color = 'blue']
-            10 -> 7 [color = 'blue']
-            10 -> 8 [color = 'blue']
             10 -> 10 [color = 'blue']
             10 -> 12 [color = 'blue']
             10 -> 13 [color = 'blue']
@@ -412,82 +407,13 @@ digraph boxes_and_circles{
             20 -> 14 [color = 'blue']
             18 -> 14 [color = 'blue']
             14 -> 14 [color = 'blue']
+            16 -> 10 [color = 'blue']
+            20 -> 10 [color = 'blue']
+            10 -> 19 [color = 'blue']
+            10 -> 20 [color = 'blue']
+            10 -> 9 [color = 'blue']
 }
 ")
-
-
-# #Empirical
-# 1 -> 10 [color = 'blue']
-# 2 -> 10 [color = 'blue']
-# 3 -> 10 [color = '']
-# 4 -> 10 [color = 'blue']
-# 5 -> 10 [color = '']
-# 6 -> 10 [color = '']
-# 7 -> 10 [color = '']
-# 8 -> 10 [color = '']
-# 9 -> 10 [color = '']
-# 10 -> 16 [color = '']
-# 10 -> 14 [color = '']
-# 10 -> 17 [color = '']
-# 11 -> 10 [color = '']
-# 12 -> 10 [color = '']
-# 13 -> 10 [color = '']
-# 1 -> 14 [color = '']
-# 2 -> 14 [color = '']
-# 3 -> 14 [color = '']
-# 4 -> 14 [color = '']
-# 5 -> 14 [color = '']
-# 14 -> 17 [color = '']
-# 15 -> 14 [color = '']
-# 6 -> 14 [color = '']
-# 7 -> 14 [color = '']
-# 8 -> 14 [color = '']
-# 9 -> 14 [color = '']
-# 11 -> 14 [color = '']
-# 12 -> 14 [color = '']
-# 13 -> 14 [color = '']
-
-# #Predictions
-# 1 -> 10
-# 2 -> 10
-# 4 -> 10
-# 18 -> 10
-# 15 -> 10
-# 8 -> 10
-# 10 -> 1
-# 10 -> 21
-# 10 -> 16
-# 10 -> 4
-# 10 -> 18
-# 10 -> 14
-# 10 -> 15
-# 10 -> 17
-# 10 -> 7
-# 10 -> 8
-# 10 -> 10
-# 10 -> 12
-# 10 -> 13
-# 12 -> 10
-# 13 -> 10
-# 1 -> 14
-# 2 -> 14
-# 19 -> 14
-# 16 -> 14
-# 3 -> 14
-# 4 -> 14
-# 5 -> 14
-# 20 -> 14
-# 18 -> 14
-# 14 -> 14
-# 14 -> 17
-# 15 -> 14
-# 6 -> 14
-# 7 -> 14
-# 8 -> 14
-# 9 -> 14
-# 11 -> 14
-# 12 -> 14
-# 13 -> 14
 
 # Load package
 library(networkD3)
