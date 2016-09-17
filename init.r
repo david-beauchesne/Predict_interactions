@@ -73,32 +73,100 @@ source("./Script/bin_inter.r") # function to extract binary interaction from die
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
-# NOTES:
-#   In this version of the algorithm, we use similarity matrices rather than graphs, which greatly slows down the analysis speed.
-#   We therefore divide the algorightm between :
-#     Similarity evaluation (functions: similarity_taxon & similarity_taxon_to_predict, 'wt' argument has to be the same for both functions)
-#     Interaction predictions (function: two_way_tanimoto_predict)
-
-# Process steps for analyses:
-#   1. Similarity between taxa combinations
-#     1.1 Evaluate the similarity matrix of S0 (i.e. all species in catalogue) for a number of wt values seq(0, 1, by = 0.1)
-#     1.2 Define S1, set of species forming a community C[i] and for which we wish to predict interactions
-#     1.3 Remove all species in S1 from similarity matrix alreay measured and interactions stemming from C[i]
-#     1.4 Extend similarity matrix to include S1 taxa (Evaluate similarity for all additionnal combinations added to the matrix)
+# PSEUDOCODE:
+# Parameters:
+#   Kc                    Integer, how many consumer neighbors to select
+#   Kr                    Integer, how many resource neighbors to select
+#   S0                    Interction catalogue w/ 'taxa', 'taxonomy', 'resource set', 'non-resource set', 'consumer set', 'non-consumer set'
+#   S1                    Set of taxa for which we wish to predict pairwise interactions
+#   MW                    Mimimum weight to accept a candidate as a prey
+#   Minimum_threshold     Minimum similarity threshold used to accept candidate species. Arbitrary at this point.
 #
-#   For each species in S1:
-#   2. Identify resources already known in interaction catalogue (S0) for S1 species
-#     2.1 If resoures are in S1, automatically add them to the predictions as empirically valid interactions
-#     2.2 If resources are not in S1, find Kr similar resources in S1 and add them to candidate list with weight equal to their similarity
-
-#   3. Identify Kc similar consumers to S1 in S0
-#     3.1 Extract set of candidate resources from each similar consumer, if any
-#     3.2 If candidate resource is in S1, add it to candidate list with weight 1
-#     3.3 If candidate resource not in S1, find Kr similar resources in S1 and add them to candidate list with weight equal to their similarity
-
-#   4. Make predictions:
-#     4.1 Remove taxa with weight < to minimum weight (MW) from prediction list
-#     4.2 Sort prediction list according to weight. Higher weights mean higher likelihood for resource being consumed
-
-#   Subset of communities based on the number of taxa available? Most of them end up having very few taxa represented in here. Less than I expected...
-# -----------------------------------------------------------------------------
+# Output
+#   A matrix 'predictions' with columns
+#     1. S1 taxa
+#     2. empirical resource of S1 taxa
+#     3. predicted resources of S1 taxa
+#
+# ------------
+#
+# predictions <- empty vector
+#
+#
+# for consumers in S1
+#     candidate_list <- empty vector
+#
+#     # 1. Empirical information in catalogue
+#     resources_S1 = set of resources found in S0
+#     empirical_resource <- empty vector
+#
+#     if length(resources_S1) > 0:
+#         for resources in resources_S1
+#             if resources in S1:
+#                 add resources to empirical_resource
+#             else:
+#                 similar_resource <- pick K most similar resources in S1 based on taxonomy and set of consumers
+#                     if similarity K + 1 = similarity K:
+#                         random sample of similar resources with similarity K
+#
+#                 for resources' in similar_resource
+#                     if all K similarity = 0:
+#                         break out of loop
+#                     else if resources' similarity = 0:
+#                         NULL
+#                     else if resources' similarity < minimum similarity threshold:
+#                         NULL
+#                     else if resources' in candidate_list:
+#                         add weight = similarity between resources and resources' to resources' in candidate_list
+#                     else: (not in candidate_list)
+#                         add resources' to candidate_list w/ weight = similarity between resources and resources'
+#
+#         add empirical_resource to predictions matrix
+#
+#     # 2. Similar consumers information
+#     similar_consumers <- pick K most similar consumers in S0 based on taxonomy and set of resources
+#         if similarity K + 1 = similarity K:
+#             random sample of similar consumers with similarity K
+#
+#     for consumers' in similar_consumers
+#         if all K similarity = 0:
+#             break out of loop
+#         else if consumers' similarity = 0:
+#             NULL
+#
+#         candidate_resources = resources' of consumers' in S0
+#
+#         for resources' in candidate_resources
+#             if length(candidate_resources) == 0:
+#                 break out of loop
+#             else if candidate_resources == "":
+#                 break out of loop
+#             else if resources' = consumers: (does not allow for cannibalism. Should verify this at some point and allow for it, there are multiple instances of cannibalism in food webs)
+#                 break out of loop
+#             else if resources' in S1:
+#                 if resources' in candidate_list:
+#                     add weight = 1 to resources' in candidate_list
+#                 else:
+#                     add resources' w/ weight = 1 to candidate_list
+#
+#             else: (resources' not in S1)
+#                 similar_resource <- pick K most similar resources in S1 based on taxonomy and set of consumers
+#                     if similarity K + 1 = similarity K:
+#                         random sample of similar resources with similarity K
+#
+#                 for resources' in similar_resource
+#                     if all K similarity = 0:
+#                         break out of loop
+#                     else if resources' similarity = 0:
+#                         NULL
+#                     else if resources' similarity < minimum similarity threshold:
+#                         NULL
+#                     else if resources' in candidate_list:
+#                         add weight = similarity between resources' and candidate_resources to resources' in candidate_list
+#                     else: (not in candidate_list)
+#                         add resources' to candidate_list w/ weight = similarity between resources' and candidate_resources
+#
+#     candidate_list <- choose candidate resources with weight >= MW
+#     predictions <- add candidate_list to predictions
+#
+# return(predictions matrix)
