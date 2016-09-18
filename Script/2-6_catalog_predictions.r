@@ -27,6 +27,7 @@
 load("./RData/interactions_source.RData")
 filename1 = 'catalog_predictions2'
 filename2 = 'catalog_predictions3'
+filename3 = 'catalog_predictions4'
 
 
 catalog_predictions0 <- catalog_predictions(comm_id = TRUE,
@@ -51,7 +52,7 @@ catalog_predictions1 <- catalog_predictions(comm_id = TRUE,
 
 catalog_predictions2 <- catalog_predictions(comm_id = TRUE,
                                             community = "Kortsch2015_arctic",
-                                            percent_remove = c(10,20,40,60,80),
+                                            percent_remove = c(10,20,40),
                                             nb_iter = 50,
                                             K.values = 8,
                                             MW = 1,
@@ -61,7 +62,7 @@ catalog_predictions2 <- catalog_predictions(comm_id = TRUE,
 
 catalog_predictions3 <- catalog_predictions(comm_id = TRUE,
                                             community = "Kortsch2015_arctic",
-                                            percent_remove = c(30,50,70,90),
+                                            percent_remove = c(30,50,70),
                                             nb_iter = 50,
                                             K.values = 8,
                                             MW = 1,
@@ -69,8 +70,29 @@ catalog_predictions3 <- catalog_predictions(comm_id = TRUE,
                                             minimum_threshold = 0.3,
                                             filename = filename2)
 
+catalog_predictions4 <- catalog_predictions(comm_id = TRUE,
+                                            community = "Kortsch2015_arctic",
+                                            percent_remove = c(60,80,90),
+                                            nb_iter = 50,
+                                            K.values = 8,
+                                            MW = 1,
+                                            WT =  c(0.5,1),
+                                            minimum_threshold = 0.3,
+                                            filename = filename3)
+
+
 
 # Catalog vs predictions
+load("./Analyses/catalog_predictions0.RData")
+catalog_predictions0 <- Tanimoto_analysis
+load("./Analyses/catalog_predictions1.RData")
+catalog_predictions1 <- Tanimoto_analysis
+load("./Analyses/catalog_predictions2.RData")
+catalog_predictions2 <- Tanimoto_analysis
+load("./Analyses/catalog_predictions3.RData")
+catalog_predictions3 <- Tanimoto_analysis
+load("./Analyses/catalog_predictions4.RData")
+catalog_predictions4 <- Tanimoto_analysis
 
 accuracy <- accuracy0 <- accuracy1 <- accuracy2 <-  vector('list', 3)
 names(accuracy) <- names(accuracy0) <- names(accuracy1) <- names(accuracy2) <- c('Catalog', 'Predict', 'Algorithm')
@@ -90,9 +112,13 @@ accuracy2[[1]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predi
 accuracy2[[2]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions3, predict.only = TRUE)
 accuracy2[[3]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions3)
 
-accuracy[[1]] <- rbind(accuracy[[1]], accuracy0[[1]], accuracy1[[1]], accuracy2[[1]])
-accuracy[[2]] <- rbind(accuracy[[2]], accuracy0[[2]], accuracy1[[2]], accuracy2[[2]])
-accuracy[[3]] <- rbind(accuracy[[3]], accuracy0[[3]], accuracy1[[3]], accuracy2[[3]])
+accuracy3[[1]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions4, empirical.only = TRUE)
+accuracy3[[2]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions4, predict.only = TRUE)
+accuracy3[[3]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions4)
+
+accuracy[[1]] <- rbind(accuracy[[1]], accuracy0[[1]], accuracy1[[1]], accuracy2[[1]], accuracy3[[1]])
+accuracy[[2]] <- rbind(accuracy[[2]], accuracy0[[2]], accuracy1[[2]], accuracy2[[2]], accuracy3[[2]])
+accuracy[[3]] <- rbind(accuracy[[3]], accuracy0[[3]], accuracy1[[3]], accuracy2[[3]], accuracy3[[3]])
 
 percent_remove = c(0,10,20,30,40,50,60,70,80,90,100)
 nb_iter = 50
