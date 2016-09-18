@@ -94,7 +94,7 @@ catalog_predictions3 <- Tanimoto_analysis
 load("./Analyses/catalog_predictions4.RData")
 catalog_predictions4 <- Tanimoto_analysis
 
-accuracy <- accuracy0 <- accuracy1 <- accuracy2 <-  vector('list', 3)
+accuracy <- accuracy0 <- accuracy1 <- accuracy2 <- accuracy3 <- vector('list', 3)
 names(accuracy) <- names(accuracy0) <- names(accuracy1) <- names(accuracy2) <- c('Catalog', 'Predict', 'Algorithm')
 accuracy[[1]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions2, empirical.only = TRUE)
 accuracy[[2]] <- catalog_predictions_accuracy(Tanimoto_analysis = catalog_predictions2, predict.only = TRUE)
@@ -197,8 +197,8 @@ j = 14 #'Score'[y]
 
             abline(h = c(1.125,2.375), col = "black", lty = 2)
             mtext(text = expression('Score'[y]), side = 2, line = 2, at = 1.75, font = 1.5, cex = 1)
-            mtext(text = expression(paste("Percent of taxa removed from ", italic(S0), ' (%)')), side = 1, line = 2, at = 50, font = 2, cex = 1)
-            mtext(text = expression(paste("Percent of ",italic(S1)," taxa in ", italic(S0), ' (%)')), side = 3, line = 1, at = 50, font = 2, cex = 1)
+            mtext(text = expression(paste("Percent of taxa removed from ", italic(N[0]), ' (%)')), side = 1, line = 2, at = 50, font = 2, cex = 1)
+            mtext(text = expression(paste("Percent of ",italic(N[1])," taxa in ", italic(N[0]), ' (%)')), side = 3, line = 1, at = 50, font = 2, cex = 1)
             mtext(text = seq(0, 100, by = 10), side = 1, line = 0, at = seq(0, 100, by = 10), font = 1, cex = 0.75)
             mtext(text = seq(100, 0, by = -10), side = 3, line = -0.5, at = seq(0, 100, by = 10), font = 1, cex = 0.75)
             text(x = 5, y = 0.15, labels = 'Catalog', font = 2, cex = 1, col = col3[1], adj = 0)
