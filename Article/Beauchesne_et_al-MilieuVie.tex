@@ -49,12 +49,11 @@ natbib
 \affil[2]{Universit\'e de Sherbrooke}
 \affil[3]{Université Laval}
 \date{\today}
+\providecommand{\keywords}[1]{\textbf{\textit{Keywords:}} #1}
 \maketitle
 
-%ADD RUNNING TITLE HERE, MUST NOT EXCEED 55 CHARACTERS AND SPACES
-
-%UP TO 8 KEYWORDS
-% \keywords{predicting biotic interactions, machine learning, food webs, estuary and gulf of St.Lawrence}
+\centerline{RUNNING TITLE:}
+\centerline{PREDICTING BIOTIC INTERACTIONS IN DATA-POOR ENVIRONMENTS}
 
 \newpage
 
@@ -65,6 +64,8 @@ natbib
 % ---------------------------------
 \section{Abstract}
 Large networks of ecological interactions, such as food webs, are complex to characterize, be it empirically or theoretically. The former requires exhaustive observations, while the latter generally requires ample data to be validated. We therefore wondered whether readily available data, namely empirically described interactions in a variety of ecosystems, could be combined to predict species interactions in data deficient ecosystems. To test this, we built a biotic interactions catalogue from a collection of 94 empirical food webs, detailed predator-prey interaction databases and interactions from the Global Biotic Interactions (GloBI) database. We used an unsupervised machine learning method to predict interactions between any given set of taxa, given pairwise taxonomic proximity and known consumer and resource sets found in the interaction catalogue. Initial results suggest that pairwise interactions can be predicted with high accuracy. Although results are seemingly dependent on the comprehensiveness of the catalogue knowledge of taxonomy was found to complement well the catalogue and improve predictions, especially as empirical information available diminished. Given it’s high accuracy, this methodology could democratize the use of food webs and network level descriptors in remote location where empirical data is hard to gather. Network characteristics could then be efficiently evaluated and correlated to levels of environmental stressors in order to improve vulnerability assessments of ecosystems to global changes, opening promising avenues for further research and for management initiatives.
+\newline \newline
+\keywords{Interactions, machine learning, food webs, K-nearest neighbour, taxonomy, St. Lawrence}
 
 % ---------------------------------
 % ---------------------------------
