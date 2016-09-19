@@ -1,5 +1,6 @@
 \documentclass[letterpaper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
 \usepackage{authblk}
 \usepackage{hyperref}
 \usepackage{graphicx}
@@ -9,6 +10,9 @@
 \SetWatermarkScale{4}
 \usepackage{lineno}
 \linenumbers
+
+\usepackage{setspace}
+\doublespacing
 
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 
@@ -77,7 +81,7 @@ Large networks of ecological interactions, such as food webs, are complex to cha
 
 Alternatively, a currently growing approach is to predict interactions using proxies such as functional traits, phylogenies and spatial distributions (e.g. \cite{Morales-Castilla2015, Bartomeus2016}). For example, multiple traits can play a significant role in community dynamics and influence the presence and intensity of biotic interactions, like the influence of body size on predator-prey interactions, a literal take on \emph{big fish eats small fish} \citep{Cohen2003, Brose2006, Gravel2013}. However, the time required to gather the necessary data to apply those methods may still be restrictive, or the data be unavailable altogether, so much so that other methods have been developed to fill the gaps in knowledge \citep[e.g.][]{Schrodt2015}.
 
-We therefore wondered whether more readily available data could be used to infer interactions in data deficient ecosystems. There is an increasing amount of data describing worldwide species interactions, some freely available through the Global Biotic Interactions (GloBI) database (\cite{Poelen2014}). Another readily available piece of information on species is their taxonomy, through initiatives like the World Register of Marine Species (WoRMS; \cite{WoRMS2016}). More than simple nomenclature, evolutionary processes are thought to influence consumer-resource relationships (\cite{Mouquet2012, Rohr2014}) so that taxonomically related species would be more likely to share similar types of both consumers and resources (\cite{Eklof2012, Morales-Castilla2015, Gray2015}). Based on that assumption, taxonomy might be useful in predicting interactions for species lacking detailed information on their biology, but which have a taxonomically related species for which such information is available. The objective of this work is thus to combine empirical biotic interactions originating from a variety of ecosystems with taxonomic relatedness to predict interactions in data deficient ecosystems. As an example, we compare the observed interactions in the southern Gulf of St. Lawrence (SGSL; \cite{Savenkoff2004}) with predictions made using our approach.
+We therefore wondered whether more readily available data could be used to infer interactions in data deficient ecosystems. There is an increasing amount of data describing worldwide species interactions, some freely available through the Global Biotic Interactions (GloBI) database \citep{Poelen2014}. Another readily available piece of information on species is their taxonomy, through initiatives like the World Register of Marine Species (WoRMS; \cite{WoRMS2016}). More than simple nomenclature, evolutionary processes are thought to influence consumer-resource relationships \citep{Mouquet2012, Rohr2014} so that taxonomically related species would be more likely to share similar types of both consumers and resources \citep{Eklof2012, Morales-Castilla2015, Gray2015}. Based on that assumption, taxonomy might be useful in predicting interactions for species lacking detailed information on their biology, but which have a taxonomically related species for which such information is available. The objective of this work is thus to combine empirical biotic interactions originating from a variety of ecosystems with taxonomic relatedness to predict interactions in data deficient ecosystems. As an example, we compare the observed interactions in the southern Gulf of St. Lawrence (SGSL; \cite{Savenkoff2004}) with predictions made using our approach.
 
 % ---------------------------------
 % ---------------------------------
@@ -88,11 +92,11 @@ We therefore wondered whether more readily available data could be used to infer
 The objective of our methodology is to predict the interactions between all pairs of taxa within an arbitrary set $N_1$, using a set of taxa $N_0$ with empirically described interactions from which we can extract pairs of consumers and resources and their taxonomy. We couple the use of empirical data with an unsupervised machine learning method to achieve this.
 
  \subsection{Biotic interaction catalogue}
-We built a biotic interaction catalogue to serve as a set of taxa $N_0$ for with empirically described interactions. The empirical data used to construct the interaction catalogue was gathered in two successive steps. The first consisted of gathering data from a collection of 94 empirical food webs from which we extracted pairwise taxa interactions (see \cite{Brose2005, Kortsch2015, UniversityofCanberra2016} for more information). We also used a detailed predator-prey interaction database describing trophic relationships between marine fishes and their prey (\cite{Barnes2008}). From these datasets, only interactions between taxa at the taxonomic scale of the family or higher were selected for inclusion in the catalogue. Data used came exclusively from marine and coastal ecosystems and encompassed a wide variety of organisms: fungi, algae, parasites, phytoplankton, zooplankton, benthic and pelagic invertebrates, demersal and pelagic fishes, marine birds and marine mammals.
+We built a biotic interaction catalogue to serve as a set of taxa $N_0$ for with empirically described interactions. The empirical data used to construct the interaction catalogue was gathered in two successive steps. The first consisted of gathering data from a collection of 94 empirical food webs from which we extracted pairwise taxa interactions (see \cite{Brose2005, Kortsch2015, UniversityofCanberra2016} for more information). We also used a detailed predator-prey interaction database describing trophic relationships between marine fishes and their prey \citep{Barnes2008}. From these datasets, only interactions between taxa at the taxonomic scale of the family or higher were selected for inclusion in the catalogue. Data used came exclusively from marine and coastal ecosystems and encompassed a wide variety of organisms: fungi, algae, parasites, phytoplankton, zooplankton, benthic and pelagic invertebrates, demersal and pelagic fishes, marine birds and marine mammals.
 
 As empirical food webs are vastly dominated by non-interactions (96\%), these datasets yielded a highly skewed distribution of interactions vs non-interactions. To counterbalance this, the second step of data compilation consisted of extracting observed interactions from the Global Biotic Interaction (GloBI) database (\cite{Poelen2014}), which describes binary interactions for a wide range of taxa worldwide. We extracted all trphic interactions available on GloBI for species belonging to the families of taxa identified through step 1. Interactions were extracted using the rGloBI package in R (\cite{Poelen2015}). As per step 1, only interactions between taxa at the taxonomic scale of the family or higher were retained.
 
-The nomenclature used between datasets and food webs varied substantially. Taxa names thus had to be verified, modified according to the scientific nomenclature and validated. This process was performed using the Taxize package in R (\cite{Chamberlain2013, Chamberlain2014}) and manually verified for errors. The same package was used to extract the taxonomy of all taxa for which interactions were obtained in previous steps. The complete R code and data used to build the catalogue is available at \href{https://github.com/david-beauchesne/Interaction_catalog}{https://github.com/david-beauchesne/Interaction\_catalog}.
+The nomenclature used between datasets and food webs varied substantially. Taxa names thus had to be verified, modified according to the scientific nomenclature and validated. This process was performed using the Taxize package in R \citep{Chamberlain2013, Chamberlain2014} and manually verified for errors. The same package was used to extract the taxonomy of all taxa for which interactions were obtained in previous steps. The complete R code and data used to build the catalogue is available at \href{https://github.com/david-beauchesne/Interaction_catalog}{https://github.com/david-beauchesne/Interaction\_catalog}.
 
 \subsection{Unsupervised machine learning}
 We use the \textit{K}-nearest neighbor (KNN) algorithm \citep{Murphy2012} to predict pairwise interactions for a set of taxa $S$. The KNN algorithm predicts missing entries or proposes additional entries by a majority vote based on the $K$ nearest (i.e. most similar) entries (see Box 1 for an example). In this case, taxa are described by a set of resources when considered as a consumer, a set of consumers when considered as a resource and their taxonomy (i.e. kingdom, phylum, class, order, family, genus, species). Similarity between taxa was evaluated using the Tanimoto similarity measure, which compares two vectors $x$ and $y$ with $n = \left\vert{\mathbf{x}}\right\vert = \left\vert{\mathbf{y}}\right\vert$ elements, and is defined as the size of the intersection of two sets divided by their union:
@@ -101,13 +105,23 @@ We use the \textit{K}-nearest neighbor (KNN) algorithm \citep{Murphy2012} to pre
 \mbox{tanimoto}(\mathbf{x}, \mathbf{y}) = \frac{\left\vert\mathbf{x} \cap \mathbf{y}\right\vert}{\left\vert\mathbf{x} \cup \mathbf{y}\right\vert},
 \end{equation}
 
-where \(\cap\) is the intersect and \(\cup\) the union of the vectors. Adding a weighting scheme, we can measure the similarity using two different sets of vectors:
+where \(\cap\) is the intersect and \(\cup\) the union of the vectors. Adding a weighting scheme, we can measure the similarity using two different sets of vectors \(\{\mathbf{x}, \mathbf{y}\}\) and \(\{\mathbf{u}, \mathbf{v}\}\):
+
+% \begin{equation}
+% \mbox{tanimoto}_t(x, y, w_t) = w_t\mbox{tanimoto}(\mathbf{T_Cx}, \mathbf{T_Cy}) + (1 - w_t)\mbox{tanimoto}(\mathbf{T_Tx}, \mathbf{T_Ty}),
+% \end{equation}
 
 \begin{equation}
-\mbox{tanimoto}_t(x, y, w_t) = w_t\mbox{tanimoto}(\mathbf{T_Cx}, \mathbf{T_Cy}) + (1 - w_t)\mbox{tanimoto}(\mathbf{T_Tx}, \mathbf{T_Ty}),
+\label{eq2}
+\mbox{tanimoto}_t(x, y, u, v, w_t) = w_t\mbox{tanimoto}(\mathbf{x}, \mathbf{y}) + (1 - w_t)\mbox{tanimoto}(\mathbf{u}, \mathbf{v}),
 \end{equation}
 
-where $w_t$ is the weight given to sets of resources or consumers for consumer $T_C$ and resources $T_R$ (replace $T_C$ in equation 2), for taxa $x$ and $y$. $T_T$ is the taxonomy of taxa $x$ and $y$. When $w_t$ = 0 only resource or consumer sets are used to compute similarity, while $w_t$ = 1 solely uses taxonomy. This approach to consider the relative contribution of two sets of vectors to the Tanimoto similarity was developed by \citet{Desjardins-Proulx}.
+where $w_t$ the weight (in $[0;1]$). For our analyses, the first element of the right-hand side of \eqref{eq2} is a similarity between the sets of resources (or consumers) for the second is the Tanimoto similarity pertaining to the taxonomy of the same taxa. When $w_t = 0$ only resource or consumer sets are used to compute similarity, while $w_t = 1$ solely uses taxonomy. This approach to consider the relative contribution of two sets of vectors to the Tanimoto similarity was developed by \citet{Desjardins-Proulx}.
+
+% old version
+% where wt is the weight given to the to sets of resources or consumers for
+% consumer TC and resources TR (replace TC in equation 2), for taxa x and y.
+% TT is the taxonomy of taxa x and y.
 
   \subsection{Predicting interactions}
 The algorithm was built on a series of logical steps that ultimately predicts a candidate resources list $C_R$ for each taxon in $N_1$ based on empirical data available and the similarity among consumers and among resources (Figure \ref{fig:decision_diag}). For all consumer taxa $T_C$ in $N_1$, the algorithm first verifies, for all resources in resource set $T_R$, if they are found the $N_0$ (Step S1, Figure \ref{fig:decision_diag}). When it does, all $T_R$ taxa that are also in $N_1$ are added as predicted resources for $T_C$ (Steps S2-S3). This corresponds to what we refer to as the catalogue contribution to resource predictions. In essence, two taxa in $N_1$ that are known to interact through empirical data in the catalogue are automatically assumed to interact in $N_1$.
