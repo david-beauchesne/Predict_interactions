@@ -4,10 +4,10 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{makecell}
-\usepackage{draftwatermark}
+% \usepackage{draftwatermark}
 \usepackage{tabularx}
-\SetWatermarkText{DRAFT}
-\SetWatermarkScale{4}
+% \SetWatermarkText{DRAFT}
+% \SetWatermarkScale{4}
 
 \usepackage{setspace}
 \doublespacing
@@ -23,6 +23,18 @@
 \renewcommand\thetable{S\arabic{table}}
 \renewcommand\Affilfont{\itshape\small}
 \setcounter{section}{0}
+
+\usepackage[
+backend=biber,
+style=authoryear,
+citestyle=authoryear,
+maxbibnames=100,
+maxcitenames=2,
+uniquelist=false,
+natbib
+]{biblatex}
+\addbibresource{refVM.bib}
+
 
 \begin{document}
 
@@ -49,6 +61,7 @@
 \maketitle
 
 \newpage
+
 \begin{table}[h!]
     \centering
     \small
@@ -123,9 +136,10 @@
         Phytoplankton                      & $Chaetoceros$ $affinis$, $Chaetoceros sp.$, $Leptocylindrus$ $minimus$, $Thalassiiosira$ $nordenskioldii$, $Thalassiiosira sp.$, $Fragilariopsis sp.$, other diatoms, mixture of autotrophic and mixotrophic organisms including Cryptophytes, dinoflagellates, Prasinophytes and Prymnesiophytes  \\
         \hline
   \end{tabularx}
-    \caption{List of functional groups included in the dataset presented in Savenkoff et al. (2004) with their taxa composition. Only taxa that were at least at the scale of the family were used to predict interactions using the XXX algorithm. List adapted from Savenkoff et al. (2004).}
+    \caption{List of functional groups included in the dataset presented in \citet{Savenkoff2004} with their taxa composition. Only taxa that were at least at the scale of the family were used to predict interactions. List adapted from \citet{Savenkoff2004}.}
 \end{table}
 
+\newpage
 \begin{table}[h!]
     \centering
     \begin{tabular}{|l|l|}
@@ -175,6 +189,7 @@
       \hline
   \end{tabular}
 \end{table}
+\newpage
 \begin{table}[h!]
   \centering
   \begin{tabular}{|l|l|}
@@ -224,6 +239,7 @@
       \hline
     \end{tabular}
 \end{table}
+\newpage
 \begin{table}[h!]
     \centering
     \begin{tabular}{|l|l|}
@@ -248,9 +264,10 @@
     Large demersal feeders              & Large demersal feeders    \\
     \hline
 \end{tabular}
-    \caption{List of functional groups for which interactions were predicted by the XXX algorithm, but not observed in Savenkoff et al. (2004) ($b$).}
+    \caption{List of functional groups for which interactions were predicted by the algorithm, but not observed in \citet{Savenkoff2004} ($b$).}
 \end{table}
 
+\newpage
 \begin{table}[h!]
   \centering
   \begin{tabular}{|l|l|}
@@ -294,8 +311,11 @@
     Redfish                & Piscivorous small pelagic feeders  \\
     \hline
   \end{tabular}
-  \caption{List of functional groups for which observed interactions in Savenkoff et al. (2004) were not predicted by the XXX algorithm ($c$).}
+  \caption{List of functional groups for which observed interactions in \citet{Savenkoff2004} were not predicted by the algorithm ($c$).}
 \end{table}
+
+\newpage
+\printbibliography
 
 
 \end{document}
