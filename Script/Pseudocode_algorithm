@@ -1,3 +1,6 @@
+
+-----
+
 Parameters:
   Kc                    Integer, how many consumer neighbors to select
   Kr                    Integer, how many resource neighbors to select
@@ -24,21 +27,14 @@ for consumers in S1
     resources_S1 = set of resources found in S0
     empirical_resource <- empty vector
 
-    if length(resources_S1) > 0:
         for resources in resources_S1
             if resources in S1:
                 add resources to empirical_resource
             else:
                 similar_resource <- pick K most similar resources in S1 based on taxonomy and set of consumers
-                    if similarity K + 1 = similarity K:
-                        random sample of similar resources with similarity K
 
                 for resources' in similar_resource
-                    if all K similarity = 0:
-                        break out of loop
-                    else if resources' similarity = 0:
-                        NULL
-                    else if resources' similarity < minimum similarity threshold:
+                    if resources' similarity < minimum similarity threshold:
                         NULL
                     else if resources' in candidate_list:
                         add weight = similarity between resources and resources' to resources' in candidate_list
@@ -49,25 +45,13 @@ for consumers in S1
 
     # 2. Similar consumers information
     similar_consumers <- pick K most similar consumers in S0 based on taxonomy and set of resources
-        if similarity K + 1 = similarity K:
-            random sample of similar consumers with similarity K
 
     for consumers' in similar_consumers
-        if all K similarity = 0:
-            break out of loop
-        else if consumers' similarity = 0:
-            NULL
 
         candidate_resources = resources' of consumers' in S0
 
         for resources' in candidate_resources
-            if length(candidate_resources) == 0:
-                break out of loop
-            else if candidate_resources == "":
-                break out of loop
-            else if resources' = consumers: (does not allow for cannibalism. Should verify this at some point and allow for it, there are multiple instances of cannibalism in food webs)
-                break out of loop
-            else if resources' in S1:
+            if resources' in S1:
                 if resources' in candidate_list:
                     add weight = 1 to resources' in candidate_list
                 else:
@@ -75,14 +59,8 @@ for consumers in S1
 
             else: (resources' not in S1)
                 similar_resource <- pick K most similar resources in S1 based on taxonomy and set of consumers
-                    if similarity K + 1 = similarity K:
-                        random sample of similar resources with similarity K
 
                 for resources' in similar_resource
-                    if all K similarity = 0:
-                        break out of loop
-                    else if resources' similarity = 0:
-                        NULL
                     else if resources' similarity < minimum similarity threshold:
                         NULL
                     else if resources' in candidate_list:
@@ -92,5 +70,3 @@ for consumers in S1
 
     candidate_list <- choose candidate resources with weight >= MW
     predictions <- add candidate_list to predictions
-
-return(predictions matrix)
