@@ -238,3 +238,135 @@ j = 14 #'Score'[y]
             it <- it + 1.25
         } #i
 dev.off()
+
+
+
+
+# -------------------------------
+#Figure version 3 - article couleur
+# pdf(paste('./Article/Revisions/','catalog_predictions3','.pdf',sep=''),width=6,height=8)
+jpeg(paste('./Article/Revisions/','Figure3','.jpeg',sep=''),width=6,height=8, res = 300, units = 'in')
+j = 14 #'Score'[y]
+        eplot(xmin = -1, xmax = 100 + 1, ymax = 3.6)
+        par(pch = 21,  xaxs = "i", yaxs = "i", family = "serif")
+        col <- c("#FF8822",'#5ED275','#9CCBFF')
+        col2 <- c("#FF8822",'#275A31','#0077FF')
+        col3 <- c("#FF8822","#449955","#2288FF")
+
+        # Axes
+            axis(side = 1, at = seq(0, 100, by = 10), labels = FALSE, las = 1, pos = -0.05)
+            axis(side = 2, at = seq(0, 1, by = 0.25), labels = seq(0, 1, by = 0.25), las = 1, pos = -1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 2, at = seq(0, 1, by = 0.25)+1.25, labels = seq(0, 1, by = 0.25), las = 1, pos = -1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 2, at = seq(0, 1, by = 0.25)+2.5, labels = seq(0, 1, by = 0.25), las = 1, pos = -1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 3, at = seq(0, 100, by = 10), labels = FALSE, las = 1, pos = 1.05 + 2.5)
+            axis(side = 4, at = seq(0, 1, by = 0.25), labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 4, at = seq(0, 1, by = 0.25)+1.25, labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 4, at = seq(0, 1, by = 0.25)+2.5, labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1, cex.axis = 0.75, font.axis = 1)
+
+            abline(h = c(1.125,2.375), col = "black", lty = 2)
+            mtext(text = expression('Score'[y]), side = 2, line = 2, at = 1.75, font = 1.5, cex = 1)
+            mtext(text = expression(paste("Percent of ",italic(N[1])," taxa in ", italic(N[0]), ' (%)')), side = 1, line = 2, at = 50, font = 2, cex = 1)
+            mtext(text = expression(paste("Percent of taxa removed from ", italic(N[0]), ' (%)')), side = 3, line = 1, at = 50, font = 2, cex = 1)
+            mtext(text = seq(100, 0, by = -10), side = 1, line = 0, at = seq(0, 100, by = 10), font = 1, cex = 0.75)
+            mtext(text = seq(0, 100, by = 10), side = 3, line = -0.5, at = seq(0, 100, by = 10), font = 1, cex = 0.75)
+            text(x = 5, y = 0.85, labels = 'Catalogue', font = 2, cex = 1, col = col3[1], adj = 0)
+            text(x = 5, y = 2.10, labels = 'Predictions', font = 2, cex = 1, col = col3[2], adj = 0)
+            text(x = 5, y = 3.35, labels = 'Algorithm', font = 2, cex = 1, col = col3[3], adj = 0)
+
+        it <- 0
+        for(i in 1:length(accuracy)) {
+            if(i == 2 || i == 3) {
+                accuracy_mean <- aggregate(as.numeric(accuracy[[i]][,j]) ~ as.numeric(accuracy[[i]][, 'pc_rm']) + as.numeric(accuracy[[i]][, 'wt']), data=accuracy[[i]], FUN=function(x) c(mean=mean(x), sd=sd(x)))
+                accuracy_mean <- accuracy_mean[order(accuracy_mean[,2]), ]
+                # hack: we draw arrows but with very special "arrowheads" for error bars
+
+                arrows(seq(0,100,by=10), rev(accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][,1] - accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 2]+it), seq(0,100,by=10), rev(accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 1] + accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 2]+it), length=0.025, angle=90, code=3, col = col[i])
+                points(x = seq(0,100,by=10), y = rev(accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 1]+it), cex = 0.75, pch = 22, col = col[i])
+
+                arrows(seq(0,100,by=10), rev(accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][,1] - accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 2]+it), seq(0,100,by=10), rev(accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 1] + accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 2]+it), length=0.025, angle=90, code=3, col = col2[i])
+                points(x = seq(0,100,by=10), y = rev(accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 1]+it), cex = 0.75, pch = 22, col = col2[i])
+
+                lines(lowess(x = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '0.5'), 'pc_rm']), y = rev(as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '0.5'), j]) + it)), col = col[i])
+                lines(lowess(x = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '1'), 'pc_rm']), y = rev(as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '1'), j]) + it)), col = col2[i])
+
+                text(x = 90, y = 0.25 + it, labels = expression(paste(italic('w'[t]), ' = 0.5')), col = col[i], font = 1, cex = 0.75)
+                text(x = 90, y = 0.15 + it, labels = expression(paste(italic('w'[t]), ' = 1')), col = col2[i], font = 1, cex = 0.75)
+                } else {
+                    accuracy_mean <- aggregate(as.numeric(accuracy[[i]][,j]) ~ as.numeric(accuracy[[i]][, 'pc_rm']), data=accuracy[[i]], FUN=function(x) c(mean=mean(x), sd=sd(x)))
+                    accuracy_mean <- accuracy_mean[order(accuracy_mean[,1]), ]
+                    # hack: we draw arrows but with very special "arrowheads" for error bars
+
+                    arrows(seq(0,100,by=10), rev(accuracy_mean[, 2][,1] - accuracy_mean[, 2][, 2]+it), seq(0,100,by=10), rev(accuracy_mean[, 2][, 1] + accuracy_mean[, 2][, 2]+it), length=0.025, angle=90, code=3, col = col3[i])
+                    points(x = seq(0,100,by=10), y = rev(accuracy_mean[, 2][, 1]+it), cex = 0.75, pch = 22, col = col3[i])
+
+                    lines(lowess(x = as.numeric(accuracy[[i]][, 'pc_rm']), y = rev(as.numeric(accuracy[[i]][, j]) + it)), col = col3[i])
+                }
+
+            it <- it + 1.25
+        } #i
+dev.off()
+
+
+# -------------------------------
+#Figure version 4 - article B&W
+# pdf(paste('./Article/Revisions/','catalog_predictions3','.pdf',sep=''),width=6,height=8)
+jpeg(paste('./Article/Revisions/','Figure3_BW','.jpeg',sep=''),width=6,height=8, res = 300, units = 'in')
+j = 14 #'Score'[y]
+        eplot(xmin = -1, xmax = 100 + 1, ymax = 3.6)
+        par(pch = 21,  xaxs = "i", yaxs = "i", family = "serif")
+        col <- c("dark gray",'dark gray','dark gray')
+        col2 <- c("black",'black','black')
+        col3 <- c("black","black","black")
+
+        # Axes
+            axis(side = 1, at = seq(0, 100, by = 10), labels = FALSE, las = 1, pos = -0.05)
+            axis(side = 2, at = seq(0, 1, by = 0.25), labels = seq(0, 1, by = 0.25), las = 1, pos = -1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 2, at = seq(0, 1, by = 0.25)+1.25, labels = seq(0, 1, by = 0.25), las = 1, pos = -1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 2, at = seq(0, 1, by = 0.25)+2.5, labels = seq(0, 1, by = 0.25), las = 1, pos = -1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 3, at = seq(0, 100, by = 10), labels = FALSE, las = 1, pos = 1.05 + 2.5)
+            axis(side = 4, at = seq(0, 1, by = 0.25), labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 4, at = seq(0, 1, by = 0.25)+1.25, labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1, cex.axis = 0.75, font.axis = 1)
+            axis(side = 4, at = seq(0, 1, by = 0.25)+2.5, labels = seq(0, 1, by = 0.25), las = 1, pos = 100 + 1, cex.axis = 0.75, font.axis = 1)
+
+            abline(h = c(1.125,2.375), col = "gray", lty = 2)
+            mtext(text = expression('Score'[y]), side = 2, line = 2, at = 1.75, font = 1.5, cex = 1)
+            mtext(text = expression(paste("Percent of ",italic(N[1])," taxa in ", italic(N[0]), ' (%)')), side = 1, line = 2, at = 50, font = 2, cex = 1)
+            mtext(text = expression(paste("Percent of taxa removed from ", italic(N[0]), ' (%)')), side = 3, line = 1, at = 50, font = 2, cex = 1)
+            mtext(text = seq(100, 0, by = -10), side = 1, line = 0, at = seq(0, 100, by = 10), font = 1, cex = 0.75)
+            mtext(text = seq(0, 100, by = 10), side = 3, line = -0.5, at = seq(0, 100, by = 10), font = 1, cex = 0.75)
+            text(x = 5, y = 0.85, labels = 'Catalogue', font = 2, cex = 1, col = col3[1], adj = 0)
+            text(x = 5, y = 2.10, labels = 'Predictions', font = 2, cex = 1, col = col3[2], adj = 0)
+            text(x = 5, y = 3.35, labels = 'Algorithm', font = 2, cex = 1, col = col3[3], adj = 0)
+
+        it <- 0
+        for(i in 1:length(accuracy)) {
+            if(i == 2 || i == 3) {
+                accuracy_mean <- aggregate(as.numeric(accuracy[[i]][,j]) ~ as.numeric(accuracy[[i]][, 'pc_rm']) + as.numeric(accuracy[[i]][, 'wt']), data=accuracy[[i]], FUN=function(x) c(mean=mean(x), sd=sd(x)))
+                accuracy_mean <- accuracy_mean[order(accuracy_mean[,2]), ]
+                # hack: we draw arrows but with very special "arrowheads" for error bars
+
+                arrows(seq(0,100,by=10), rev(accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][,1] - accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 2]+it), seq(0,100,by=10), rev(accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 1] + accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 2]+it), length=0.025, angle=90, code=3, col = col[i])
+                points(x = seq(0,100,by=10), y = rev(accuracy_mean[which(accuracy_mean[, 2] == '0.5'), 3][, 1]+it), cex = 0.75, pch = 22, col = col[i])
+
+                arrows(seq(0,100,by=10), rev(accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][,1] - accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 2]+it), seq(0,100,by=10), rev(accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 1] + accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 2]+it), length=0.025, angle=90, code=3, col = col2[i])
+                points(x = seq(0,100,by=10), y = rev(accuracy_mean[which(accuracy_mean[, 2] == '1'), 3][, 1]+it), cex = 0.75, pch = 22, col = col2[i])
+
+                lines(lowess(x = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '0.5'), 'pc_rm']), y = rev(as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '0.5'), j]) + it)), col = col[i], lty = 4)
+                lines(lowess(x = as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '1'), 'pc_rm']), y = rev(as.numeric(accuracy[[i]][which(accuracy[[i]][, 'wt'] == '1'), j]) + it)), col = col2[i])
+
+                text(x = 90, y = 0.25 + it, labels = expression(paste(italic('w'[t]), ' = 0.5')), col = col[i], font = 1, cex = 0.75)
+                text(x = 90, y = 0.15 + it, labels = expression(paste(italic('w'[t]), ' = 1')), col = col2[i], font = 1, cex = 0.75)
+                } else {
+                    accuracy_mean <- aggregate(as.numeric(accuracy[[i]][,j]) ~ as.numeric(accuracy[[i]][, 'pc_rm']), data=accuracy[[i]], FUN=function(x) c(mean=mean(x), sd=sd(x)))
+                    accuracy_mean <- accuracy_mean[order(accuracy_mean[,1]), ]
+                    # hack: we draw arrows but with very special "arrowheads" for error bars
+
+                    arrows(seq(0,100,by=10), rev(accuracy_mean[, 2][,1] - accuracy_mean[, 2][, 2]+it), seq(0,100,by=10), rev(accuracy_mean[, 2][, 1] + accuracy_mean[, 2][, 2]+it), length=0.025, angle=90, code=3, col = col3[i])
+                    points(x = seq(0,100,by=10), y = rev(accuracy_mean[, 2][, 1]+it), cex = 0.75, pch = 22, col = col3[i])
+
+                    lines(lowess(x = as.numeric(accuracy[[i]][, 'pc_rm']), y = rev(as.numeric(accuracy[[i]][, j]) + it)), col = col3[i])
+                }
+
+            it <- it + 1.25
+        } #i
+dev.off()
