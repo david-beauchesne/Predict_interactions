@@ -43,7 +43,7 @@ sp_SSL[,3] <- c('Cetaceans',
 'Seabirds',
 'Atlantic cod',
 'Atlantic cod',
-'Greenland halibut',
+'grayland halibut',
 'American plaice',
 'American plaice',
 'Flounders',
@@ -259,7 +259,7 @@ SSL_pred_part <- gsub("Grey seals", "5",SSL_pred_part)
 SSL_pred_part <- gsub("Harp seals", "6",SSL_pred_part)
 SSL_pred_part <- gsub("Seabirds", "7",SSL_pred_part)
 SSL_pred_part <- gsub("Harbour seals", "8",SSL_pred_part)
-SSL_pred_part <- gsub("Greenland halibut", "9",SSL_pred_part)
+SSL_pred_part <- gsub("grayland halibut", "9",SSL_pred_part)
 SSL_pred_part <- gsub("Piscivorous small pelagic feeders", "10",SSL_pred_part)
 SSL_pred_part <- gsub("Redfish", "11",SSL_pred_part)
 SSL_pred_part <- gsub("Large pelagic feeders", "12",SSL_pred_part)
@@ -282,7 +282,7 @@ SSL_emp_part <- gsub("Grey seals", "5",SSL_emp_part)
 SSL_emp_part <- gsub("Harp seals", "6",SSL_emp_part)
 SSL_emp_part <- gsub("Seabirds", "7",SSL_emp_part)
 SSL_emp_part <- gsub("Harbour seals", "8",SSL_emp_part)
-SSL_emp_part <- gsub("Greenland halibut", "9",SSL_emp_part)
+SSL_emp_part <- gsub("grayland halibut", "9",SSL_emp_part)
 SSL_emp_part <- gsub("Piscivorous small pelagic feeders", "10",SSL_emp_part)
 SSL_emp_part <- gsub("Redfish", "11",SSL_emp_part)
 SSL_emp_part <- gsub("Large pelagic feeders", "12",SSL_emp_part)
@@ -299,6 +299,8 @@ SSL_emp_part <- gsub("Shrimp", "21",SSL_emp_part)
 SSL_emp_part
 SSL_pred_part
 
+
+# Figure 4 - article couleur
 library(DiagrammeR)
 grViz("
 
@@ -316,7 +318,7 @@ digraph boxes_and_circles{
             6 [label =  <Harp seals>]
             7 [label =  <Seabirds>]
             8 [label =  <Harbour seals>]
-            9 [label =  <Greenland halibut>]
+            9 [label =  <grayland halibut>]
             10 [label =  <Piscivorous small<br/>pelagic feeders>]
             11 [label =  <Redfish>]
             12 [label =  <Large pelagic<br/>feeders>]
@@ -360,32 +362,32 @@ digraph boxes_and_circles{
             6 -> 9 [color = 'transparent']
 
             #Empirical & predictions
-            1 -> 10 [color = 'green']
-            2 -> 10 [color = 'green']
-            3 -> 10 [color = 'green']
-            4 -> 10 [color = 'green']
-            6 -> 10 [color = 'green']
-            7 -> 10 [color = 'green']
-            8 -> 10 [color = 'green']
-            10 -> 16 [color = 'green']
-            10 -> 14 [color = 'green']
-            10 -> 17 [color = 'green']
-            12 -> 10 [color = 'green']
-            13 -> 10 [color = 'green']
-            1 -> 14 [color = 'green']
-            2 -> 14 [color = 'green']
-            3 -> 14 [color = 'green']
-            4 -> 14 [color = 'green']
-            5 -> 14 [color = 'green']
-            14 -> 17 [color = 'green']
-            15 -> 14 [color = 'green']
-            6 -> 14 [color = 'green']
-            7 -> 14 [color = 'green']
-            8 -> 14 [color = 'green']
-            9 -> 14 [color = 'green']
-            11 -> 14 [color = 'green']
-            12 -> 14 [color = 'green']
-            13 -> 14 [color = 'green']
+            1 -> 10 [color = 'green', style = 'dashed']
+            2 -> 10 [color = 'green', style = 'dashed']
+            3 -> 10 [color = 'green', style = 'dashed']
+            4 -> 10 [color = 'green', style = 'dashed']
+            6 -> 10 [color = 'green', style = 'dashed']
+            7 -> 10 [color = 'green', style = 'dashed']
+            8 -> 10 [color = 'green', style = 'dashed']
+            10 -> 16 [color = 'green', style = 'dashed']
+            10 -> 14 [color = 'green', style = 'dashed']
+            10 -> 17 [color = 'green', style = 'dashed']
+            12 -> 10 [color = 'green', style = 'dashed']
+            13 -> 10 [color = 'green', style = 'dashed']
+            1 -> 14 [color = 'green', style = 'dashed']
+            2 -> 14 [color = 'green', style = 'dashed']
+            3 -> 14 [color = 'green', style = 'dashed']
+            4 -> 14 [color = 'green', style = 'dashed']
+            5 -> 14 [color = 'green', style = 'dashed']
+            14 -> 17 [color = 'green', style = 'dashed']
+            15 -> 14 [color = 'green', style = 'dashed']
+            6 -> 14 [color = 'green', style = 'dashed']
+            7 -> 14 [color = 'green', style = 'dashed']
+            8 -> 14 [color = 'green', style = 'dashed']
+            9 -> 14 [color = 'green', style = 'dashed']
+            11 -> 14 [color = 'green', style = 'dashed']
+            12 -> 14 [color = 'green', style = 'dashed']
+            13 -> 14 [color = 'green', style = 'dashed']
 
             # Empirical only
             5 -> 10 [color = 'black']
@@ -393,30 +395,142 @@ digraph boxes_and_circles{
             11 -> 10 [color = 'black']
 
             # Predictions only
-            18 -> 10 [color = 'blue']
-            15 -> 10 [color = 'blue']
-            10 -> 21 [color = 'blue']
-            10 -> 4 [color = 'blue']
-            10 -> 18 [color = 'blue']
-            10 -> 15 [color = 'blue']
-            10 -> 10 [color = 'blue']
-            10 -> 12 [color = 'blue']
-            10 -> 13 [color = 'blue']
-            19 -> 14 [color = 'blue']
-            16 -> 14 [color = 'blue']
-            20 -> 14 [color = 'blue']
-            18 -> 14 [color = 'blue']
-            14 -> 14 [color = 'blue']
-            16 -> 10 [color = 'blue']
-            20 -> 10 [color = 'blue']
-            10 -> 19 [color = 'blue']
-            10 -> 20 [color = 'blue']
-            10 -> 9 [color = 'blue']
+            18 -> 10 [color = 'blue', style = 'dotted']
+            15 -> 10 [color = 'blue', style = 'dotted']
+            10 -> 21 [color = 'blue', style = 'dotted']
+            10 -> 4 [color = 'blue', style = 'dotted']
+            10 -> 18 [color = 'blue', style = 'dotted']
+            10 -> 15 [color = 'blue', style = 'dotted']
+            10 -> 10 [color = 'blue', style = 'dotted']
+            10 -> 12 [color = 'blue', style = 'dotted']
+            10 -> 13 [color = 'blue', style = 'dotted']
+            19 -> 14 [color = 'blue', style = 'dotted']
+            16 -> 14 [color = 'blue', style = 'dotted']
+            20 -> 14 [color = 'blue', style = 'dotted']
+            18 -> 14 [color = 'blue', style = 'dotted']
+            14 -> 14 [color = 'blue', style = 'dotted']
+            16 -> 10 [color = 'blue', style = 'dotted']
+            20 -> 10 [color = 'blue', style = 'dotted']
+            10 -> 19 [color = 'blue', style = 'dotted']
+            10 -> 20 [color = 'blue', style = 'dotted']
+            10 -> 9 [color = 'blue', style = 'dotted']
 }
 ")
 
-# Load package
-library(networkD3)
-# Plot
-simpleNetwork(as.data.frame(SSL_bin_inter[, c(1,3)]))
-simpleNetwork(as.data.frame(SSL_emp_bin[, c(1,3)]))
+
+# Figure 4 - article B&W
+library(DiagrammeR)
+grViz("
+
+digraph boxes_and_circles{
+
+    node [shape = box
+            # fixedsize = TRUE
+            # width = 2.5
+            ]
+            1 [label =  <Skates>]
+            2 [label =  <Cetaceans>]
+            3 [label =  <Hooded seals>]
+            4 [label =  <Atlantic cod>]
+            5 [label =  <Grey seals>]
+            6 [label =  <Harp seals>]
+            7 [label =  <Seabirds>]
+            8 [label =  <Harbour seals>]
+            9 [label =  <grayland halibut>]
+            10 [label =  <Piscivorous small<br/>pelagic feeders>]
+            11 [label =  <Redfish>]
+            12 [label =  <Large pelagic<br/>feeders>]
+            13 [label =  <Large demersal<br/>feeders>]
+            14 [label =  <Capelin>]
+            15 [label =  <Small demersal<br/>feeders>]
+            16 [label =  <Planktivorous small<br/>pelagic feeders>]
+            17 [label =  <Small zooplankton>]
+            18 [label =  <Flounders>]
+            19 [label =  <Large crustaceans>]
+            20 [label =  <American plaice>]
+            21 [label =  <Shrimp>]
+
+    edge [dir = back]
+            12 -> 15 [color = 'transparent']
+            12 -> 16 [color = 'transparent']
+            13 -> 15 [color = 'transparent']
+            13 -> 16 [color = 'transparent']
+            20 -> 15 [color = 'transparent']
+            20 -> 16 [color = 'transparent']
+            18 -> 15 [color = 'transparent']
+            18 -> 16 [color = 'transparent']
+            4 -> 15 [color = 'transparent']
+            4 -> 16 [color = 'transparent']
+            15 -> 21 [color = 'transparent']
+            15 -> 19 [color = 'transparent']
+            16 -> 21 [color = 'transparent']
+            16 -> 19 [color = 'transparent']
+
+            2 -> 11 [color = 'transparent']
+            2 -> 1 [color = 'transparent']
+            2 -> 9 [color = 'transparent']
+            3 -> 11 [color = 'transparent']
+            3 -> 1 [color = 'transparent']
+            3 -> 9 [color = 'transparent']
+            5 -> 11 [color = 'transparent']
+            5 -> 1 [color = 'transparent']
+            5 -> 9 [color = 'transparent']
+            6 -> 11 [color = 'transparent']
+            6 -> 1 [color = 'transparent']
+            6 -> 9 [color = 'transparent']
+
+            #Empirical & predictions
+            1 -> 10 [color = 'black', style = 'dashed']
+            2 -> 10 [color = 'black', style = 'dashed']
+            3 -> 10 [color = 'black', style = 'dashed']
+            4 -> 10 [color = 'black', style = 'dashed']
+            6 -> 10 [color = 'black', style = 'dashed']
+            7 -> 10 [color = 'black', style = 'dashed']
+            8 -> 10 [color = 'black', style = 'dashed']
+            10 -> 16 [color = 'black', style = 'dashed']
+            10 -> 14 [color = 'black', style = 'dashed']
+            10 -> 17 [color = 'black', style = 'dashed']
+            12 -> 10 [color = 'black', style = 'dashed']
+            13 -> 10 [color = 'black', style = 'dashed']
+            1 -> 14 [color = 'black', style = 'dashed']
+            2 -> 14 [color = 'black', style = 'dashed']
+            3 -> 14 [color = 'black', style = 'dashed']
+            4 -> 14 [color = 'black', style = 'dashed']
+            5 -> 14 [color = 'black', style = 'dashed']
+            14 -> 17 [color = 'black', style = 'dashed']
+            15 -> 14 [color = 'black', style = 'dashed']
+            6 -> 14 [color = 'black', style = 'dashed']
+            7 -> 14 [color = 'black', style = 'dashed']
+            8 -> 14 [color = 'black', style = 'dashed']
+            9 -> 14 [color = 'black', style = 'dashed']
+            11 -> 14 [color = 'black', style = 'dashed']
+            12 -> 14 [color = 'black', style = 'dashed']
+            13 -> 14 [color = 'black', style = 'dashed']
+
+            # Empirical only
+            5 -> 10 [color = 'black']
+            9 -> 10 [color = 'black']
+            11 -> 10 [color = 'black']
+
+            # Predictions only
+            18 -> 10 [color = 'gray', style = 'dotted']
+            15 -> 10 [color = 'gray', style = 'dotted']
+            10 -> 21 [color = 'gray', style = 'dotted']
+            10 -> 4 [color = 'gray', style = 'dotted']
+            10 -> 18 [color = 'gray', style = 'dotted']
+            10 -> 15 [color = 'gray', style = 'dotted']
+            10 -> 10 [color = 'gray', style = 'dotted']
+            10 -> 12 [color = 'gray', style = 'dotted']
+            10 -> 13 [color = 'gray', style = 'dotted']
+            19 -> 14 [color = 'gray', style = 'dotted']
+            16 -> 14 [color = 'gray', style = 'dotted']
+            20 -> 14 [color = 'gray', style = 'dotted']
+            18 -> 14 [color = 'gray', style = 'dotted']
+            14 -> 14 [color = 'gray', style = 'dotted']
+            16 -> 10 [color = 'gray', style = 'dotted']
+            20 -> 10 [color = 'gray', style = 'dotted']
+            10 -> 19 [color = 'gray', style = 'dotted']
+            10 -> 20 [color = 'gray', style = 'dotted']
+            10 -> 9 [color = 'gray', style = 'dotted']
+}
+")
